@@ -39,7 +39,7 @@ MyDB_RecordIteratorAltPtr MyDB_BPlusTreeReaderWriter :: getSortedRangeIteratorAl
     MyDB_INRecordPtr tail = getINRecord();
     tail->setKey(high);
     
-    if (buildComparator(head, tail)) {
+    if (compareTwoRecords(low, high)) {
         cout << "low < high\n";
         vector<int> result;
         vector<MyDB_PageReaderWriter> retPages;
@@ -83,8 +83,8 @@ MyDB_RecordIteratorAltPtr MyDB_BPlusTreeReaderWriter :: getRangeIteratorAlt (MyD
     cout << "low key: " << low->toInt() << "\n";
     cout << "high key: " << high->toInt() << "\n";
     
-    if (compareTwoRecords(head->getKey(), tail->getKey())) {
-        cout << "low < high\n";
+    if (!compareTwoRecords(head->getKey(), tail->getKey())) {
+        cout << "low <= high\n";
         vector<int> result;
         vector<MyDB_PageReaderWriter> retPages;
         queue<int> pages;
@@ -112,7 +112,7 @@ MyDB_RecordIteratorAltPtr MyDB_BPlusTreeReaderWriter :: getRangeIteratorAlt (MyD
         return iter;
     } else {
         
-        cout << "low >= high\n";
+        cout << "low > high\n";
         return nullptr;
     }
     
@@ -137,7 +137,7 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
     
     MyDB_INRecordPtr cur = this->getINRecord();
     MyDB_RecordIteratorPtr myIter = getByID(whichPage)->getIterator(cur);
-    int prePtr=1;
+    int prePtr = -1;
     if (myIter ->hasNext()) {
         myIter->getNext();
     }
@@ -155,13 +155,20 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
             }
         } else {
             cout << "curr >= head\n";
+            cout << "push 1st page\n";
+            list.push_back(1);
             break;
         }
         
     }
     // find the first inRecord that is larger or equal to head
-    list.push_back(prePtr);
-    cout << "found 1st and pushed\n";
+    if (prePtr == -1) {
+        cout << "no one smaller than low\n";
+    } else {
+        cout << "found 1st and pushed\n";
+        list.push_back(prePtr);
+    }
+    
     // find upper page
     while(!compareTwoRecords(tail->getKey(), cur->getKey())){
         cout << "cur >= tail\n";
