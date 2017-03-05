@@ -181,7 +181,7 @@ int main (int argc, char *argv[]) {
             cout << "TEST 6... creating tree for small table, on suppkey, checking for sorted order " << flush;
             MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (1024, 128, "tempFile");
             MyDB_BPlusTreeReaderWriter supplierTable ("suppkey", myTable, myMgr);
-            supplierTable.loadFromTextFile ("/Users/xiajunru/Code/Database-530/A4_1/A4_1/SortTest/source/supplier.tbl");
+            supplierTable.loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A4_1/A4_1/SortTest/source/supplier.tbl");
             
             // there should be 10000 records
             MyDB_RecordPtr temp = supplierTable.getEmptyRecord ();
