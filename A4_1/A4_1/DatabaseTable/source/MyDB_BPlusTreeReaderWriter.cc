@@ -144,6 +144,7 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
     }
     // find lowest page
     // while cur is smaller than head, go ahead
+    cout << "curr:" << cur->getKey()->toInt() << " < head:" << head->getKey()->toInt() << "\n";
     while (true) {
         if (compareTwoRecords( cur->getKey(), low)) {
             cout << "curr:" << cur->getKey()->toInt() << " < head:" << head->getKey()->toInt() << "\n";
