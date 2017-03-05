@@ -144,7 +144,7 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
     // find lowest page
     // while cur is smaller than head, go ahead
     while (true) {
-        if (!compareTwoRecords( tail->getKey(), head->getKey())) {
+        if (compareTwoRecords( cur->getKey(), low)) {
             cout << "curr:" << cur->getKey()->toInt() << " < head:" << head->getKey()->toInt() << "\n";
             if(myIter->hasNext()){
                 prePtr=cur->getPtr();
@@ -170,7 +170,7 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
     }
     
     // find upper page
-    while(!compareTwoRecords(tail->getKey(), cur->getKey())){
+    while(!compareTwoRecords(high, cur->getKey())){
         cout << "cur >= tail\n";
         cout << "curr: " << cur->getKey()->toInt() << "\n";
         list.push_back(cur->getPtr());
