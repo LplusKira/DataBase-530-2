@@ -62,7 +62,7 @@ MyDB_RecordIteratorAltPtr MyDB_BPlusTreeReaderWriter :: getSortedRangeIteratorAl
                 }
             }
         }
-        MyDB_RecordIteratorAltPtr iter = make_shared <MyDB_PageListIteratorSelfSortingAlt> (retPages);
+        MyDB_RecordIteratorAltPtr iter = make_shared <MyDB_PageListIteratorAlt> (retPages);
         return iter;
     } else {
         
@@ -83,7 +83,7 @@ MyDB_RecordIteratorAltPtr MyDB_BPlusTreeReaderWriter :: getRangeIteratorAlt (MyD
     cout << "low key: " << low->toInt() << "\n";
     cout << "high key: " << high->toInt() << "\n";
     
-    if (buildComparator(head, tail)) {
+    if (compareTwoRecords(head->getKey(), tail->getKey())) {
         cout << "low < high\n";
         vector<int> result;
         vector<MyDB_PageReaderWriter> retPages;
@@ -163,12 +163,14 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
     list.push_back(prePtr);
     cout << "found 1st and pushed\n";
     // find upper page
-    while(!buildComparator(tail, cur)){
+    while(!compareTwoRecords(tail->getKey(), cur->getKey())){
         cout << "cur >= tail\n";
         cout << "curr: " << cur->getKey()->toInt() << "\n";
         list.push_back(cur->getPtr());
         if(myIter->hasNext()){
             myIter->getNext();
+        }else{
+            break;
         }
     }
     cout << "\n\ncheck list here:\n\n";
@@ -222,12 +224,8 @@ void MyDB_BPlusTreeReaderWriter :: append (MyDB_RecordPtr record) {
             fastIter->getNext();
         }
         while (fastIter->hasNext()) {
-<<<<<<< HEAD
             cout << "before current ptr " << current->getPtr() << ", key: " << current->getKey()->toInt() << "\n";
             // larger or equal to
-=======
-//            cout << "before current ptr " << current->getPtr() << ", key: " << current->getKey()->toInt() << "\n";
->>>>>>> modify compare
             if (!buildComparator(current, record)) {
 //                cout << "current >= insert\n";
                 

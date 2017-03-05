@@ -189,11 +189,6 @@ MyDB_RecordIteratorAltPtr buildItertorOverSortedRuns (int runSize, MyDB_TableRea
 				pagesToSort.pop_back ();
 				vector<MyDB_PageReaderWriter> runTwo = pagesToSort.back ();
 				pagesToSort.pop_back ();
-<<<<<<< HEAD
-                
-=======
-		
->>>>>>> modify compare
 				// merge them
 				newPagesToSort.push_back (mergeIntoList (sortMe.getBufferMgr (), getIteratorAlt (runOne), 
 					getIteratorAlt (runTwo), comparator, lhs, rhs));

@@ -51,11 +51,7 @@ int main (int argc, char *argv[]) {
 //            cout << "TEST 1... creating tree for small table, on suppkey " << flush;
 //            MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (1024, 128, "tempFile");
 //            MyDB_BPlusTreeReaderWriter supplierTable ("suppkey", myTable, myMgr);
-<<<<<<< HEAD
 //            supplierTable.loadFromTextFile ("/Users/xiajunru/Code/Database-530/A4_1/A4_1/SortTest/source/supplier.tbl");
-=======
-//            supplierTable.loadFromTextFile ("/Users/kejunliu/Documents/Database-530/A4_1/A4_1/SortTest/source/supplier.tbl");
->>>>>>> modify compare
 //            
 //            // there should be 10000 records
 //            MyDB_RecordPtr temp = supplierTable.getEmptyRecord ();
@@ -185,7 +181,7 @@ int main (int argc, char *argv[]) {
             cout << "TEST 6... creating tree for small table, on suppkey, checking for sorted order " << flush;
             MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (1024, 128, "tempFile");
             MyDB_BPlusTreeReaderWriter supplierTable ("suppkey", myTable, myMgr);
-            supplierTable.loadFromTextFile ("/Users/kejunliu/Documents/Database-530/A4_1/A4_1/SortTest/source/supplier.tbl");
+            supplierTable.loadFromTextFile ("/Users/xiajunru/Code/Database-530/A4_1/A4_1/SortTest/source/supplier.tbl");
             
             // there should be 10000 records
             MyDB_RecordPtr temp = supplierTable.getEmptyRecord ();
@@ -196,11 +192,7 @@ int main (int argc, char *argv[]) {
             MyDB_IntAttValPtr high = make_shared <MyDB_IntAttVal> ();
             high->set (10000);
             
-<<<<<<< HEAD
-            MyDB_RecordIteratorAltPtr myIter = supplierTable.getSortedRangeIteratorAlt (low, high);
-=======
             MyDB_RecordIteratorAltPtr myIter = supplierTable.getRangeIteratorAlt (low, high);
->>>>>>> modify compare
             bool res = true;
             while (myIter->advance ()) {
                 myIter->getCurrent (temp);
@@ -210,10 +202,8 @@ int main (int argc, char *argv[]) {
                     cout << "Found key of " << temp->getAtt (0)->toInt () << ", expected " << counter << "\n";
                 }
             }
-<<<<<<< HEAD
-=======
+
             cout << "counter: " << counter << "\n";
->>>>>>> modify compare
             if (res && (counter == 10000))
                 cout << "\tTEST PASSED\n";
             else
