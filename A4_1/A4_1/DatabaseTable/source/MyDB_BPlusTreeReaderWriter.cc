@@ -93,18 +93,18 @@ MyDB_RecordIteratorAltPtr MyDB_BPlusTreeReaderWriter :: getRangeIteratorAlt (MyD
         
         while(!pages.empty()) {
             int curPage = pages.front();
-            cout << "curPage: " << curPage << "\n";
-            pages.pop();
-            result.clear();
-            if (discoverPages(curPage, result, low, high)) {
-                cout << " internal, continue discover \n";
+            if (getByID(curPage)->getType() == RegularPage) {
+                cout << "this is a leaf page\n";
+                result.push_back(curPage);
+                pages.pop();
+                result.clear();
+            } else {
+                cout << "curPage: " << curPage << "\n";
+                pages.pop();
+                result.clear();
+                discoverPages(curPage, result, low, high);
                 for (int page : result) {
                     pages.push(page);
-                }
-            } else {
-                cout << "leaf, add these pages to result pages \n";
-                for (int page: result) {
-                    retPages.push_back(*getByID(page));
                 }
             }
         }
@@ -126,6 +126,7 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
     MyDB_INRecordPtr tail=make_shared<MyDB_INRecord>(high);
     cout << "head: " << low->toInt() << "\n";
     cout << "tail: " << high->toInt() << "\n";
+
     MyDB_INRecordPtr current2 = this->getINRecord();
     MyDB_RecordIteratorPtr myIter2 = getByID(whichPage)->getIterator(current2);
     cout << "~~~~~in page " << whichPage << "~~~~~~~\n";
@@ -184,9 +185,10 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
     for (int check: list) {
         cout << check << " , ";
     }
-    if(getByID(list.back())->getType()== RegularPage){
-        return false;
-    }
+//    if(getByID(list.back())->getType()== RegularPage){
+//        cout << "page <" << list.back() << "> is a leaf page\n";
+//        return false;
+//    }
     return true;
 }
 void MyDB_BPlusTreeReaderWriter :: append (MyDB_RecordPtr record) {
