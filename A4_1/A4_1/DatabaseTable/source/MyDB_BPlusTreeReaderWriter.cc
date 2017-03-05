@@ -91,11 +91,23 @@ MyDB_RecordIteratorAltPtr MyDB_BPlusTreeReaderWriter :: getRangeIteratorAlt (MyD
         cout << "push root: " << getTable()->getRootLocation() << "\n";
         pages.push(getTable()->getRootLocation());
         
+        //get first
+        MyDB_INRecordPtr firstPage = getINRecord();
+        MyDB_RecordIteratorPtr find1stIter = getByID(getTable()->getRootLocation())->getIterator(firstPage);
+        if (find1stIter ->hasNext()) {
+            find1stIter->getNext();
+        }
+        if (compareTwoRecords(low, firstPage->getKey())) {
+            // if has page 1, do not push it again
+            cout << "push 1st page\n";
+            retPages.push_back(*getByID(1));
+        }
+        
         while(!pages.empty()) {
             int curPage = pages.front();
             if (getByID(curPage)->getType() == RegularPage) {
-                cout << "this is a leaf page\n";
-                result.push_back(curPage);
+                cout <<  curPage << " is a leaf page\n";
+                retPages.push_back(*getByID(curPage));
                 pages.pop();
                 result.clear();
             } else {
@@ -157,8 +169,6 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
             }
         } else {
             cout << "curr >= head\n";
-            cout << "push 1st page\n";
-            list.push_back(1);
             break;
         }
         
@@ -186,6 +196,7 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
     for (int check: list) {
         cout << check << " , ";
     }
+    cout << "\n";
 //    if(getByID(list.back())->getType()== RegularPage){
 //        cout << "page <" << list.back() << "> is a leaf page\n";
 //        return false;
