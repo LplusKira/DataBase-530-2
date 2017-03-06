@@ -53,7 +53,7 @@ private:
 
 	// gets a list of pages that might have data for an iterator... any leaf page that can possibly
 	// have a value in the range [low, high], inclusive should be returned from this call
-	bool discoverPages (int whichPage, vector <int> &list,
+	bool discoverPages (int whichPage, vector <int> &list, vector <MyDB_PageReaderWriter> &leafList,
         	MyDB_AttValPtr low, MyDB_AttValPtr high);
 
 	// appends a record to the named page; if there is a split, then an MyDB_INRecordPtr is returned that
@@ -97,6 +97,7 @@ private:
     
     bool compareTwoRecords(MyDB_AttValPtr rec1, MyDB_AttValPtr rec2);
     
+    bool compareAndAppend(MyDB_AttValPtr rec1, MyDB_AttValPtr rec2);
 };
 
 #endif

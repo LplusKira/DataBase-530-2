@@ -50,7 +50,7 @@ MyDB_RecordIteratorAltPtr MyDB_BPlusTreeReaderWriter :: getSortedRangeIteratorAl
             int curPage = pages.front();
             pages.pop();
             result.clear();
-            if (discoverPages(curPage, result, low, high)) {
+            if (discoverPages(curPage, result, retPages, low, high)) {
                 cout << " internal, continue discover \n";
                 for (int page : result) {
                     pages.push(page);
@@ -106,21 +106,34 @@ MyDB_RecordIteratorAltPtr MyDB_BPlusTreeReaderWriter :: getRangeIteratorAlt (MyD
         
         while(!pages.empty()) {
             int curPage = pages.front();
-            if (getByID(curPage)->getType() == RegularPage) {
-                cout <<  curPage << " is a leaf page\n";
-                retPages.push_back(*getByID(curPage));
-                pages.pop();
-                result.clear();
-            } else {
+//            if (getByID(curPage)->getType() == RegularPage) {
+//                cout <<  curPage << " is a leaf page\n";
+//                retPages.push_back(*getByID(curPage));
+//                pages.pop();
+//                result.clear();
+//            } else {
                 cout << "curPage: " << curPage << "\n";
                 pages.pop();
                 result.clear();
-                discoverPages(curPage, result, low, high);
+                discoverPages(curPage, result, retPages, low, high);
                 for (int page : result) {
                     pages.push(page);
-                }
+               // }
             }
         }
+        
+//        cout << "\n\ncheck list here:\n\n";
+//        for (MyDB_PageReaderWriter check: retPages) {
+//            MyDB_INRecordPtr checkrec = this->getINRecord();
+//            MyDB_RecordIteratorPtr checkIter = check.getIterator(checkrec);
+//            if (checkIter ->hasNext()) {
+//                checkIter->getNext();
+//            }
+//            cout << checkrec->getKey()->toInt() << " , ";
+//        }
+//        cout << "\n";
+        
+        
         MyDB_RecordIteratorAltPtr iter = make_shared <MyDB_PageListIteratorAlt> (retPages);
         return iter;
     } else {
@@ -132,7 +145,7 @@ MyDB_RecordIteratorAltPtr MyDB_BPlusTreeReaderWriter :: getRangeIteratorAlt (MyD
 }
 
 
-bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &list, MyDB_AttValPtr low, MyDB_AttValPtr high) {
+bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &list, vector <MyDB_PageReaderWriter> &leafList, MyDB_AttValPtr low, MyDB_AttValPtr high) {
     
     cout << "*************discover page now***********\n";
     MyDB_INRecordPtr head=make_shared<MyDB_INRecord>(low);
@@ -179,25 +192,46 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
         cout << "no one smaller than low\n";
     } else {
         cout << "found 1st and pushed\n";
-        list.push_back(prePtr);
+        if (getByID(prePtr)->getType() == DirectoryPage) {
+            list.push_back(prePtr);
+        } else {
+            leafList.push_back(*getByID(prePtr));
+        }
+        
     }
     
     // find upper page
     while(!compareTwoRecords(high, cur->getKey())){
-        cout << "cur >= tail\n";
+        cout << "cur <= tail\n";
 //        cout << "curr: " << cur->getKey()->toInt() << "\n";
-        list.push_back(cur->getPtr());
+        if (getByID(cur->getPtr())->getType() == DirectoryPage) {
+            list.push_back(cur->getPtr());
+        } else {
+            leafList.push_back(*getByID(cur->getPtr()));
+            cout << "push leaf ";
+            MyDB_INRecordPtr checkrec = this->getINRecord();
+            MyDB_RecordIteratorPtr checkIter = getByID(cur->getPtr())->getIterator(checkrec);
+            if (checkIter ->hasNext()) {
+                checkIter->getNext();
+            }
+            cout << checkrec->getKey()->toInt() << " \n";
+        }
         if(myIter->hasNext()){
             myIter->getNext();
         }else{
             break;
         }
     }
-    cout << "\n\ncheck list here:\n\n";
-    for (int check: list) {
-        cout << check << " , ";
-    }
-    cout << "\n";
+//    cout << "\n\ncheck list here:\n\n";
+//    for (MyDB_PageReaderWriter check: leafList) {
+//        MyDB_INRecordPtr checkrec = this->getINRecord();
+//        MyDB_RecordIteratorPtr checkIter = check.getIterator(checkrec);
+//        if (checkIter ->hasNext()) {
+//            checkIter->getNext();
+//        }
+//        cout << checkrec->getKey()->toInt() << " , ";
+//    }
+//    cout << "\n";
 //    if(getByID(list.back())->getType()== RegularPage){
 //        cout << "page <" << list.back() << "> is a leaf page\n";
 //        return false;
@@ -222,17 +256,20 @@ void MyDB_BPlusTreeReaderWriter :: append (MyDB_RecordPtr record) {
     if (get1stRecInRootIter ->hasNext()) {
         get1stRecInRootIter->getNext();
     }
-    if (compareTwoRecords(record->getAtt(whichAttIsOrdering), get1stRecInRoot->getKey())) {
+    // if record < get1stRecInRoot
+    if (compareAndAppend(getKey(record), getKey(get1stRecInRoot))) {
         cout << "inserted record is smaller than 1st record in root\n";
-        while (getByID(stack.top())->getType() != RegularPage) {
-            
-            int currentPage = getTable()->getRootLocation();
+        stack.push(getTable()->getRootLocation());
+        while (!stack.empty() && getByID(stack.top())->getType() != RegularPage) {
+            cout << "push\n";
+            int currentPage = stack.top();
+            stack.pop();
             MyDB_INRecordPtr getlastRecInPage = this->getINRecord();
             MyDB_RecordIteratorPtr getlastRecInPageIter = getByID(currentPage)->getIterator(getlastRecInPage);
             while (getlastRecInPageIter->hasNext()) {
                 getlastRecInPageIter->getNext();
             }
-            stack.push(currentPage);
+            stack.push(getlastRecInPage->getPtr());
         }
     } else {
         cout << "insert normally\n";
@@ -242,39 +279,26 @@ void MyDB_BPlusTreeReaderWriter :: append (MyDB_RecordPtr record) {
             MyDB_RecordIteratorPtr fastIter = getByID(stack.top())->getIterator(current);
             int prePtr  = 1;
             //jump to the 1st record first
-            
-            if (fastIter ->hasNext()) {
-                fastIter->getNext();
-            }
             while (fastIter->hasNext()) {
                 // larger or equal to
-                if (!buildComparator(current, record)) {
-                    //                cout << "current >= insert\n";
+                fastIter->getNext();
+                if (!compareAndAppend(getKey(current), getKey(record))) {
+                    cout << "current " << getKey(current)->toString() << ">= insert " << getKey(record)->toString() << "\n";
                     
                     break;
                 } else {
                     int temp = current->getPtr();
                     prePtr = temp;
-                    //                cout << "current < insert\n";
-                    fastIter->getNext();
+                    cout << "current " << getKey(current)->toString() << "< insert " << getKey(record)->toString() << "\n";
+                    
                 }
             }
             int index = prePtr;
             stack.push(index);
+            cout << "push into path: " << index << "\n";
         }
     }
-    
-    
-//            MyDB_INRecordPtr current2 = this->getINRecord();
-//            MyDB_RecordIteratorPtr myIter2 = getByID(stack.top())->getIterator(current2);
-//            while (myIter2 -> hasNext()) {
-//                myIter2->getNext();
-//                cout << "->find path: record starts with " << current2->getPtr() << ", key:" << current2->getKey()->toInt()<< "\n";
-//            }
 
-    //find the page and push all path into stack
-    
-    
     // start to append
     MyDB_RecordPtr new_record = append(stack.top(), record);
     
@@ -323,7 +347,7 @@ void MyDB_BPlusTreeReaderWriter :: append (MyDB_RecordPtr record) {
     if (!stack.empty()) {
         sortPage(getByID(stack.top()));
     }
-        //printTree();
+    printTree();
 }
 
 
@@ -364,6 +388,7 @@ MyDB_RecordPtr MyDB_BPlusTreeReaderWriter :: append (int whichpage, MyDB_RecordP
         //1. create new page
         forMe->setLastPage(forMe->lastPage()+1);
         MyDB_PageReaderWriterPtr newPage = make_shared <MyDB_PageReaderWriter> (*this, forMe->lastPage());
+        cout << "create page # " << forMe->lastPage() << "\n";
         MyDB_PageType page_Type = page->getType();
         newPage->clear();
         newPage->setType(page_Type);
@@ -431,7 +456,7 @@ MyDB_RecordPtr MyDB_BPlusTreeReaderWriter :: append (int whichpage, MyDB_RecordP
 //        cout << "record: " << record << "\n";
 //        cout << "median:" << median << "\n";
         //cout << buildComparator(record, median) << "\n";
-        if(!buildComparator(record, median)){
+        if(compareAndAppend(getKey(record), getKey(median))){
             if(page->append(record)){
                 cout << "append to lower part\n";
             }else{
@@ -462,37 +487,34 @@ MyDB_INRecordPtr MyDB_BPlusTreeReaderWriter :: getINRecord () {
 }
 
 void MyDB_BPlusTreeReaderWriter :: printTree () {
-    std::stack<MyDB_PageReaderWriterPtr> stack;
-    stack.push(this->root);
-    int count = 0; // # of records
-    while (!stack.empty())
-    {
-        MyDB_PageReaderWriterPtr current = stack.top();
-        
-        if (current->getType() == DirectoryPage) {
-            //cout << "this is an internal page.\n";
-            MyDB_INRecordPtr temp = this->getINRecord();
-            MyDB_RecordIteratorPtr myIter = current->getIterator(temp);
-            while (myIter->hasNext()) {
-                int index = temp->getPtr();
-                stack.push(getByID(index));
-                myIter->getNext();
+    queue<MyDB_PageReaderWriterPtr> q;
+    
+    q.push(getByID(getTable()->getRootLocation()));
+    while(q.size()!=0){
+        MyDB_PageReaderWriterPtr temp=q.front();
+        auto pageIter=temp->getIteratorAlt();
+        q.pop();
+        //search the page while appendMe>=cur
+        if(temp->getType()==MyDB_PageType::DirectoryPage){
+            while(pageIter->advance()){
+                auto curRec=getINRecord();
+                pageIter->getCurrent(curRec);
+                q.push(make_shared <MyDB_PageReaderWriter> (*this, curRec->getPtr()));
+                cout << curRec->getKey()->toString() << " ";
             }
-            //cout << "# record: " << count << "\n";
-            stack.pop();
-        } else {
-            cout << "this is a leaf page.\n";
-            MyDB_RecordPtr temp = this->getEmptyRecord();
-            MyDB_RecordIteratorPtr myIter = current->getIterator(temp);
-            while (myIter->hasNext()) {
-                count++;
-                cout << temp << "\n";
-                myIter->getNext();
+            cout << "-------------------------\n";
+        }
+        else {
+            while (pageIter->advance()) {
+                auto curRec = getEmptyRecord();
+                pageIter->getCurrent(curRec);
+                cout << curRec->getAtt(whichAttIsOrdering)->toString() << " ";
+                
             }
         }
+        cout<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
+        
     }
-    cout << "# of records in this tree: " << count << "\n";
-
 }
 
 MyDB_AttValPtr MyDB_BPlusTreeReaderWriter :: getKey (MyDB_RecordPtr fromMe) {
@@ -608,5 +630,29 @@ bool MyDB_BPlusTreeReaderWriter :: compareTwoRecords(MyDB_AttValPtr rec1, MyDB_A
     lhs->setKey(rec1);
     rhs->setKey(rec2);
     return comparator();
+}
+bool MyDB_BPlusTreeReaderWriter :: compareAndAppend(MyDB_AttValPtr rec1, MyDB_AttValPtr rec2) {
+    if (orderingAttType->promotableToInt ()) {
+        if(rec1->toInt()>=rec2->toInt()){
+            return false;
+        }else{
+            return true;
+        }
+    } else if (orderingAttType->promotableToDouble ()) {
+        if(rec1->toDouble()>=rec2->toDouble()){
+            return false;
+        }else{
+            return true;
+        }
+    } else if (orderingAttType->promotableToString ()) {
+        if(rec1->toString()>=rec2->toString()){
+            return false;
+        }else{
+            return true;
+        }
+    } else {
+        cout << "This is bad... cannot do anything with the >.\n";
+        exit (1);
+    }
 }
 #endif
