@@ -259,8 +259,8 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
 }
 void MyDB_BPlusTreeReaderWriter :: append (MyDB_RecordPtr record) {
     //using stack
-    cout << "append\n";
-    cout << "#####" << record << "\n";
+//    cout << "append\n";
+//    cout << "#####" << record << "\n";
     // when run loadFromText, the root and leaf are cleared, so we need to create again
     if (forMe->lastPage() == 0) {
         initialize();
@@ -277,10 +277,9 @@ void MyDB_BPlusTreeReaderWriter :: append (MyDB_RecordPtr record) {
     }
     // if record < get1stRecInRoot
     if (compareAndAppend(getKey(record), getKey(get1stRecInRoot))) {
-        cout << "inserted record is smaller than 1st record in root\n";
+//        cout << "inserted record is smaller than 1st record in root\n";
         stack.push(getTable()->getRootLocation());
         while (!stack.empty() && getByID(stack.top())->getType() != RegularPage) {
-            cout << "push\n";
             int currentPage = stack.top();
             stack.pop();
             MyDB_INRecordPtr getlastRecInPage = this->getINRecord();
@@ -291,7 +290,7 @@ void MyDB_BPlusTreeReaderWriter :: append (MyDB_RecordPtr record) {
             stack.push(getlastRecInPage->getPtr());
         }
     } else {
-        cout << "insert normally\n";
+//        cout << "insert normally\n";
         while (getByID(stack.top())->getType() != RegularPage) {
             
             MyDB_INRecordPtr current = this->getINRecord();
@@ -302,19 +301,19 @@ void MyDB_BPlusTreeReaderWriter :: append (MyDB_RecordPtr record) {
                 // larger or equal to
                 fastIter->getNext();
                 if (!compareAndAppend(getKey(current), getKey(record))) {
-                    cout << "current " << getKey(current)->toString() << ">= insert " << getKey(record)->toString() << "\n";
+//                    cout << "current " << getKey(current)->toString() << ">= insert " << getKey(record)->toString() << "\n";
                     
                     break;
                 } else {
                     int temp = current->getPtr();
                     prePtr = temp;
-                    cout << "current " << getKey(current)->toString() << "< insert " << getKey(record)->toString() << "\n";
+//                    cout << "current " << getKey(current)->toString() << "< insert " << getKey(record)->toString() << "\n";
                     
                 }
             }
             int index = prePtr;
             stack.push(index);
-            cout << "push into path: " << index << "\n";
+//            cout << "push into path: " << index << "\n";
         }
     }
 
@@ -332,17 +331,8 @@ void MyDB_BPlusTreeReaderWriter :: append (MyDB_RecordPtr record) {
             new_record = append(stack.top(), new_record);
             // after append, if is internal page, inplace sort it
             sortPage(getByID(stack.top()));
-//            MyDB_INRecordPtr temp = this->getINRecord();
-//            MyDB_RecordIteratorPtr myIter = getByID(stack.top())->getIterator(temp);
-//            cout << "============sort page:\n";
-//            while (myIter->hasNext()) {
-//                myIter->getNext();
-//                cout << temp << ", ";
-//            }
-//            cout << "\n";
         } else {
             //create new root
-            cout << "\n\n`````create new root \n\n";
 //            cout << " before, root is " << getTable()->getRootLocation() << "\n";
             forMe->setLastPage(forMe->lastPage() + 1);
             MyDB_PageReaderWriterPtr newRoot = make_shared <MyDB_PageReaderWriter> (*this, forMe->lastPage ());
@@ -385,26 +375,26 @@ MyDB_RecordPtr MyDB_BPlusTreeReaderWriter :: split (MyDB_PageReaderWriter, MyDB_
 
 MyDB_RecordPtr MyDB_BPlusTreeReaderWriter :: append (int whichpage, MyDB_RecordPtr record) {
     MyDB_PageReaderWriterPtr page = getByID(whichpage);
-    cout << "\n\ntry to append to page : " << whichpage << "\n";
-    cout << record << "\n\n\n";
+//    cout << "\n\ntry to append to page : " << whichpage << "\n";
+//    cout << record << "\n\n\n";
     
     if(page->append(record)){
-        cout << "easy append\n";
+//        cout << "easy append\n";
         return nullptr;
     }else{
         //harder case
-        cout << "\n\nhard append\n";
+//        cout << "\n\nhard append\n";
         
         //1. sort
         if (page->getType() == RegularPage) {
-            cout << "sort for leaf page\n";
+//            cout << "sort for leaf page\n";
             MyDB_RecordPtr lhr = this->getEmptyRecord();
             MyDB_RecordPtr rhr = this->getEmptyRecord();
             function<bool()> myComp=buildComparator(lhr, rhr);
             page->sortInPlace(myComp, lhr, rhr);
 
         } else {
-            cout << "sort for internal page\n";
+//            cout << "sort for internal page\n";
             MyDB_INRecordPtr lhr = this->getINRecord();
             MyDB_INRecordPtr rhr = this->getINRecord();
             function<bool()> myComp=buildComparator(lhr, rhr);
@@ -416,7 +406,7 @@ MyDB_RecordPtr MyDB_BPlusTreeReaderWriter :: append (int whichpage, MyDB_RecordP
         //1. create new page
         forMe->setLastPage(forMe->lastPage()+1);
         MyDB_PageReaderWriterPtr newPage = make_shared <MyDB_PageReaderWriter> (*this, forMe->lastPage());
-        cout << "create page # " << forMe->lastPage() << "\n";
+//        cout << "create page # " << forMe->lastPage() << "\n";
         MyDB_PageType page_Type = page->getType();
         newPage->clear();
         newPage->setType(page_Type);
@@ -424,21 +414,21 @@ MyDB_RecordPtr MyDB_BPlusTreeReaderWriter :: append (int whichpage, MyDB_RecordP
         MyDB_RecordIteratorAltPtr myIter = page->getIteratorAlt();
         std::vector<MyDB_RecordPtr> recs;
         int bytesConsumed = sizeof (size_t) * 2;
-        cout << "\n\noriginal records\n:";
+//        cout << "\n\noriginal records\n:";
         while (bytesConsumed < size) {
             //cout << bytesConsumed << "byyyyyy\n";
             if(myIter->advance()){
                 if (page->getType() == RegularPage) {
                     MyDB_RecordPtr temp = this->getEmptyRecord();
                     myIter->getCurrent(temp);
-                    cout << temp << "\n";
+//                    cout << temp << "\n";
                     recs.push_back(temp);
                     int consume=temp->getBinarySize();
                     bytesConsumed += consume;
                 } else {
                     MyDB_INRecordPtr temp = this->getINRecord();
                     myIter->getCurrent(temp);
-                    cout << temp << "\n";
+//                    cout << temp << "\n";
                     recs.push_back(temp);
                     int consume=temp->getBinarySize();
                     bytesConsumed += consume;
@@ -448,55 +438,54 @@ MyDB_RecordPtr MyDB_BPlusTreeReaderWriter :: append (int whichpage, MyDB_RecordP
                 break;
             }
         }
-        cout << "\n\n";
-        cout << "vector records\n:";
-        for(int i=0;i<recs.size();i++){
-            cout << recs[i]<<"gggggggg\n";
-        }
-        cout << "\n\n";
+       
+//        for(int i=0;i<recs.size();i++){
+//            cout << recs[i]<<"gggggggg\n";
+//        }
+//        cout << "\n\n";
         ///////////
         int medium=recs.size()/2;
         MyDB_PageType pageType = page->getType();
         page->clear();
         page->setType(pageType);
         MyDB_RecordPtr median=recs.at(medium);
-        cout << "lower half:\n";
+//        cout << "lower half:\n";
         for(int i=0;i<recs.size()/2;i++){
-            cout << recs.at(i)<< "\n";
+//            cout << recs.at(i)<< "\n";
             if(page->append(recs.at(i))){
-                cout << "success\n";
+//                cout << "success\n";
             }else{
-                cout << "ummmm ....... cannot append to lower part\n";
+//                cout << "ummmm ....... cannot append to lower part\n";
             }
         }
-        cout << "\n\n";
-        cout << "upper half\n";
+//        cout << "\n\n";
+//        cout << "upper half\n";
         for(int i=recs.size()/2;i<recs.size();i++){
-            cout << recs.at(i)<< "\n";
+//            cout << recs.at(i)<< "\n";
             if(newPage->append(recs.at(i))){
-                cout << "success\n";
+//                cout << "success\n";
             }else{
-                cout << "ummmm ....... cannot append to upper part\n";
+//                cout << "ummmm ....... cannot append to upper part\n";
             }
         }
-        cout << "\n\n";
+//        cout << "\n\n";
         
 //        cout << "record: " << record << "\n";
 //        cout << "median:" << median << "\n";
         //cout << buildComparator(record, median) << "\n";
         if(compareAndAppend(getKey(record), getKey(median))){
             if(page->append(record)){
-                cout << "append to lower part\n";
+//                cout << "append to lower part\n";
             }else{
-                cout << "ummmm  cannot append to lower part\n";
+//                cout << "ummmm  cannot append to lower part\n";
             }
         }else{
-            cout << record << "record\n";
+//            cout << record << "record\n";
             if(newPage->append(record)){
-                cout << "append to upper part\n";
+//                cout << "append to upper part\n";
                 sortPage(newPage);
             }else{
-                cout << "ummmm  cannot append to upper part\n";
+//                cout << "ummmm  cannot append to upper part\n";
             }
         }
         
@@ -596,41 +585,41 @@ function <bool ()>  MyDB_BPlusTreeReaderWriter :: buildComparator (MyDB_RecordPt
 void MyDB_BPlusTreeReaderWriter :: initialize() {
     forMe->setLastPage (0);
     //create root page (anonymous)
-    cout << "create root page\n";
+//    cout << "create root page\n";
     root = make_shared <MyDB_PageReaderWriter> (*this, forMe->lastPage ());
     getTable()->setRootLocation(forMe->lastPage());
     root->clear ();
-    cout << "type: " << root->getType() << " should be "<< DirectoryPage << "\n";
+//    cout << "type: " << root->getType() << " should be "<< DirectoryPage << "\n";
     root->setType(MyDB_PageType::DirectoryPage);
-    cout << "type: " << root->getType() << " should be "<< DirectoryPage << "\n";
+//    cout << "type: " << root->getType() << " should be "<< DirectoryPage << "\n";
     
     
     //create leaf page (has directory)
-    cout << "create leaf page\n";
+//    cout << "create leaf page\n";
     forMe->setLastPage(forMe->lastPage() + 1);
     MyDB_PageReaderWriterPtr leaf = make_shared <MyDB_PageReaderWriter> (*this, forMe->lastPage ());
     leaf->clear ();
-    cout << "set leaf loc: " << forMe->lastPage() << "\n";
+//    cout << "set leaf loc: " << forMe->lastPage() << "\n";
     
     //set ptr and default record key for root
-    cout << "set ptr: " << forMe->lastPage() << "\n";
+//    cout << "set ptr: " << forMe->lastPage() << "\n";
     MyDB_INRecordPtr record = getINRecord();
     record->setPtr(forMe->lastPage ());
     root->append(record);
     
     // and the root location
     rootLocation = getTable ()->getRootLocation ();
-    cout << "--------------some tests below ----------------\n";
-    cout << "type: " << root->getType() << " should be "<< DirectoryPage << "\n";
-    cout << "root loc: " << getTable()->getRootLocation() << "\n";
-    MyDB_INRecordPtr current = this->getINRecord();
-    MyDB_RecordIteratorPtr myIter = root->getIterator(current);
-    while (myIter->hasNext()) {
-        myIter->getNext();
-    }
-    int index = current->getPtr();
-    cout << "root rec1 points to: " << index << "\n";
-    cout << "type: " << root->getType() << " should be "<< DirectoryPage << "\n";
+//    cout << "--------------some tests below ----------------\n";
+//    cout << "type: " << root->getType() << " should be "<< DirectoryPage << "\n";
+//    cout << "root loc: " << getTable()->getRootLocation() << "\n";
+//    MyDB_INRecordPtr current = this->getINRecord();
+//    MyDB_RecordIteratorPtr myIter = root->getIterator(current);
+//    while (myIter->hasNext()) {
+//        myIter->getNext();
+//    }
+//    int index = current->getPtr();
+//    cout << "root rec1 points to: " << index << "\n";
+//    cout << "type: " << root->getType() << " should be "<< DirectoryPage << "\n";
 }
 
 MyDB_PageReaderWriterPtr MyDB_BPlusTreeReaderWriter :: getByID(int index) {
