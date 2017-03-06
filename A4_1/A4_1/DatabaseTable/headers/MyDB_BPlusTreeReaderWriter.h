@@ -97,6 +97,8 @@ private:
     
     bool compareTwoRecords(MyDB_AttValPtr rec1, MyDB_AttValPtr rec2);
     
+    bool compareAndAppend(MyDB_AttValPtr rec1, MyDB_AttValPtr rec2);
+    
 };
 
 #endif
