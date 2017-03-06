@@ -62,6 +62,7 @@ MyDB_RecordIteratorAltPtr MyDB_BPlusTreeReaderWriter :: getSortedRangeIteratorAl
                 }
             }
         }
+       // MyDB_PageListIteratorSelfSortingAlt iter = get
         MyDB_RecordIteratorAltPtr iter = make_shared <MyDB_PageListIteratorAlt> (retPages);
         return iter;
     } else {
@@ -80,8 +81,8 @@ MyDB_RecordIteratorAltPtr MyDB_BPlusTreeReaderWriter :: getRangeIteratorAlt (MyD
     head->setKey(low);
     MyDB_INRecordPtr tail = getINRecord();
     tail->setKey(high);
-    cout << "low key: " << low->toInt() << "\n";
-    cout << "high key: " << high->toInt() << "\n";
+//    cout << "low key: " << low->toInt() << "\n";
+//    cout << "high key: " << high->toInt() << "\n";
     
     if (!compareTwoRecords(head->getKey(), tail->getKey())) {
         cout << "low <= high\n";
@@ -136,15 +137,15 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
     cout << "*************discover page now***********\n";
     MyDB_INRecordPtr head=make_shared<MyDB_INRecord>(low);
     MyDB_INRecordPtr tail=make_shared<MyDB_INRecord>(high);
-    cout << "head: " << low->toInt() << "\n";
-    cout << "tail: " << high->toInt() << "\n";
+//    cout << "head: " << low->toInt() << "\n";
+//    cout << "tail: " << high->toInt() << "\n";
 
     MyDB_INRecordPtr current2 = this->getINRecord();
     MyDB_RecordIteratorPtr myIter2 = getByID(whichPage)->getIterator(current2);
     cout << "~~~~~in page " << whichPage << "~~~~~~~\n";
     while (myIter2 -> hasNext()) {
         myIter2->getNext();
-        cout << "->find path: record starts with " << current2->getPtr() << ", key:" << current2->getKey()->toInt()<< "\n";
+//        cout << "->find path: record starts with " << current2->getPtr() << ", key:" << current2->getKey()->toInt()<< "\n";
     }
     
     
@@ -156,10 +157,10 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
     }
     // find lowest page
     // while cur is smaller than head, go ahead
-    cout << "curr:" << cur->getKey()->toInt() << " < head:" << head->getKey()->toInt() << "\n";
+//    cout << "curr:" << cur->getKey()->toInt() << " < head:" << head->getKey()->toInt() << "\n";
     while (true) {
         if (compareTwoRecords( cur->getKey(), low)) {
-            cout << "curr:" << cur->getKey()->toInt() << " < head:" << head->getKey()->toInt() << "\n";
+//            cout << "curr:" << cur->getKey()->toInt() << " < head:" << head->getKey()->toInt() << "\n";
             if(myIter->hasNext()){
                 prePtr=cur->getPtr();
                 cout << "set prePtr: " << prePtr << "\n";
@@ -184,7 +185,7 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
     // find upper page
     while(!compareTwoRecords(high, cur->getKey())){
         cout << "cur >= tail\n";
-        cout << "curr: " << cur->getKey()->toInt() << "\n";
+//        cout << "curr: " << cur->getKey()->toInt() << "\n";
         list.push_back(cur->getPtr());
         if(myIter->hasNext()){
             myIter->getNext();
@@ -206,15 +207,64 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
 void MyDB_BPlusTreeReaderWriter :: append (MyDB_RecordPtr record) {
     //using stack
     cout << "append\n";
-//    cout << "#####" << record << "\n";
+    cout << "#####" << record << "\n";
     // when run loadFromText, the root and leaf are cleared, so we need to create again
     if (forMe->lastPage() == 0) {
         initialize();
     }
 
-    
     std::stack<int> stack;
     stack.push(getTable()->getRootLocation());
+    
+    // if inserted record is smaller than 1st record in root, insert it all the way down to the right most
+    MyDB_INRecordPtr get1stRecInRoot = this->getINRecord();
+    MyDB_RecordIteratorPtr get1stRecInRootIter = getByID(getTable()->getRootLocation())->getIterator(get1stRecInRoot);
+    if (get1stRecInRootIter ->hasNext()) {
+        get1stRecInRootIter->getNext();
+    }
+    if (compareTwoRecords(record->getAtt(whichAttIsOrdering), get1stRecInRoot->getKey())) {
+        cout << "inserted record is smaller than 1st record in root\n";
+        while (getByID(stack.top())->getType() != RegularPage) {
+            
+            int currentPage = getTable()->getRootLocation();
+            MyDB_INRecordPtr getlastRecInPage = this->getINRecord();
+            MyDB_RecordIteratorPtr getlastRecInPageIter = getByID(currentPage)->getIterator(getlastRecInPage);
+            while (getlastRecInPageIter->hasNext()) {
+                getlastRecInPageIter->getNext();
+            }
+            stack.push(currentPage);
+        }
+    } else {
+        cout << "insert normally\n";
+        while (getByID(stack.top())->getType() != RegularPage) {
+            
+            MyDB_INRecordPtr current = this->getINRecord();
+            MyDB_RecordIteratorPtr fastIter = getByID(stack.top())->getIterator(current);
+            int prePtr  = 1;
+            //jump to the 1st record first
+            
+            if (fastIter ->hasNext()) {
+                fastIter->getNext();
+            }
+            while (fastIter->hasNext()) {
+                // larger or equal to
+                if (!buildComparator(current, record)) {
+                    //                cout << "current >= insert\n";
+                    
+                    break;
+                } else {
+                    int temp = current->getPtr();
+                    prePtr = temp;
+                    //                cout << "current < insert\n";
+                    fastIter->getNext();
+                }
+            }
+            int index = prePtr;
+            stack.push(index);
+        }
+    }
+    
+    
 //            MyDB_INRecordPtr current2 = this->getINRecord();
 //            MyDB_RecordIteratorPtr myIter2 = getByID(stack.top())->getIterator(current2);
 //            while (myIter2 -> hasNext()) {
@@ -223,54 +273,7 @@ void MyDB_BPlusTreeReaderWriter :: append (MyDB_RecordPtr record) {
 //            }
 
     //find the page and push all path into stack
-    while (getByID(stack.top())->getType() != RegularPage) {
-        
-        MyDB_INRecordPtr current = this->getINRecord();
-        MyDB_RecordIteratorPtr fastIter = getByID(stack.top())->getIterator(current);
-        int prePtr  = 1;
-//        if (myIter->hasNext() && buildComparator(current, record)) {
-//            cout << "have a smaller record\n";
-//            append(getByID(1), record);
-//            break;
-//        }
-        
-//        if (buildComparator(current, record)) {
-//            cout << "<\n";
-//        } else {
-//            cout << ">\n";
-//        }
-        //jump to the 1st record first
-        
-        if (fastIter ->hasNext()) {
-            fastIter->getNext();
-        }
-        while (fastIter->hasNext()) {
-//            cout << "before current ptr " << current->getPtr() << ", key: " << current->getKey()->toInt() << "\n";
-            // larger or equal to
-            if (!buildComparator(current, record)) {
-//                cout << "current >= insert\n";
-                
-                break;
-            } else {
-                int temp = current->getPtr();
-                prePtr = temp;
-//                cout << "current < insert\n";
-                fastIter->getNext();
-            }
-//            cout << "after current ptr " << current->getPtr() << ", key: " << current->getKey()->toInt() << "\n";
-        }
-        
-//        cout << "current ptr " << current->getPtr() << ", key: " << current->getKey()->toInt() << "\n";
-//        cout << "pre ptr " << prePtr << "\n";
-//        cout << "record key: " << record->getAtt(whichAttIsOrdering)->toInt() << "\n";
-        int index = prePtr;
-//        cout << "index" << index << "\n";
-        //cout  << current->getAtt(0)->toInt() << "\n";
-//        cout << "current points to: " << current->getPtr() << "\n";
-        //cout  << record->getAtt(0)->toInt() << "\n";
-//        cout << "push: " << index << "\n";
-        stack.push(index);
-    }
+    
     
     // start to append
     MyDB_RecordPtr new_record = append(stack.top(), record);
