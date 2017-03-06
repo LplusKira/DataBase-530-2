@@ -98,7 +98,7 @@ MyDB_RecordIteratorAltPtr MyDB_BPlusTreeReaderWriter :: getSortedRangeIteratorAl
             }
         }
         MyDB_RecordIteratorAltPtr iter = make_shared <MyDB_PageListIteratorAlt> (retPages);
-        printTree();
+//        printTree();
         return iter;
     } else {
         cout << "low > high\n";
@@ -172,7 +172,7 @@ MyDB_RecordIteratorAltPtr MyDB_BPlusTreeReaderWriter :: getRangeIteratorAlt (MyD
         }
         
         MyDB_RecordIteratorAltPtr iter = make_shared <MyDB_PageListIteratorAlt> (retPages);
-        printTree();
+//        printTree();
         return iter;
     } else {
         
