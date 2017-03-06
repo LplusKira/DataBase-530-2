@@ -46,37 +46,37 @@ int main (int argc, char *argv[]) {
     cout << "Using small page size.\n";
     
     switch (start) {
-        case 1:
-        {
-            cout << "TEST 1... creating tree for small table, on suppkey " << flush;
-            MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (1024, 128, "tempFile");
-            MyDB_BPlusTreeReaderWriter supplierTable ("suppkey", myTable, myMgr);
-            supplierTable.loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A4_1/A4_1/SortTest/source/supplier.tbl");
-            
-            // there should be 10000 records
-            MyDB_RecordPtr temp = supplierTable.getEmptyRecord ();
-            MyDB_RecordIteratorAltPtr myIter = supplierTable.getIteratorAlt ();
-            
-            int counter = 0;
-            while (myIter->advance ()) {
-                myIter->getCurrent (temp);
-                counter++;
-            }
-            cout << "counter: " << counter << "\n";
-            bool result = (counter == 10000);
-            if (result)
-                cout << "\tTEST PASSED\n";
-            else
-                cout << "\tTEST FAILED\n";
-            QUNIT_IS_TRUE (result);
-        }
-            FALLTHROUGH_INTENDED;
+//        case 1:
+//        {
+//            cout << "TEST 1... creating tree for small table, on suppkey " << flush;
+//            MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (1024, 128, "tempFile");
+//            MyDB_BPlusTreeReaderWriter supplierTable ("suppkey", myTable, myMgr);
+//            supplierTable.loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A4_1/A4_1/SortTest/source/supplier.tbl");
+//            
+//            // there should be 10000 records
+//            MyDB_RecordPtr temp = supplierTable.getEmptyRecord ();
+//            MyDB_RecordIteratorAltPtr myIter = supplierTable.getIteratorAlt ();
+//            
+//            int counter = 0;
+//            while (myIter->advance ()) {
+//                myIter->getCurrent (temp);
+//                counter++;
+//            }
+//            cout << "counter: " << counter << "\n";
+//            bool result = (counter == 10000);
+//            if (result)
+//                cout << "\tTEST PASSED\n";
+//            else
+//                cout << "\tTEST FAILED\n";
+//            QUNIT_IS_TRUE (result);
+//        }
+//            FALLTHROUGH_INTENDED;
 //        case 2:
 //        {
 //            cout << "TEST 2... creating tree for small table, on nationkey " << flush;
 //            MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (1024, 128, "tempFile");
 //            MyDB_BPlusTreeReaderWriter supplierTable ("nationkey", myTable, myMgr);
-//            supplierTable.loadFromTextFile ("/Users/kejunliu/Documents/Database-530/A4_1/A4_1/SortTest/source/supplier.tbl");
+//            supplierTable.loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A4_1/A4_1/SortTest/source/supplier.tbl");
 //            
 //            // there should be 10000 records
 //            MyDB_RecordPtr temp = supplierTable.getEmptyRecord ();
@@ -143,12 +143,12 @@ int main (int argc, char *argv[]) {
 //            QUNIT_IS_TRUE (result);
 //        }
 //            FALLTHROUGH_INTENDED;
-//        case 1:
+//        case 5:
 //        {
 //            cout << "TEST 5... creating tree for large table, on comment asking some queries" << flush;
 //            MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (1024, 128, "tempFile");
 //            MyDB_BPlusTreeReaderWriter supplierTable ("comment", myTable, myMgr);
-//            supplierTable.loadFromTextFile ("/Users/kejunliu/Documents/Database-530/A4_1/A4_1/SortTest/source/supplierBig.tbl");
+//            supplierTable.loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A4_1/A4_1/SortTest/source/supplierBig.tbl");
 //            
 //            // there should be 320000 records
 //            MyDB_RecordPtr temp = supplierTable.getEmptyRecord ();
@@ -176,9 +176,47 @@ int main (int argc, char *argv[]) {
 //            QUNIT_IS_TRUE (result);
 //        }
 //            FALLTHROUGH_INTENDED;
-//        case 1:
+        case 1:
+        {
+            cout << "TEST 6... creating tree for small table, on suppkey, checking for sorted order " << flush;
+            MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (1024, 128, "tempFile");
+            MyDB_BPlusTreeReaderWriter supplierTable ("suppkey", myTable, myMgr);
+
+            supplierTable.loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A4_1/A4_1/SortTest/source/supplier.tbl");
+
+            
+            // there should be 10000 records
+            MyDB_RecordPtr temp = supplierTable.getEmptyRecord ();
+            
+            int counter = 0;
+            MyDB_IntAttValPtr low = make_shared <MyDB_IntAttVal> ();
+            low->set (1);
+            MyDB_IntAttValPtr high = make_shared <MyDB_IntAttVal> ();
+            high->set (10000);
+            
+            MyDB_RecordIteratorAltPtr myIter = supplierTable.getSortedRangeIteratorAlt (low, high);
+            bool res = true;
+            while (myIter->advance ()) {
+                myIter->getCurrent (temp);
+                counter++;
+                
+                if (counter != temp->getAtt (0)->toInt ()) {
+                    res = false;
+                    cout << "Found key of " << temp->getAtt (0)->toInt () << ", expected " << counter << "\n";
+                }
+            }
+
+            cout << "counter: " << counter << "\n";
+            if (res && (counter == 10000))
+                cout << "\tTEST PASSED\n";
+            else
+                cout << "\tTEST FAILED\n";
+            QUNIT_IS_TRUE (res && (counter == 10000));
+        }
+            FALLTHROUGH_INTENDED;
+//        case 7:
 //        {
-//            cout << "TEST 6... creating tree for small table, on suppkey, checking for sorted order " << flush;
+//            cout << "TEST 7... creating tree for small table, on suppkey, running point queries " << flush;
 //            MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (1024, 128, "tempFile");
 //            MyDB_BPlusTreeReaderWriter supplierTable ("suppkey", myTable, myMgr);
 //            supplierTable.loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A4_1/A4_1/SortTest/source/supplier.tbl");
@@ -187,49 +225,14 @@ int main (int argc, char *argv[]) {
 //            MyDB_RecordPtr temp = supplierTable.getEmptyRecord ();
 //            
 //            int counter = 0;
-//            MyDB_IntAttValPtr low = make_shared <MyDB_IntAttVal> ();
-//            low->set (1);
-//            MyDB_IntAttValPtr high = make_shared <MyDB_IntAttVal> ();
-//            high->set (10000);
-//            
-//            MyDB_RecordIteratorAltPtr myIter = supplierTable.getRangeIteratorAlt (low, high);
 //            bool res = true;
-//            while (myIter->advance ()) {
-//                myIter->getCurrent (temp);
-//                counter++;
-//                if (counter != temp->getAtt (0)->toInt ()) {
-//                    res = false;
-//                    cout << "Found key of " << temp->getAtt (0)->toInt () << ", expected " << counter << "\n";
-//                }
-//            }
-//
-//            cout << "counter: " << counter << "\n";
-//            if (res && (counter == 10000))
-//                cout << "\tTEST PASSED\n";
-//            else
-//                cout << "\tTEST FAILED\n";
-//            QUNIT_IS_TRUE (res && (counter == 10000));
-//        }
-//            FALLTHROUGH_INTENDED;
-//        case 7:
-//        {
-//            cout << "TEST 7... creating tree for small table, on suppkey, running point queries " << flush;
-//            MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (1024, 128, "tempFile");
-//            MyDB_BPlusTreeReaderWriter supplierTable ("suppkey", myTable, myMgr);
-//            supplierTable.loadFromTextFile ("/Users/kejunliu/Documents/Database-530/A4_1/A4_1/SortTest/source/supplier.tbl");
-//            
-//            // there should be 10000 records
-//            MyDB_RecordPtr temp = supplierTable.getEmptyRecord ();
-//            
-//            int counter = 0;
-//            bool res = true;
-//            for (int i = 1; i < 101; i++) {
+//            for (int i = 1; i < 6; i++) {
 //                MyDB_IntAttValPtr low = make_shared <MyDB_IntAttVal> ();
 //                low->set (i * 19);
 //                MyDB_IntAttValPtr high = make_shared <MyDB_IntAttVal> ();
 //                high->set (i * 19);
 //                
-//                MyDB_RecordIteratorAltPtr myIter = supplierTable.getSortedRangeIteratorAlt (low, high);
+//                MyDB_RecordIteratorAltPtr myIter = supplierTable.getRangeIteratorAlt (low, high);
 //                while (myIter->advance ()) {
 //                    myIter->getCurrent (temp);
 //                    counter++;
@@ -239,7 +242,8 @@ int main (int argc, char *argv[]) {
 //                    }
 //                }
 //            }
-//            if (res && (counter == 100))
+//            cout << "counter="<<counter<<"\n";
+//            if (res && (counter == 5))
 //                cout << "\tTEST PASSED\n";
 //            else
 //                cout << "\tTEST FAILED\n";
@@ -251,7 +255,7 @@ int main (int argc, char *argv[]) {
 //            cout << "TEST 8... creating tree for small table, on comment, running point queries with no answer " << flush;
 //            MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (1024, 128, "tempFile");
 //            MyDB_BPlusTreeReaderWriter supplierTable ("comment", myTable, myMgr);
-//            supplierTable.loadFromTextFile ("/Users/kejunliu/Documents/Database-530/A4_1/A4_1/SortTest/source/supplier.tbl");
+//            supplierTable.loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A4_1/A4_1/SortTest/source/supplier.tbl");
 //            
 //            // there should be 10000 records
 //            MyDB_RecordPtr temp = supplierTable.getEmptyRecord ();
