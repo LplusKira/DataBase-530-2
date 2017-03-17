@@ -313,66 +313,66 @@ int main (int argc, char *argv[]) {
 //            QUNIT_IS_TRUE (counter == 0);
 //        }
 //            FALLTHROUGH_INTENDED;
-//        case 10:
-//        {
-//            cout << "TEST 10... mega test using tons of range queries " << flush;
-//            MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (1024 * 128, 128, "tempFile");
-//            MyDB_BPlusTreeReaderWriter supplierTable ("suppkey", myTable, myMgr);
-//            
-//            // load it from a text file
-//            supplierTable.loadFromTextFile ("/Users/kejunliu/Documents/Database-530/A4_1/A4_1/SortTest/source/supplierBig.tbl");
-//            
-//            // there should be 320000 records
-//            MyDB_RecordPtr temp = supplierTable.getEmptyRecord ();
-//            MyDB_RecordIteratorAltPtr myIter = supplierTable.getIteratorAlt ();
-//            
-//            // now, we check 100 different random suppliers queries
-//            bool allOK = true;
-//            for (int time = 0; time < 2; time++) {
-//                for (int i = 0; i < 100; i++) {
-//                    
-//                    // we are looping through twice; the first time, ask only point queries
-//                    srand48 (i);
-//                    int lowBound = lrand48 () % 10000;
-//                    int highBound = lrand48 () % 10000;
-//                    if (time % 2 == 0)
-//                        highBound = lowBound;
-//                    
-//                    // make sure the low bound is less than the high bound
-//                    if (lowBound > highBound) {
-//                        int temp = lowBound;
-//                        lowBound = highBound;
-//                        highBound = temp;
-//                    }
-//                    
-//                    // ask a range query
-//                    MyDB_IntAttValPtr low = make_shared <MyDB_IntAttVal> ();
-//                    low->set (lowBound);
-//                    MyDB_IntAttValPtr high = make_shared <MyDB_IntAttVal> ();
-//                    high->set (highBound);
-//                    
-//                    if (i % 2 == 0) 
-//                        myIter = supplierTable.getRangeIteratorAlt (low, high);
-//                    else
-//                        myIter = supplierTable.getSortedRangeIteratorAlt (low, high);
-//                    
-//                    // verify we got exactly the correct count back
-//                    int counter = 0;
-//                    while (myIter->advance ()) {
-//                        myIter->getCurrent (temp);
-//                        counter++;
-//                    }
-//                    
-//                    if (counter != 32 * (highBound - lowBound + 1))
-//                        allOK = false;
-//                }
-//            }
-//            if (allOK)
-//                cout << "\tTEST PASSED\n";
-//            else
-//                cout << "\tTEST FAILED\n";
-//            QUNIT_IS_TRUE (allOK);
-//        }
+        case 1:
+        {
+            cout << "TEST 10... mega test using tons of range queries " << flush;
+            MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (1024 * 128, 128, "tempFile");
+            MyDB_BPlusTreeReaderWriter supplierTable ("suppkey", myTable, myMgr);
+            
+            // load it from a text file
+            supplierTable.loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A4_1/A4_1/SortTest/source/supplierBig.tbl");
+            
+            // there should be 320000 records
+            MyDB_RecordPtr temp = supplierTable.getEmptyRecord ();
+            MyDB_RecordIteratorAltPtr myIter = supplierTable.getIteratorAlt ();
+            
+            // now, we check 100 different random suppliers queries
+            bool allOK = true;
+            for (int time = 0; time < 2; time++) {
+                for (int i = 0; i < 100; i++) {
+                    
+                    // we are looping through twice; the first time, ask only point queries
+                    srand48 (i);
+                    int lowBound = lrand48 () % 10000;
+                    int highBound = lrand48 () % 10000;
+                    if (time % 2 == 0)
+                        highBound = lowBound;
+                    
+                    // make sure the low bound is less than the high bound
+                    if (lowBound > highBound) {
+                        int temp = lowBound;
+                        lowBound = highBound;
+                        highBound = temp;
+                    }
+                    
+                    // ask a range query
+                    MyDB_IntAttValPtr low = make_shared <MyDB_IntAttVal> ();
+                    low->set (lowBound);
+                    MyDB_IntAttValPtr high = make_shared <MyDB_IntAttVal> ();
+                    high->set (highBound);
+                    
+                    if (i % 2 == 0) 
+                        myIter = supplierTable.getRangeIteratorAlt (low, high);
+                    else
+                        myIter = supplierTable.getSortedRangeIteratorAlt (low, high);
+                    
+                    // verify we got exactly the correct count back
+                    int counter = 0;
+                    while (myIter->advance ()) {
+                        myIter->getCurrent (temp);
+                        counter++;
+                    }
+                    
+                    if (counter != 32 * (highBound - lowBound + 1))
+                        allOK = false;
+                }
+            }
+            if (allOK)
+                cout << "\tTEST PASSED\n";
+            else
+                cout << "\tTEST FAILED\n";
+            QUNIT_IS_TRUE (allOK);
+        }
     }
 }
 

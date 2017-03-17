@@ -205,7 +205,7 @@ MyDB_RecordIteratorAltPtr MyDB_BPlusTreeReaderWriter :: getRangeIteratorAlt (MyD
         }
         
         MyDB_RecordIteratorAltPtr iter = make_shared <MyDB_PageListIteratorAlt> (retPages);
-        printTree();
+//        printTree();
         return iter;
     } else {
         
@@ -226,7 +226,7 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
     
     MyDB_INRecordPtr current2 = this->getINRecord();
     MyDB_RecordIteratorPtr myIter2 = getByID(whichPage)->getIterator(current2);
-    cout << "~~~~~in page " << whichPage << "~~~~~~~\n";
+//    cout << "~~~~~in page " << whichPage << "~~~~~~~\n";
     while (myIter2 -> hasNext()) {
         myIter2->getNext();
         //        cout << "->find path: record starts with " << current2->getPtr() << ", key:" << current2->getKey()->toInt()<< "\n";
@@ -244,32 +244,32 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
     //    cout << "curr:" << cur->getKey()->toInt() << " < head:" << head->getKey()->toInt() << "\n";
     while (true) {
         if (compareAndAppend( cur->getKey(), low)) {
-                        cout << "curr:" << cur->getKey()->toInt() << " < head:" << head->getKey()->toInt() << "\n";
+//                        cout << "curr:" << cur->getKey()->toInt() << " < head:" << head->getKey()->toInt() << "\n";
             
             if(myIter->hasNext()){
                 prePtr=cur->getPtr();
-                cout << "set prePtr: " << prePtr << "\n";
+//                cout << "set prePtr: " << prePtr << "\n";
                 myIter->getNext();
             } else {
                 break;
             }
         } else {
-            cout << "curr >= head\n";
+//            cout << "curr >= head\n";
             break;
         }
         
     }
     // find the first inRecord that is larger or equal to head
     if (prePtr == -1) {
-        cout << "no one smaller than low\n";
+//        cout << "no one smaller than low\n";
     } else {
-        cout << "found 1st and pushed\n";
+//        cout << "found 1st and pushed\n";
         list.push_back(prePtr);
     }
     
     // find upper page
     while(!compareAndAppend(high, cur->getKey())){
-        cout << "cur >= tail\n";
+//        cout << "cur >= tail\n";
         //        cout << "curr: " << cur->getKey()->toInt() << "\n";
         list.push_back(cur->getPtr());
         if(myIter->hasNext()){
@@ -278,11 +278,11 @@ bool MyDB_BPlusTreeReaderWriter :: discoverPages (int whichPage, vector <int> &l
             break;
         }
     }
-    cout << "\n\ncheck list here:\n\n";
-    for (int check: list) {
-        cout << check << " , ";
-    }
-    cout << "\n";
+//    cout << "\n\ncheck list here:\n\n";
+//    for (int check: list) {
+//        cout << check << " , ";
+//    }
+//    cout << "\n";
     //    if(getByID(list.back())->getType()== RegularPage){
     //        cout << "page <" << list.back() << "> is a leaf page\n";
     //        return false;
