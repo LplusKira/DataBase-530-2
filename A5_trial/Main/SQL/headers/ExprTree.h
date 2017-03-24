@@ -132,7 +132,7 @@ public:
 	}
 
 	string toString () {
-		return "[" + tableName + "@" + attName + "]";
+		return "[" + tableName + "_" + attName + "]";
 	}
     
     string getTableName() {
@@ -146,14 +146,16 @@ public:
         return "Identifier";
     }
     string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
-        cout << "check this att\n";
         string ret;
-        string tableName_full;
+        string tableName_full = "";
         for (auto a: tablesToProcess) {
             if (a.second == tableName)
                 tableName_full = a.first;
         }
-        
+        if (tableName_full == "") {
+            cout << "ERROR: unknown table identifier.\n";
+            return "ERROR";
+        }
         MyDB_SchemaPtr mySchema = make_shared <MyDB_Schema> ();
         mySchema->fromCatalog (tableName_full, catalog);
         vector <pair <string, MyDB_AttTypePtr>> atts = mySchema->getAtts();
@@ -161,7 +163,6 @@ public:
         for (pair <string, MyDB_AttTypePtr> att: atts) {
             if (att.first == attName) {
                 attisthere = true;
-                cout << att.first << ", " << att.second->toString() << ".\n";
                 if (att.second->toString() == "bool") {
                     ret = "BoolLiteral";
                 } else if (att.second->toString() == "double") {
@@ -175,7 +176,8 @@ public:
             }
         }
         if (!attisthere) {
-            cout << "\n\nError: There is no att named ("<< attName << ") in table [" << tableName_full <<"].\n\n";
+            cout << "ERROR: There is no att named ("<< attName << ") in table [" << tableName_full <<"].\n";
+            ret = "ERROR";
         }
         return ret;
     }
@@ -198,8 +200,13 @@ public:
     string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
         string lht = lhs->check(catalog, tablesToProcess);
         string rht = rhs->check(catalog, tablesToProcess);
-        if (rht == "StringLiteral" || lht == "StringLiteral" || rht == "ERROR" || lht == "ERROR") {
-            cout << "ERROR: string text in MinusOp.\n";
+        if (rht == "ERROR" || lht == "ERROR") {
+            return "ERROR";
+        } else if (rht == "StringLiteral") {
+            cout << "ERROR (Minus): Minus function expects an operand that can be deducted. but got " << rhs << " which is of type string.\n";
+            return "ERROR";
+        } else if (lht == "StringLiteral") {
+            cout << "ERROR (Minus): Minus function expects an operand that can be deducted. but got " << lhs << " which is of type string.\n";
             return "ERROR";
         }
         return "DoubleLiteral";
@@ -230,7 +237,6 @@ public:
         string lht = lhs->check(catalog, tablesToProcess);
         string rht = rhs->check(catalog, tablesToProcess);
         if (rht == "ERROR" || lht == "ERROR") {
-            cout << "ERROR: either lht or rht is error in this plus statement.\n";
             return "ERROR";
         } else if (rht == "StringLiteral" || lht == "StringLiteral") {
             return "StringLiteral";
@@ -273,10 +279,12 @@ public:
         string lht = lhs->check(catalog, tablesToProcess);
         string rht = rhs->check(catalog, tablesToProcess);
         if (rht == "ERROR" || lht == "ERROR") {
-            cout << "ERROR: either lht or rht is error in this TimesOp.\n";
             return "ERROR";
-        } else if (rht == "StringLiteral" || lht == "StringLiteral") {
-            cout << "ERROR: string text in TimesOp.\n";
+        } else if (rht == "StringLiteral") {
+            cout << "ERROR (Times): Times function expects an operand that can be multiplied. but got " << rhs << " which is of type string.\n";
+            return "ERROR";
+        } else if (lht == "StringLiteral") {
+            cout << "ERROR (Times): Times function expects an operand that can be multiplied. but got " << lhs << " which is of type string.\n";
             return "ERROR";
         } else if (rht == "IntLiteral" && lht == "IntLiteral") {
             return "IntLiteral";
@@ -311,10 +319,12 @@ public:
         string lht = lhs->check(catalog, tablesToProcess);
         string rht = rhs->check(catalog, tablesToProcess);
         if (rht == "ERROR" || lht == "ERROR") {
-            cout << "ERROR: either lht or rht is error in this DivideOp.\n";
             return "ERROR";
-        } else if (rht == "StringLiteral" || lht == "StringLiteral") {
-            cout << "ERROR: string text in DivideOp.\n";
+        } else if (rht == "StringLiteral") {
+            cout << "ERROR (Divide): Divide function expects an operand that can be divided. but got " << rhs << " which is of type string.\n";
+            return "ERROR";
+        } else if (lht == "StringLiteral") {
+            cout << "ERROR (Divide): Divide function expects an operand that can be divided. but got " << lhs << " which is of type string.\n";
             return "ERROR";
         } else {
             return "DoubleLiteral";
@@ -347,13 +357,14 @@ public:
         string lht = lhs->check(catalog, tablesToProcess);
         string rht = rhs->check(catalog, tablesToProcess);
         if (rht == "ERROR" || lht == "ERROR") {
-            cout << "ERROR: either lht or rht is error in this GtOp.\n";
             return "ERROR";
         } else if (rht == "StringLiteral" && lht == "StringLiteral") {
             return "BoolLiteral";
-        } else if ((rht == "StringLiteral" && lht != "StringLiteral")
-                   || (lht == "StringLiteral" && rht!= "StringLiteral")) {
-            cout << "ERROR: string compared with double/int.\n";
+        } else if (rht == "StringLiteral" && lht != "StringLiteral") {
+            cout << "ERROR (Greater Than): " << lhs->toString() <<" is of type int or double, > operator expects its rhs to be of type int or double but got " << rhs->toString() << ", whose type is string\n";
+            return "ERROR";
+        } else if (lht == "StringLiteral" && rht!= "StringLiteral") {
+            cout << "ERROR (Greater Than): " << rhs->toString() <<" is of type int or double, > operator expects its lhs to be of type int or double but got " << lhs->toString() << ", whose type is string\n";
             return "ERROR";
         } else {
             return "BoolLiteral";
@@ -386,13 +397,14 @@ public:
         string lht = lhs->check(catalog, tablesToProcess);
         string rht = rhs->check(catalog, tablesToProcess);
         if (rht == "ERROR" || lht == "ERROR") {
-            cout << "ERROR: either lht or rht is error in this LtOp.\n";
             return "ERROR";
         } else if (rht == "StringLiteral" && lht == "StringLiteral") {
             return "BoolLiteral";
-        } else if ((rht == "StringLiteral" && lht != "StringLiteral")
-                   || (lht == "StringLiteral" && rht!= "StringLiteral")) {
-            cout << "ERROR: string compared with double/int.\n";
+        } else if (rht == "StringLiteral" && lht != "StringLiteral") {
+            cout << "ERROR (Less Than): " << lhs->toString() <<" is of type int or double, < operator expects its rhs to be of type int or double but got " << rhs->toString() << ", whose type is string\n";
+            return "ERROR";
+        } else if (lht == "StringLiteral" && rht!= "StringLiteral") {
+            cout << "ERROR (Less Than): " << rhs->toString() <<" is of type int or double, < operator expects its lhs to be of type int or double but got " << lhs->toString() << ", whose type is string\n";
             return "ERROR";
         } else {
             return "BoolLiteral";
@@ -425,13 +437,14 @@ public:
         string lht = lhs->check(catalog, tablesToProcess);
         string rht = rhs->check(catalog, tablesToProcess);
         if (rht == "ERROR" || lht == "ERROR") {
-            cout << "ERROR: either lht or rht is error in this NeqOp.\n";
             return "ERROR";
         } else if (rht == "StringLiteral" && lht == "StringLiteral") {
             return "BoolLiteral";
-        } else if ((rht == "StringLiteral" && lht != "StringLiteral")
-                   || (lht == "StringLiteral" && rht!= "StringLiteral")) {
-            cout << "ERROR: string compared with double/int.\n";
+        } else if (rht == "StringLiteral" && lht != "StringLiteral") {
+            cout << "ERROR (Not Equal): " << lhs->toString() <<" is of type int or double, != operator expects its rhs to be of type int or double but got " << rhs->toString() << ", whose type is string\n";
+            return "ERROR";
+        } else if (lht == "StringLiteral" && rht!= "StringLiteral") {
+            cout << "ERROR (Not Equal): " << rhs->toString() <<" is of type int or double, != operator expects its lhs to be of type int or double but got " << lhs->toString() << ", whose type is string\n";
             return "ERROR";
         } else {
             return "BoolLiteral";
@@ -496,12 +509,14 @@ public:
         string lht = lhs->check(catalog, tablesToProcess);
         string rht = rhs->check(catalog, tablesToProcess);
         if (rht == "ERROR" || lht == "ERROR") {
-            cout << "ERROR: either lht or rht is error in this EqOp.\n";
             return "ERROR";
         } else if (rht == "StringLiteral" && lht == "StringLiteral") {
             return "BoolLiteral";
-        } else if ((rht == "StringLiteral" && lht != "StringLiteral")
-                   || (lht == "StringLiteral" && rht != "StringLiteral")){
+        }  else if (rht == "StringLiteral" && lht != "StringLiteral") {
+            cout << "ERROR (Equal): " << lhs->toString() <<" is of type int or double, = operator expects its rhs to be of type int or double but got " << rhs->toString() << ", whose type is string\n";
+            return "ERROR";
+        } else if (lht == "StringLiteral" && rht!= "StringLiteral") {
+            cout << "ERROR (Equal): " << rhs->toString() <<" is of type int or double, = operator expects its lhs to be of type int or double but got " << lhs->toString() << ", whose type is string\n";
             return "ERROR";
         } else {
             return "BoolLiteral";
@@ -560,6 +575,7 @@ public:
     string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
         string ct = child->check(catalog, tablesToProcess);
         if (ct == "StringLiteral") {
+            cout << "ERROR (Sum): operator sum applied to " << child->toString() << " which is of type string.\n";
             return "ERROR";
         }
         return ct;
@@ -588,6 +604,7 @@ public:
     string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
         string ct = child->check(catalog, tablesToProcess);
         if (ct == "StringLiteral") {
+            cout << "ERROR (Avg): operator avg applied to " << child->toString() << " which is of type string.\n";
             return "ERROR";
         }
         return ct;

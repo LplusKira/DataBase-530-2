@@ -317,8 +317,7 @@ public:
 //        }
 //    }
     void check(MyDB_CatalogPtr catalog) {
-        
-        cout << "****starts to check****\n";
+        bool pass = true;
         vector <string> myTables;
         catalog->getStringList ("tables", myTables);
         
@@ -333,18 +332,57 @@ public:
                 }
             }
             if (!tbinthere) {
-                cout << "\n\nError: There is no table named ["<< a.first << "] in this database.\n\n";
+                cout << "ERROR: There is no table named ["<< a.first << "] in this database.\n";
+                pass = false;
+                return;
+            }
+        }
+        vector<ExprTreePtr> groupAtts;
+        bool shouldGroup = false;
+        for (auto a: valuesToSelect) {
+            if (a->type() == "Identifier") {
+                groupAtts.push_back(a);
+            } else {
+                shouldGroup = true;
+            }
+            string result = a->check(catalog, tablesToProcess);
+            if (result == "ERROR") {
+                pass = false;
+                return;
             }
         }
         
-        for (auto a: valuesToSelect) {
-//            if (a->type() == "Identifier") {
-//                checkAtt(catalog, a);
-//            } else {
-                string result = a->check(catalog, tablesToProcess);
-                cout << result <<endl;
-            //}
+        for (auto a: allDisjunctions) {
+            string result = a->check(catalog, tablesToProcess);
+            if (result == "ERROR") {
+                pass = false;
+                return;
+            }
         }
+        
+        if (!shouldGroup) {
+            
+        } else {
+            for (ExprTreePtr b: groupAtts) {
+                cout << "group atts: " << b->toString() << "\n";
+                bool hasB = false;
+                for (auto a: groupingClauses) {
+                    cout << "group clauses: " << a->toString() << "\n";
+                    if (a->toString() == b->toString()) {
+                        hasB = true;
+                    }
+                }
+                if (!hasB) {
+                    cout << "ERROR: selecting on " << b->toString() << "but it is not in the group by clause or an aggregate.\n";
+                    pass = false;
+                    return;
+                }
+            }
+        }
+        if (pass) {
+            cout << "Query OK!\n";
+        }
+        
     }
 	#include "FriendDecls.h"
 };
