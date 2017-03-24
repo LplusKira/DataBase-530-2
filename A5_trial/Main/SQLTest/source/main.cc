@@ -7,7 +7,7 @@
 #include <sstream>
 
 int main (int numArgs, char **args) {
-
+    
 	// make sure we have the correct arguments
 //	if (numArgs != 3) {
 //		cout << "args: catalog_file directory_for_tables\n";
@@ -21,7 +21,6 @@ int main (int numArgs, char **args) {
 	// print out the intro notification
 	cout << "\n          Welcome to MyDB v0.1\n\n";
 	cout << "\"Not the worst database in the world\" (tm) \n\n";
-
 	// and repeatedly accept queries
 	while (true) {
 		
@@ -86,7 +85,7 @@ int main (int numArgs, char **args) {
                         cout << "Added table " << final->addToCatalog ("test", myCatalog) << "\n";
 						
 					} else if (final->isSFWQuery ()) {
-
+                        final->checkSFWQuery(myCatalog);
 						// print it out
 						final->printSFWQuery ();
 					}

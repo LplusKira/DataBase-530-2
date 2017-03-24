@@ -237,6 +237,7 @@ public:
 		cout << "From the following:\n";
 		for (auto a : tablesToProcess) {
 			cout << "\t" << a.first << " AS " << a.second << "\n";
+            
 		}
 		cout << "Where the following are true:\n";
 		for (auto a : allDisjunctions) {
@@ -247,7 +248,18 @@ public:
 			cout << "\t" << a->toString () << "\n";
 		}
 	}
-
+    void check(MyDB_CatalogPtr catalog) {
+        //map <string, MyDB_TablePtr> tables = getAllTables(checkInMe);
+        vector <string> myTables;
+        catalog->getStringList ("tables", myTables);
+        
+        // add the new table in, if not there
+        bool inthere = false;
+        for (string s : myTables) {
+            if (s == tableName)
+                inthere = true;
+        }
+    }
 	#include "FriendDecls.h"
 };
 
@@ -292,7 +304,9 @@ public:
 	void printSFWQuery () {
 		myQuery.print ();
 	}
-
+    void checkSFWQuery(MyDB_CatalogPtr checkInMe) {
+        myQuery.check(checkInMe);
+    }
 	#include "FriendDecls.h"
 };
 
