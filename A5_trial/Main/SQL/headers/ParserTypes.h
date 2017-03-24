@@ -10,6 +10,8 @@
 #include "MyDB_Table.h"
 #include <string>
 #include <utility>
+#include <stdio.h>
+#include <string.h>
 
 using namespace std;
 
@@ -30,11 +32,10 @@ public:
         ~Value () {}
 
         Value (ExprTreePtr useMe) {
-                myVal = useMe;
+            myVal = useMe;
         }
-
         Value () {
-                myVal = nullptr;
+            myVal = nullptr;
         }
 	
 	friend struct CNF;
@@ -78,7 +79,9 @@ public:
         ValueList (struct Value *useMe) {
               	valuesToCompute.push_back (useMe->myVal); 
         }
-
+    vector <ExprTreePtr> getValues () {
+        return valuesToCompute;
+    }
         ValueList () {}
 
 	friend struct SFWQuery;
@@ -248,6 +251,71 @@ public:
 			cout << "\t" << a->toString () << "\n";
 		}
 	}
+//    vector<string> split(const string &s, const string &seperator){
+//        vector<string> result;
+//        typedef string::size_type string_size;
+//        string_size i = 0;
+//        
+//        while(i != s.size()){
+//            //找到字符串中首个不等于分隔符的字母；
+//            int flag = 0;
+//            while(i != s.size() && flag == 0){
+//                flag = 1;
+//                for(string_size x = 0; x < seperator.size(); ++x)
+//                    if(s[i] == seperator[x]){
+//                        　　++i;
+//                        　　flag = 0;
+//                        　　 break;
+//                        　　}
+//            }
+//            
+//            //找到又一个分隔符，将两个分隔符之间的字符串取出；
+//            flag = 0;
+//            string_size j = i;
+//            while(j != s.size() && flag == 0){
+//                for(string_size x = 0; x < seperator.size(); ++x)
+//                    　　if(s[j] == seperator[x]){
+//                        　　flag = 1;
+//                        　　 break;
+//                        　　}
+//                if(flag == 0) 
+//                    　　++j;
+//            }
+//            if(i != j){
+//                result.push_back(s.substr(i, j-i));
+//                i = j;
+//            }
+//        }
+//        return result;
+//    }
+//    void checkAtt(MyDB_CatalogPtr catalog, ExprTreePtr a) {
+//        // check if att is in there
+//        cout << "This is an att\n";
+//        vector<string> v = split(a->toString(), "[]@");
+//        string tableName_short = v[0];
+//        string attName = v[1];
+//                
+//        string tableName;
+//        for (auto a: tablesToProcess) {
+//            if (a.second == tableName_short)
+//                tableName = a.first;
+//        }
+//                
+//        MyDB_SchemaPtr mySchema = make_shared <MyDB_Schema> ();
+//        mySchema->fromCatalog (tableName, catalog);
+//        vector <pair <string, MyDB_AttTypePtr>> atts = mySchema->getAtts();
+//        bool attisthere = false;
+//        for (pair <string, MyDB_AttTypePtr> att: atts) {
+//            if (att.first == attName) {
+//                attisthere = true;
+//                cout << att.first << ", " << att.second->toString() << ".\n";
+//                break;
+//            }
+//        }
+//        if (!attisthere) {
+//            cout << "\n\nError: There is no att named ("<< attName << ") in table [" << tableName <<"].\n\n";
+//        }
+//    }
     void check(MyDB_CatalogPtr catalog) {
         
         cout << "****starts to check****\n";
@@ -269,35 +337,13 @@ public:
             }
         }
         
-        // check if att is in there
-        for (auto a : valuesToSelect) {
-            cout << "check att" << a << "\n";
-            cout << a->isIdentifier <<"\n";
-            if (a->isIdentifier) {
-                cout << "This is an att\n";
-                char *tableName_short = a->getTableName();
-                char *attName = a->getAttName();
-                
-                string tableName;
-                for (auto a: tablesToProcess) {
-                    if (a.second == tableName_short)
-                        tableName = a.first;
-                }
-                
-                mySchema = make_shared <MyDB_Schema> ();
-                mySchema->fromCatalog (tableName, catalog);
-                vector <pair <string, MyDB_AttTypePtr>> atts = mySchema->getAtts();
-                bool attisthere = false;
-                for (pair <string, MyDB_AttTypePtr> att: atts) {
-                    if (att.first == attName) {
-                        attisthere = true;
-                        break;
-                    }
-                }
-                if (!attinthere) {
-                    cout << "\n\nError: There is no att named ("<< attName << ") in table [" << tableName <<"].\n\n";
-                }
-            }
+        for (auto a: valuesToSelect) {
+//            if (a->type() == "Identifier") {
+//                checkAtt(catalog, a);
+//            } else {
+                string result = a->check(catalog, tablesToProcess);
+                cout << result <<endl;
+            //}
         }
     }
 	#include "FriendDecls.h"

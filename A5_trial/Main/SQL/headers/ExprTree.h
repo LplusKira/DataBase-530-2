@@ -3,6 +3,9 @@
 #define SQL_EXPRESSIONS
 
 #include "MyDB_AttType.h"
+#include "MyDB_Catalog.h"
+#include "MyDB_Schema.h"
+#include "MyDB_Table.h"
 #include <string>
 #include <vector>
 
@@ -19,8 +22,8 @@ class ExprTree {
 public:
 	virtual string toString () = 0;
 	virtual ~ExprTree () {}
-    virtual isBool = false;
-    virtual isIdentier = false;
+    virtual string type() = 0;
+    virtual string check(MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) = 0;
 };
 
 class BoolLiteral : public ExprTree {
@@ -31,8 +34,7 @@ public:
 	
 	BoolLiteral (bool fromMe) {
 		myVal = fromMe;
-        isBool = true;
-	}
+    }
 
 	string toString () {
 		if (myVal) {
@@ -40,7 +42,13 @@ public:
 		} else {
 			return "bool[false]";
 		}
-	}	
+	}
+    string type () {
+        return "BoolLiteral";
+    }
+    string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
+        return "BoolLiteral";
+    }
 };
 
 class DoubleLiteral : public ExprTree {
@@ -51,12 +59,17 @@ public:
 
 	DoubleLiteral (double fromMe) {
 		myVal = fromMe;
-	}
+    }
 
 	string toString () {
 		return "double[" + to_string (myVal) + "]";
 	}	
-
+    string type () {
+        return "DoubleLiteral";
+    }
+    string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
+        return "DoubleLiteral";
+    }
 	~DoubleLiteral () {}
 };
 
@@ -74,7 +87,12 @@ public:
 	string toString () {
 		return "int[" + to_string (myVal) + "]";
 	}
-
+    string type () {
+        return "IntLiteral";
+    }
+    string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
+        return "IntLiteral";
+    }
 	~IntLiteral () {}
 };
 
@@ -92,7 +110,12 @@ public:
 	string toString () {
 		return "string[" + myVal + "]";
 	}
-
+    string type () {
+        return "StringLiteral";
+    }
+    string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
+        return "StringLiteral";
+    }
 	~StringLiteral () {}
 };
 
@@ -106,21 +129,56 @@ public:
 	Identifier (char *tableNameIn, char *attNameIn) {
 		tableName = string (tableNameIn);
 		attName = string (attNameIn);
-        isIdentifier = true;
 	}
 
 	string toString () {
-		return "[" + tableName + "_" + attName + "]";
+		return "[" + tableName + "@" + attName + "]";
 	}
     
-    char *tableNameIn getTableName() {
+    string getTableName() {
         return tableName;
     }
     
-    char *attNameIn getAttName() {
+    string getAttName() {
         return attName;
     }
-    
+    string type () {
+        return "Identifier";
+    }
+    string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
+        cout << "check this att\n";
+        string ret;
+        string tableName_full;
+        for (auto a: tablesToProcess) {
+            if (a.second == tableName)
+                tableName_full = a.first;
+        }
+        
+        MyDB_SchemaPtr mySchema = make_shared <MyDB_Schema> ();
+        mySchema->fromCatalog (tableName_full, catalog);
+        vector <pair <string, MyDB_AttTypePtr>> atts = mySchema->getAtts();
+        bool attisthere = false;
+        for (pair <string, MyDB_AttTypePtr> att: atts) {
+            if (att.first == attName) {
+                attisthere = true;
+                cout << att.first << ", " << att.second->toString() << ".\n";
+                if (att.second->toString() == "bool") {
+                    ret = "BoolLiteral";
+                } else if (att.second->toString() == "double") {
+                    ret = "DoubleLiteral";
+                } else if (att.second->toString() == "int"){
+                    ret = "IntLiteral";
+                } else {
+                    ret = "StringLiteral";
+                }
+                break;
+            }
+        }
+        if (!attisthere) {
+            cout << "\n\nError: There is no att named ("<< attName << ") in table [" << tableName_full <<"].\n\n";
+        }
+        return ret;
+    }
 	~Identifier () {}
 };
 
@@ -137,11 +195,21 @@ public:
 		lhs = lhsIn;
 		rhs = rhsIn;
 	}
-
+    string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
+        string lht = lhs->check(catalog, tablesToProcess);
+        string rht = rhs->check(catalog, tablesToProcess);
+        if (rht == "StringLiteral" || lht == "StringLiteral" || rht == "ERROR" || lht == "ERROR") {
+            cout << "ERROR: string text in MinusOp.\n";
+            return "ERROR";
+        }
+        return "DoubleLiteral";
+    }
 	string toString () {
 		return "- (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    string type () {
+        return "MinusOp";
+    }
 	~MinusOp () {}
 };
 
@@ -158,11 +226,26 @@ public:
 		lhs = lhsIn;
 		rhs = rhsIn;
 	}
-
+    string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
+        string lht = lhs->check(catalog, tablesToProcess);
+        string rht = rhs->check(catalog, tablesToProcess);
+        if (rht == "ERROR" || lht == "ERROR") {
+            cout << "ERROR: either lht or rht is error in this plus statement.\n";
+            return "ERROR";
+        } else if (rht == "StringLiteral" || lht == "StringLiteral") {
+            return "StringLiteral";
+        } else if (rht == "IntLiteral" && lht == "IntLiteral") {
+            return "IntLiteral";
+        } else {
+            return "DoubleLiteral";
+        }
+    }
 	string toString () {
 		return "+ (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    string type () {
+        return "PlusOp";
+    }
 	~PlusOp () {}
 };
 
@@ -183,7 +266,24 @@ public:
 	string toString () {
 		return "* (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    string type () {
+        return "TimesOp";
+    }
+    string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
+        string lht = lhs->check(catalog, tablesToProcess);
+        string rht = rhs->check(catalog, tablesToProcess);
+        if (rht == "ERROR" || lht == "ERROR") {
+            cout << "ERROR: either lht or rht is error in this TimesOp.\n";
+            return "ERROR";
+        } else if (rht == "StringLiteral" || lht == "StringLiteral") {
+            cout << "ERROR: string text in TimesOp.\n";
+            return "ERROR";
+        } else if (rht == "IntLiteral" && lht == "IntLiteral") {
+            return "IntLiteral";
+        } else {
+            return "DoubleLiteral";
+        }
+    }
 	~TimesOp () {}
 };
 
@@ -204,7 +304,22 @@ public:
 	string toString () {
 		return "/ (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    string type () {
+        return "DivideOp";
+    }
+    string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
+        string lht = lhs->check(catalog, tablesToProcess);
+        string rht = rhs->check(catalog, tablesToProcess);
+        if (rht == "ERROR" || lht == "ERROR") {
+            cout << "ERROR: either lht or rht is error in this DivideOp.\n";
+            return "ERROR";
+        } else if (rht == "StringLiteral" || lht == "StringLiteral") {
+            cout << "ERROR: string text in DivideOp.\n";
+            return "ERROR";
+        } else {
+            return "DoubleLiteral";
+        }
+    }
 	~DivideOp () {}
 };
 
@@ -225,7 +340,25 @@ public:
 	string toString () {
 		return "> (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    string type () {
+        return "GtOp";
+    }
+    string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
+        string lht = lhs->check(catalog, tablesToProcess);
+        string rht = rhs->check(catalog, tablesToProcess);
+        if (rht == "ERROR" || lht == "ERROR") {
+            cout << "ERROR: either lht or rht is error in this GtOp.\n";
+            return "ERROR";
+        } else if (rht == "StringLiteral" && lht == "StringLiteral") {
+            return "BoolLiteral";
+        } else if ((rht == "StringLiteral" && lht != "StringLiteral")
+                   || (lht == "StringLiteral" && rht!= "StringLiteral")) {
+            cout << "ERROR: string compared with double/int.\n";
+            return "ERROR";
+        } else {
+            return "BoolLiteral";
+        }
+    }
 	~GtOp () {}
 };
 
@@ -246,7 +379,25 @@ public:
 	string toString () {
 		return "< (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    string type () {
+        return "LtOp";
+    }
+    string check (MyDB_CatalogPtr catalog,  vector <pair <string, string>> tablesToProcess) {
+        string lht = lhs->check(catalog, tablesToProcess);
+        string rht = rhs->check(catalog, tablesToProcess);
+        if (rht == "ERROR" || lht == "ERROR") {
+            cout << "ERROR: either lht or rht is error in this LtOp.\n";
+            return "ERROR";
+        } else if (rht == "StringLiteral" && lht == "StringLiteral") {
+            return "BoolLiteral";
+        } else if ((rht == "StringLiteral" && lht != "StringLiteral")
+                   || (lht == "StringLiteral" && rht!= "StringLiteral")) {
+            cout << "ERROR: string compared with double/int.\n";
+            return "ERROR";
+        } else {
+            return "BoolLiteral";
+        }
+    }
 	~LtOp () {}
 };
 
@@ -267,7 +418,25 @@ public:
 	string toString () {
 		return "!= (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    string type () {
+        return "NeqOp";
+    }
+    string check (MyDB_CatalogPtr catalog,  vector <pair <string, string>> tablesToProcess) {
+        string lht = lhs->check(catalog, tablesToProcess);
+        string rht = rhs->check(catalog, tablesToProcess);
+        if (rht == "ERROR" || lht == "ERROR") {
+            cout << "ERROR: either lht or rht is error in this NeqOp.\n";
+            return "ERROR";
+        } else if (rht == "StringLiteral" && lht == "StringLiteral") {
+            return "BoolLiteral";
+        } else if ((rht == "StringLiteral" && lht != "StringLiteral")
+                   || (lht == "StringLiteral" && rht!= "StringLiteral")) {
+            cout << "ERROR: string compared with double/int.\n";
+            return "ERROR";
+        } else {
+            return "BoolLiteral";
+        }
+    }
 	~NeqOp () {}
 };
 
@@ -288,7 +457,18 @@ public:
 	string toString () {
 		return "|| (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    string type () {
+        return "OrOp";
+    }
+    string check (MyDB_CatalogPtr catalog,  vector <pair <string, string>> tablesToProcess) {
+        string lht = lhs->check(catalog, tablesToProcess);
+        string rht = rhs->check(catalog, tablesToProcess);
+        if (rht == "BoolLiteral" && lht == "BoolLiteral") {
+            return "BoolLiteral";
+        } else {
+            return "ERROR";
+        }
+    }
 	~OrOp () {}
 };
 
@@ -309,7 +489,24 @@ public:
 	string toString () {
 		return "== (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    string type () {
+        return "EqOp";
+    }
+    string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
+        string lht = lhs->check(catalog, tablesToProcess);
+        string rht = rhs->check(catalog, tablesToProcess);
+        if (rht == "ERROR" || lht == "ERROR") {
+            cout << "ERROR: either lht or rht is error in this EqOp.\n";
+            return "ERROR";
+        } else if (rht == "StringLiteral" && lht == "StringLiteral") {
+            return "BoolLiteral";
+        } else if ((rht == "StringLiteral" && lht != "StringLiteral")
+                   || (lht == "StringLiteral" && rht != "StringLiteral")){
+            return "ERROR";
+        } else {
+            return "BoolLiteral";
+        }
+    }
 	~EqOp () {}
 };
 
@@ -328,7 +525,17 @@ public:
 	string toString () {
 		return "!(" + child->toString () + ")";
 	}	
-
+    string type () {
+        return "NotOp";
+    }
+    string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
+        string ct = child->check(catalog, tablesToProcess);
+        if (ct == "ERROR") {
+            return "ERROR";
+        } else {
+            return "BoolLiteral";
+        }
+    }
 	~NotOp () {}
 };
 
@@ -347,7 +554,16 @@ public:
 	string toString () {
 		return "sum(" + child->toString () + ")";
 	}	
-
+    string type () {
+        return "SumOp";
+    }
+    string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
+        string ct = child->check(catalog, tablesToProcess);
+        if (ct == "StringLiteral") {
+            return "ERROR";
+        }
+        return ct;
+    }
 	~SumOp () {}
 };
 
@@ -366,7 +582,16 @@ public:
 	string toString () {
 		return "avg(" + child->toString () + ")";
 	}	
-
+    string type () {
+        return "AvgOp";
+    }
+    string check (MyDB_CatalogPtr catalog, vector <pair <string, string>> tablesToProcess) {
+        string ct = child->check(catalog, tablesToProcess);
+        if (ct == "StringLiteral") {
+            return "ERROR";
+        }
+        return ct;
+    }
 	~AvgOp () {}
 };
 
