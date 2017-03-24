@@ -9,13 +9,14 @@
 int main (int numArgs, char **args) {
 
 	// make sure we have the correct arguments
-	if (numArgs != 3) {
-		cout << "args: catalog_file directory_for_tables\n";
-		return 0;
-	}
+//	if (numArgs != 3) {
+//		cout << "args: catalog_file directory_for_tables\n";
+//		return 0;
+//	}
 
 	// open up the catalog file
-	MyDB_CatalogPtr myCatalog = make_shared <MyDB_Catalog> (args [1]);
+//	MyDB_CatalogPtr myCatalog = make_shared <MyDB_Catalog> (args [1]);
+    MyDB_CatalogPtr myCatalog = make_shared <MyDB_Catalog> ("catFile");
 
 	// print out the intro notification
 	cout << "\n          Welcome to MyDB v0.1\n\n";
@@ -81,7 +82,8 @@ int main (int numArgs, char **args) {
 					// see if we got a create table
 					if (final->isCreateTable ()) {
 
-						cout << "Added table " << final->addToCatalog (args[2], myCatalog) << "\n";
+//						cout << "Added table " << final->addToCatalog (args[2], myCatalog) << "\n";
+                        cout << "Added table " << final->addToCatalog ("test", myCatalog) << "\n";
 						
 					} else if (final->isSFWQuery ()) {
 

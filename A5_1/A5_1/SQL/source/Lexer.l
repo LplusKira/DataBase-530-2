@@ -85,7 +85,7 @@
 
 "<"			return ('<');
 
-">"			return ('>');
+">"			return ('>'); v
 
 "+"			return ('+');
 

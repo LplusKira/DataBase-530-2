@@ -105,7 +105,6 @@ private:
 
 public:
 	string addToCatalog (string storageDir, MyDB_CatalogPtr addToMe) {
-
 		// make the schema
 		MyDB_SchemaPtr mySchema = make_shared <MyDB_Schema>();
 		for (auto a : attsToCreate) {
