@@ -70,7 +70,7 @@
 		C01DA9251E8478040026E6B1 /* supplier.tbl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = supplier.tbl; sourceTree = "<group>"; };
 		C01DA9261E8478040026E6B1 /* supplierBig.tbl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = supplierBig.tbl; sourceTree = "<group>"; };
 		C01DA9271E8478040026E6B1 /* supplierBigSorted.tbl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = supplierBigSorted.tbl; sourceTree = "<group>"; };
-		C01DA9281E84A6370026E6B1 /* sqlUnitTest */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = sqlUnitTest; sourceTree = "<group>"; };
+		C01DA9291E84C7BD0026E6B1 /* sqlUnitTest */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = sqlUnitTest; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -379,7 +379,7 @@
 		C01DA9231E8478040026E6B1 /* bin */ = {
 			isa = PBXGroup;
 			children = (
-				C01DA9281E84A6370026E6B1 /* sqlUnitTest */,
+				C01DA9291E84C7BD0026E6B1 /* sqlUnitTest */,
 			);
 			path = bin;
 			sourceTree = "<group>";

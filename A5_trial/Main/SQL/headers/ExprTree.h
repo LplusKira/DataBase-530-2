@@ -19,6 +19,8 @@ class ExprTree {
 public:
 	virtual string toString () = 0;
 	virtual ~ExprTree () {}
+    virtual isBool = false;
+    virtual isIdentier = false;
 };
 
 class BoolLiteral : public ExprTree {
@@ -29,6 +31,7 @@ public:
 	
 	BoolLiteral (bool fromMe) {
 		myVal = fromMe;
+        isBool = true;
 	}
 
 	string toString () {
@@ -103,12 +106,21 @@ public:
 	Identifier (char *tableNameIn, char *attNameIn) {
 		tableName = string (tableNameIn);
 		attName = string (attNameIn);
+        isIdentifier = true;
 	}
 
 	string toString () {
 		return "[" + tableName + "_" + attName + "]";
-	}	
-
+	}
+    
+    char *tableNameIn getTableName() {
+        return tableName;
+    }
+    
+    char *attNameIn getAttName() {
+        return attName;
+    }
+    
 	~Identifier () {}
 };
 

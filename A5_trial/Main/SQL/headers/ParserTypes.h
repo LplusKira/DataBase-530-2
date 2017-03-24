@@ -249,15 +249,55 @@ public:
 		}
 	}
     void check(MyDB_CatalogPtr catalog) {
-        //map <string, MyDB_TablePtr> tables = getAllTables(checkInMe);
+        
+        cout << "****starts to check****\n";
         vector <string> myTables;
         catalog->getStringList ("tables", myTables);
         
-        // add the new table in, if not there
-        bool inthere = false;
-        for (string s : myTables) {
-            if (s == tableName)
-                inthere = true;
+        // check if table is in there
+        for (auto a : tablesToProcess) {
+            bool tbinthere = false;
+            for (string s : myTables) {
+                //cout << "database has table: " << s << ",";
+                if (s == a.first) {
+                    tbinthere = true;
+                    break;
+                }
+            }
+            if (!tbinthere) {
+                cout << "\n\nError: There is no table named ["<< a.first << "] in this database.\n\n";
+            }
+        }
+        
+        // check if att is in there
+        for (auto a : valuesToSelect) {
+            cout << "check att" << a << "\n";
+            cout << a->isIdentifier <<"\n";
+            if (a->isIdentifier) {
+                cout << "This is an att\n";
+                char *tableName_short = a->getTableName();
+                char *attName = a->getAttName();
+                
+                string tableName;
+                for (auto a: tablesToProcess) {
+                    if (a.second == tableName_short)
+                        tableName = a.first;
+                }
+                
+                mySchema = make_shared <MyDB_Schema> ();
+                mySchema->fromCatalog (tableName, catalog);
+                vector <pair <string, MyDB_AttTypePtr>> atts = mySchema->getAtts();
+                bool attisthere = false;
+                for (pair <string, MyDB_AttTypePtr> att: atts) {
+                    if (att.first == attName) {
+                        attisthere = true;
+                        break;
+                    }
+                }
+                if (!attinthere) {
+                    cout << "\n\nError: There is no att named ("<< attName << ") in table [" << tableName <<"].\n\n";
+                }
+            }
         }
     }
 	#include "FriendDecls.h"
@@ -277,6 +317,7 @@ private:
 	bool isCreate;
 
 public:
+    
 	SQLStatement (struct SFWQuery* useMe) {
 		myQuery = *useMe;
 		isQuery = true;

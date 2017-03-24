@@ -82,7 +82,7 @@ int main (int numArgs, char **args) {
 					if (final->isCreateTable ()) {
 
 //						cout << "Added table " << final->addToCatalog (args[2], myCatalog) << "\n";
-                        cout << "Added table " << final->addToCatalog ("test", myCatalog) << "\n";
+                        cout << "Added table " << final->addToCatalog ("catFile", myCatalog) << "\n";
 						
 					} else if (final->isSFWQuery ()) {
                         final->checkSFWQuery(myCatalog);
