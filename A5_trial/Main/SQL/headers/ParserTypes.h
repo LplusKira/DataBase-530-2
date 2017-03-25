@@ -364,16 +364,14 @@ public:
             
         } else {
             for (ExprTreePtr b: groupAtts) {
-                cout << "group atts: " << b->toString() << "\n";
                 bool hasB = false;
                 for (auto a: groupingClauses) {
-                    cout << "group clauses: " << a->toString() << "\n";
                     if (a->toString() == b->toString()) {
                         hasB = true;
                     }
                 }
                 if (!hasB) {
-                    cout << "ERROR: selecting on " << b->toString() << "but it is not in the group by clause or an aggregate.\n";
+                    cout << "ERROR: selecting on " << b->toString() << " but it is not in the group by clause or an aggregate.\n";
                     pass = false;
                     return;
                 }

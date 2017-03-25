@@ -153,7 +153,7 @@ public:
                 tableName_full = a.first;
         }
         if (tableName_full == "") {
-            cout << "ERROR: unknown table identifier.\n";
+            cout << "ERROR: unknown table identifier "<<tableName<<".\n";
             return "ERROR";
         }
         MyDB_SchemaPtr mySchema = make_shared <MyDB_Schema> ();
@@ -176,7 +176,7 @@ public:
             }
         }
         if (!attisthere) {
-            cout << "ERROR: There is no att named ("<< attName << ") in table [" << tableName_full <<"].\n";
+            cout << "ERROR: There is no attribute named ("<< attName << ") in table [" << tableName_full <<"].\n";
             ret = "ERROR";
         }
         return ret;
@@ -203,10 +203,10 @@ public:
         if (rht == "ERROR" || lht == "ERROR") {
             return "ERROR";
         } else if (rht == "StringLiteral") {
-            cout << "ERROR (Minus): Minus function expects an operand that can be deducted. but got " << rhs << " which is of type string.\n";
+            cout << "ERROR (Minus): Minus function expects an operand that can be deducted. but got " << rhs->toString() << " which is of type string.\n";
             return "ERROR";
         } else if (lht == "StringLiteral") {
-            cout << "ERROR (Minus): Minus function expects an operand that can be deducted. but got " << lhs << " which is of type string.\n";
+            cout << "ERROR (Minus): Minus function expects an operand that can be deducted. but got " << lhs->toString() << " which is of type string.\n";
             return "ERROR";
         }
         return "DoubleLiteral";
@@ -361,10 +361,10 @@ public:
         } else if (rht == "StringLiteral" && lht == "StringLiteral") {
             return "BoolLiteral";
         } else if (rht == "StringLiteral" && lht != "StringLiteral") {
-            cout << "ERROR (Greater Than): " << lhs->toString() <<" is of type int or double, > operator expects its rhs to be of type int or double but got " << rhs->toString() << ", whose type is string\n";
+            cout << "ERROR (Greater Than): " << lhs->toString() <<" is of type int or double, > operator expects its rhs to be of type int or double but got " << rhs->toString() << ", whose type is string.\n";
             return "ERROR";
         } else if (lht == "StringLiteral" && rht!= "StringLiteral") {
-            cout << "ERROR (Greater Than): " << rhs->toString() <<" is of type int or double, > operator expects its lhs to be of type int or double but got " << lhs->toString() << ", whose type is string\n";
+            cout << "ERROR (Greater Than): " << rhs->toString() <<" is of type int or double, > operator expects its lhs to be of type int or double but got " << lhs->toString() << ", whose type is string.\n";
             return "ERROR";
         } else {
             return "BoolLiteral";
@@ -401,10 +401,10 @@ public:
         } else if (rht == "StringLiteral" && lht == "StringLiteral") {
             return "BoolLiteral";
         } else if (rht == "StringLiteral" && lht != "StringLiteral") {
-            cout << "ERROR (Less Than): " << lhs->toString() <<" is of type int or double, < operator expects its rhs to be of type int or double but got " << rhs->toString() << ", whose type is string\n";
+            cout << "ERROR (Less Than): " << lhs->toString() <<" is of type int or double, < operator expects its rhs to be of type int or double but got " << rhs->toString() << ", whose type is string.\n";
             return "ERROR";
         } else if (lht == "StringLiteral" && rht!= "StringLiteral") {
-            cout << "ERROR (Less Than): " << rhs->toString() <<" is of type int or double, < operator expects its lhs to be of type int or double but got " << lhs->toString() << ", whose type is string\n";
+            cout << "ERROR (Less Than): " << rhs->toString() <<" is of type int or double, < operator expects its lhs to be of type int or double but got " << lhs->toString() << ", whose type is string.\n";
             return "ERROR";
         } else {
             return "BoolLiteral";
@@ -441,10 +441,10 @@ public:
         } else if (rht == "StringLiteral" && lht == "StringLiteral") {
             return "BoolLiteral";
         } else if (rht == "StringLiteral" && lht != "StringLiteral") {
-            cout << "ERROR (Not Equal): " << lhs->toString() <<" is of type int or double, != operator expects its rhs to be of type int or double but got " << rhs->toString() << ", whose type is string\n";
+            cout << "ERROR (Not Equal): " << lhs->toString() <<" is of type int or double, != operator expects its rhs to be of type int or double but got " << rhs->toString() << ", whose type is string.\n";
             return "ERROR";
         } else if (lht == "StringLiteral" && rht!= "StringLiteral") {
-            cout << "ERROR (Not Equal): " << rhs->toString() <<" is of type int or double, != operator expects its lhs to be of type int or double but got " << lhs->toString() << ", whose type is string\n";
+            cout << "ERROR (Not Equal): " << rhs->toString() <<" is of type int or double, != operator expects its lhs to be of type int or double but got " << lhs->toString() << ", whose type is string.\n";
             return "ERROR";
         } else {
             return "BoolLiteral";

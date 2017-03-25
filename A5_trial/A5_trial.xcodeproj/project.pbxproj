@@ -393,8 +393,8 @@
 			buildConfigurationList = C01DA8C81E8477860026E6B1 /* Build configuration list for PBXLegacyTarget "A5_trial" */;
 			buildPhases = (
 			);
-			buildToolPath = /Users/kejunliu/.pyenv/versions/2.7/bin/scons;
-			buildWorkingDirectory = "/Users/kejunliu/Documents/DataBase-530-2/A5_trial/Build";
+			buildToolPath = /usr/local/bin/scons;
+			buildWorkingDirectory = "/Users/xiajunru/Code/DataBase-530-2/A5_trial/Build";
 			dependencies = (
 			);
 			name = A5_trial;
