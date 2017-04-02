@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		2D1F1D571E919A670020B91F /* RegularSelection.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RegularSelection.cc; sourceTree = "<group>"; };
 		C072835C1E918F490046D52F /* BPlusQUnit.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BPlusQUnit.cc; sourceTree = "<group>"; };
 		C072835F1E918F490046D52F /* CheckLRU.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckLRU.h; sourceTree = "<group>"; };
 		C07283601E918F490046D52F /* MyDB_BufferManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDB_BufferManager.h; sourceTree = "<group>"; };
@@ -78,8 +79,11 @@
 		C07283C01E918F550046D52F /* supplierBig.tbl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = supplierBig.tbl; sourceTree = "<group>"; };
 		C07283C11E918F550046D52F /* supplierBigSorted.tbl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = supplierBigSorted.tbl; sourceTree = "<group>"; };
 		C07283C21E918F550046D52F /* supplierSmall.tbl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = supplierSmall.tbl; sourceTree = "<group>"; };
+<<<<<<< Updated upstream
 		C07283C31E9191120046D52F /* relOpUnitTest */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = relOpUnitTest; sourceTree = "<group>"; };
 		C07283C41E91A18F0046D52F /* RegularSelection.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RegularSelection.cc; sourceTree = "<group>"; };
+=======
+>>>>>>> Stashed changes
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -337,6 +341,7 @@
 			children = (
 				C07283C41E91A18F0046D52F /* RegularSelection.cc */,
 				C07283A61E918F490046D52F /* ScanJoin.cc */,
+				2D1F1D571E919A670020B91F /* RegularSelection.cc */,
 			);
 			path = source;
 			sourceTree = "<group>";
@@ -437,7 +442,6 @@
 		C07283BD1E918F550046D52F /* bin */ = {
 			isa = PBXGroup;
 			children = (
-				C07283C31E9191120046D52F /* relOpUnitTest */,
 			);
 			path = bin;
 			sourceTree = "<group>";
@@ -451,8 +455,8 @@
 			buildConfigurationList = C07283561E918E710046D52F /* Build configuration list for PBXLegacyTarget "A6_2" */;
 			buildPhases = (
 			);
-			buildToolPath = /Users/kejunliu/.pyenv/versions/2.7/bin/scons;
-			buildWorkingDirectory = "/Users/kejunliu/Documents/DataBase-530-2/A6_2/Build";
+			buildToolPath = /usr/local/bin/scons;
+			buildWorkingDirectory = "/Users/xiajunru/Code/DataBase-530-2/A6_2/Build";
 			dependencies = (
 			);
 			name = A6_2;
@@ -614,6 +618,7 @@
 				C07283581E918E710046D52F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
