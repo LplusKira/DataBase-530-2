@@ -9,10 +9,10 @@ using namespace std;
 
 RegularSelection :: RegularSelection (MyDB_TableReaderWriterPtr input, MyDB_TableReaderWriterPtr output,
                                       string selectionPredicate, vector <string> projections){
-    input = input;
-    output = output;
-    projections = projections;
-    selectionPredicate = selectionPredicate;
+    this->input = input;
+    this->output = output;
+    this->projections = projections;
+    this->selectionPredicate = selectionPredicate;
 
 }
 
