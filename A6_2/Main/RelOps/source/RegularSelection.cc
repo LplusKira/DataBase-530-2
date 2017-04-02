@@ -25,9 +25,16 @@ void RegularSelection :: run (){
             allData.push_back (leftTable->getPinned (i));
         }
     }
-    func leftPred = leftInputRec->compileComputation (leftSelectionPredicate);
     MyDB_RecordPtr inputRec = input->getEmptyRecord ();
+    func pred = inputRec->compileComputation (selectionPredicate);
+    vector <func> finalComputations;
+    for (string s : projections) {
+        finalComputations.push_back (inputRec->compileComputation (s));
+    }
+    
     MyDB_RecordIteratorAltPtr myIter = getIteratorAlt (allData);
+    // this is the output record
+    MyDB_RecordPtr outputRec = output->getEmptyRecord ();
     
     while (myIter->advance ()) {
         
@@ -35,38 +42,21 @@ void RegularSelection :: run (){
         myIter->getCurrent (inputRec);
         
         // see if it is accepted by the preicate
-        if (!leftPred ()->toBool ()) {
+        if (!pred ()->toBool ()) {
             continue;
         }
-        
-        // compute its hash
-        size_t hashVal = 0;
-        for (auto f : leftEqualities) {
-            hashVal ^= f ()->hash ();
+        // run all of the computations
+        int i = 0;
+        for (auto f : finalComputations) {
+            outputRec->getAtt (i++)->set (f());
         }
         
-        // see if it is in the hash table
-        myHash [hashVal].push_back (myIter->getCurrentPointer ());
+        // the record's content has changed because it
+        // is now a composite of two records whose content
+        // has changed via a read... we have to tell it this,
+        // or else the record's internal buffer may cause it
+        // to write old values
+        outputRec->recordContentHasChanged ();
+        output->append (outputRec);
     }
-    vector <func> finalComputations;
-    for (string s : projections) {
-        finalComputations.push_back (combinedRec->compileComputation (s));
-    }
-    // this is the output record
-    MyDB_RecordPtr outputRec = output->getEmptyRecord ();
-    for (auto f : finalComputations) {
-        outputRec->getAtt (i++)->set (f());
-				}
-    
-				// the record's content has changed because it
-				// is now a composite of two records whose content
-				// has changed via a read... we have to tell it this,
-				// or else the record's internal buffer may cause it
-				// to write old values
-				outputRec->recordContentHasChanged ();
-				output->append (outputRec);
-
-    
-
-
 }
