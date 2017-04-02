@@ -79,6 +79,7 @@
 		C07283C11E918F550046D52F /* supplierBigSorted.tbl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = supplierBigSorted.tbl; sourceTree = "<group>"; };
 		C07283C21E918F550046D52F /* supplierSmall.tbl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = supplierSmall.tbl; sourceTree = "<group>"; };
 		C07283C31E9191120046D52F /* relOpUnitTest */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = relOpUnitTest; sourceTree = "<group>"; };
+		C07283C41E91A18F0046D52F /* RegularSelection.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RegularSelection.cc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -334,6 +335,7 @@
 		C07283A51E918F490046D52F /* source */ = {
 			isa = PBXGroup;
 			children = (
+				C07283C41E91A18F0046D52F /* RegularSelection.cc */,
 				C07283A61E918F490046D52F /* ScanJoin.cc */,
 			);
 			path = source;
