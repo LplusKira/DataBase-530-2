@@ -85,7 +85,9 @@ int main () {
         projections.push_back ("[l_nationkey]");
         projections.push_back ("+ (+ (+ ([l_phone], string[ ]), + ([l_acctbal], string[ ])), [l_comment])");
         
+        cout << "\n Ready to construct selection.";
         RegularSelection myOp (supplierTableL, supplierTableOut, "== ([l_nationkey], int[1])", projections);
+        cout << "\n Ready to run selection.";
         myOp.run ();
         
         cout << "\nRunning selection.";
@@ -109,19 +111,19 @@ int main () {
         MyDB_TablePtr aggTable = make_shared <MyDB_Table> ("aggOut", "aggOut.bin", mySchemaOutAgain);
         MyDB_TableReaderWriterPtr aggTableOut = make_shared <MyDB_TableReaderWriter> (aggTable, myMgr);
         
-        Aggregate myOpAgain (supplierTableOut, aggTableOut, aggsToCompute, groupings, "bool[true]");
-        cout << "running aggregate\n";
-        myOpAgain.run ();
-        
-        temp = aggTableOut->getEmptyRecord ();
-        myIter = aggTableOut->getIteratorAlt ();
-        
-        cout << "Now we count the records.";
-        cout << "\nThe output should be 413:\n";
-        while (myIter->advance ()) {
-            myIter->getCurrent (temp);
-            cout << temp << "\n";
-        }
+//        Aggregate myOpAgain (supplierTableOut, aggTableOut, aggsToCompute, groupings, "bool[true]");
+//        cout << "running aggregate\n";
+//        myOpAgain.run ();
+//        
+//        temp = aggTableOut->getEmptyRecord ();
+//        myIter = aggTableOut->getIteratorAlt ();
+//        
+//        cout << "Now we count the records.";
+//        cout << "\nThe output should be 413:\n";
+//        while (myIter->advance ()) {
+//            myIter->getCurrent (temp);
+//            cout << temp << "\n";
+//        }
     }
     
 //    {
@@ -592,7 +594,7 @@ int main () {
     
 }
 
-//#endif
+#endif
 
 //#ifndef BPLUS_TEST_H
 //#define BPLUS_TEST_H

@@ -22,7 +22,7 @@ void RegularSelection :: run (){
     for (int i = 0; i < input->getNumPages (); i++) {
         MyDB_PageReaderWriter temp = input->getPinned (i);
         if (temp.getType () == MyDB_PageType :: RegularPage){
-            allData.push_back (leftTable->getPinned (i));
+            allData.push_back (input->getPinned (i));
         }
     }
     MyDB_RecordPtr inputRec = input->getEmptyRecord ();
