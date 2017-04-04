@@ -114,6 +114,9 @@ public:
 
 	// access a particular attribute
 	MyDB_AttValPtr getAtt (int whichAtt);
+    
+    // helper function for the compilation
+    pair <func, MyDB_AttTypePtr> compileHelper (char * &vals);
 
 private:
 
@@ -126,8 +129,7 @@ private:
 	// the amount of data in the record buffer
 	size_t recSize;
 
-	// helper function for the compilation
-	pair <func, MyDB_AttTypePtr> compileHelper (char * &vals);
+	
 
 	// helper function for the compilation
 	char *findsymbol (char val, char *input);

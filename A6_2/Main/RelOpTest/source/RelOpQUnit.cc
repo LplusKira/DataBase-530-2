@@ -106,24 +106,25 @@ int main () {
         aggsToCompute.push_back (make_pair (MyDB_AggType :: cnt, "int[0]"));
         
         vector <string> groupings;
+        groupings.push_back("+([l_name], [l_nationkey])");
         MyDB_SchemaPtr mySchemaOutAgain  = make_shared <MyDB_Schema> ();
         mySchemaOutAgain->appendAtt (make_pair ("mycnt", make_shared <MyDB_IntAttType> ()));
         MyDB_TablePtr aggTable = make_shared <MyDB_Table> ("aggOut", "aggOut.bin", mySchemaOutAgain);
         MyDB_TableReaderWriterPtr aggTableOut = make_shared <MyDB_TableReaderWriter> (aggTable, myMgr);
         
-//        Aggregate myOpAgain (supplierTableOut, aggTableOut, aggsToCompute, groupings, "bool[true]");
-//        cout << "running aggregate\n";
-//        myOpAgain.run ();
-//        
-//        temp = aggTableOut->getEmptyRecord ();
-//        myIter = aggTableOut->getIteratorAlt ();
-//        
-//        cout << "Now we count the records.";
-//        cout << "\nThe output should be 413:\n";
-//        while (myIter->advance ()) {
-//            myIter->getCurrent (temp);
-//            cout << temp << "\n";
-//        }
+        Aggregate myOpAgain (supplierTableOut, aggTableOut, aggsToCompute, groupings, "bool[true]");
+        cout << "running aggregate\n";
+        myOpAgain.run ();
+        
+        temp = aggTableOut->getEmptyRecord ();
+        myIter = aggTableOut->getIteratorAlt ();
+        
+        cout << "Now we count the records.";
+        cout << "\nThe output should be 413:\n";
+        while (myIter->advance ()) {
+            myIter->getCurrent (temp);
+            cout << temp << "\n";
+        }
     }
     
 //    {

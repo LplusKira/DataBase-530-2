@@ -1,18 +1,18 @@
 
-#ifndef AGG_H
-#define AGG_H
 
 #include "MyDB_TableReaderWriter.h"
+#include "Aggregate.h"
 #include <string>
 #include <utility>
 #include <vector>
+#include <unordered_map>
 
 // This class encapulates a simple, hash-based aggregation + group by.  It does not
 // need to work when there is not enough space in the buffer manager to store all of
 // the groups.
 using namespace std;
 
-Aggregate (MyDB_TableReaderWriterPtr input, MyDB_TableReaderWriterPtr output,
+Aggregate::Aggregate (MyDB_TableReaderWriterPtr input, MyDB_TableReaderWriterPtr output,
 		vector <pair <MyDB_AggType, string>> aggsToCompute,
            vector <string> groupings, string selectionPredicate) {
     this->input = input;
@@ -20,23 +20,37 @@ Aggregate (MyDB_TableReaderWriterPtr input, MyDB_TableReaderWriterPtr output,
     this->aggsToCompute = aggsToCompute;
     this->groupings = groupings;
     this->selectionPredicate = selectionPredicate;
-}.
+}
 	
 	// execute the aggregation
-void run () {
+void Aggregate::run () {
     // this is the hash map we'll use to look up data... the key is the hashed value
     // of all of the records' join keys, and the value is a list of pointers were all
     // of the records with that hsah value are located
     unordered_map <size_t, vector <void *>> myHash;
-    
+    MyDB_RecordPtr inputRec = input->getEmptyRecord ();
+
     //create schema ?????????
     MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
     for (auto p : groupings) {
-        pair <int, MyDB_AttTypePtr> atts = leftTable->getTable ()->getSchema ()->getAttByName(p);
+        char *str = (char *) p.c_str ();
+        pair <func, MyDB_AttTypePtr> atts = inputRec->compileHelper(str);
+        cout << "att Name: " << p << ", Type: " << atts.second->toString() << "\n";
         mySchemaOut->appendAtt (make_pair(p, atts.second));
     }
     for (auto p : aggsToCompute) {
-        mySchemaOut->appendAtt (make_pair(p.second, p.first));
+        char *str = (char *) p.second.c_str ();
+        pair <func, MyDB_AttTypePtr> atts = inputRec->compileHelper(str);
+        if (p.first == sum) {
+           mySchemaOut->appendAtt (make_pair("sum", atts.second));
+           cout << "att Name: sum, Type: " << atts.second->toString() << "\n";
+        } else if (p.first == avg) {
+           mySchemaOut->appendAtt (make_pair("avg", atts.second));
+            cout << "att Name: sum, Type: " << atts.second->toString() << "\n";
+        } else if (p.first == cnt) {
+            mySchemaOut->appendAtt (make_pair("count", atts.second));
+            cout << "att Name: sum, Type: " << atts.second->toString() << "\n";
+        }
     }
     // get all data
     vector <MyDB_PageReaderWriter> allData;
@@ -46,7 +60,6 @@ void run () {
             allData.push_back (input->getPinned (i));
         }
     }
-    MyDB_RecordPtr inputRec = input->getEmptyRecord ();
     func pred = inputRec->compileComputation (selectionPredicate);
     
     // get all grouping func
@@ -89,4 +102,3 @@ void run () {
     
 }
 
-#endif
