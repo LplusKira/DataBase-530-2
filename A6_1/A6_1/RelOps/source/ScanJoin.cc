@@ -48,7 +48,7 @@ ScanJoin :: ScanJoin (MyDB_TableReaderWriterPtr leftInputIn, MyDB_TableReaderWri
 		hadToSwapThem = true;
 	}
 }
-
+appendAndReturnLocation
 void ScanJoin :: run () {
 
 	// this is the hash map we'll use to look up data... the key is the hashed value
@@ -135,7 +135,7 @@ void ScanJoin :: run () {
 	for (string s : projections) {
 		finalComputations.push_back (combinedRec->compileComputation (s));
 	}
-
+    
 	// this is the output record
 	MyDB_RecordPtr outputRec = output->getEmptyRecord ();
 	
