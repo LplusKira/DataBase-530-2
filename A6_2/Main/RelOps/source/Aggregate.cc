@@ -39,17 +39,22 @@ void Aggregate::run () {
     
     MyDB_RecordPtr inputRec = input->getEmptyRecord ();
 
-    //create schema ?????????
+    //create schema and push all funcs to vector
     MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
+    vector <func> groupingFunc;
     for (auto p : groupings) {
         char *str = (char *) p.c_str ();
         pair <func, MyDB_AttTypePtr> atts = inputRec->compileHelper(str);
         cout << "att Name: " << p << ", Type: " << atts.second->toString() << "\n";
+        groupingFunc.push_back (atts.first);
         mySchemaOut->appendAtt (make_pair(p, atts.second));
     }
+    vector <pair<MyDB_AggType, func>> aggFunc;
     for (auto p : aggsToCompute) {
         char *str = (char *) p.second.c_str ();
         pair <func, MyDB_AttTypePtr> atts = inputRec->compileHelper(str);
+        pair<MyDB_AggType, func> pair = make_pair(p.first, atts.first);
+        aggFunc.push_back (pair);
         if (p.first == sum) {
            mySchemaOut->appendAtt (make_pair("sum", atts.second));
            cout << "att Name: sum, Type: " << atts.second->toString() << "\n";
@@ -71,16 +76,7 @@ void Aggregate::run () {
     }
     func pred = inputRec->compileComputation (selectionPredicate);
     
-    // get all grouping func
-    vector <func> groupingFunc;
-    for (auto p : groupings) {
-        groupingFunc.push_back (inputRec->compileComputation (p));
-    }
-    vector <std::pair<MyDB_AttType, func>> aggFunc;
-    for (auto p : aggsToCompute) {
-        pair<MyDB_AttType, func> pair = make_pair(p.first, inputRec->compileComputation (p.second));
-        aggFunc.push_back (pair);
-    }
+    
     MyDB_RecordPtr groupedRec = make_shared <MyDB_Record> (mySchemaOut);
     MyDB_RecordIteratorAltPtr myIter = getIteratorAlt (allData);
     int outpageNum = output->getNumPages();
@@ -90,7 +86,7 @@ void Aggregate::run () {
         
         // hash the current record
         myIter->getCurrent (inputRec);
-        
+        cout << inputRec << "\n";
         // see if it is accepted by the preicate
         if (!pred ()->toBool ()) {
             continue;
@@ -100,10 +96,12 @@ void Aggregate::run () {
         size_t hashVal = 0;
         for (auto f : groupingFunc) {
             hashVal ^= f ()->hash ();
+            cout << "hashVal: " << hashVal << "\n";
         }
         
         // see if it is in the hash table
         if (myHash.count (hashVal) == 0) {
+            cout << "not in hash...........\n";
             countMap[hashVal] = 1;
             //not in hash, add (newkey, newval)
             int i = 0;
@@ -115,6 +113,7 @@ void Aggregate::run () {
                 groupedRec->getAtt (i++)->set (p.second());
                 
             }
+            cout << "output rec: " << groupedRec << "\n";
             // the record's content has changed because it
             // is now a composite of two records whose content
             // has changed via a read... we have to tell it this,
@@ -123,6 +122,7 @@ void Aggregate::run () {
             groupedRec->recordContentHasChanged ();
             void* loc = toPage.appendAndReturnLocation(groupedRec);
             if (loc == nullptr) {
+                cout << currPagecount << " page fulls\n";
                 currPagecount++;
                 toPage = output->getPinned(currPagecount);
                 myHash [hashVal] = toPage.appendAndReturnLocation(groupedRec);
@@ -131,40 +131,51 @@ void Aggregate::run () {
             }
             
         } else {
+            cout << "in hash................\n";
             //In hash? val+=newval
             //If you need to update the aggregate, you can use fromBinary () on the record to reconstitute it, then change the value as needed (using a pre-compiled func object) and then use toBinary () to write it back again.
             void* preLoc = groupedRec->fromBinary (myHash[hashVal]);
             countMap[hashVal] += 1;
             int i = groupingFunc.size();
+            cout << "agg att starts index " << i << "\n";
             for (auto p : aggFunc) {
                 sumMap[hashVal] += groupedRec->getAtt(i)->toDouble();
                 if (p.first == sum) {
+                    cout << "SUM\n";
                     double sum = sumMap[hashVal];
-                    if (groupedRec->getAtt (i)->promotableToInt()) {
+                    //groupedRec->getSchema()->getAtts.at(i).second->promotableToInt()
+                    if (groupedRec->getSchema()->getAtts().at(i).second->promotableToInt()) {
+                        cout << "int\n";
                         MyDB_IntAttValPtr att = make_shared<MyDB_IntAttVal>();
                         att->set((int)sum);
                         groupedRec->getAtt (i)->set (att);
                         i++;
                     } else {
+                        cout << "double\n";
                         MyDB_DoubleAttValPtr att = make_shared<MyDB_DoubleAttVal>();
                         att->set(sum);
                         groupedRec->getAtt (i)->set (att);
                         i++;
                     }
                 } else if (p.first == avg) {
+                    cout << "AVG\n";
                     double average = sumMap[hashVal]/countMap[hashVal];
                     MyDB_DoubleAttValPtr att = make_shared<MyDB_DoubleAttVal>();
                     att->set(average);
                     groupedRec->getAtt (i)->set (att);
                     i++;
                 } else if (p.first == cnt) {
+                    cout << "COUNT\n";
                     MyDB_IntAttValPtr att = make_shared<MyDB_IntAttVal>();
                     att->set(countMap[hashVal]);
                     groupedRec->getAtt (i)->set (att);
                     i++;
                 }
             }
+            cout << "count: " << countMap[hashVal] << "\n";
+            cout << "sum: " << sumMap[hashVal] << "\n";
             groupedRec->toBinary(preLoc);
+            cout << "write back\n";
         }
         
         

@@ -178,6 +178,7 @@ void ScanJoin :: run () {
 				int i = 0;
 				for (auto f : finalComputations) {
 					outputRec->getAtt (i++)->set (f());
+                    outputRec->getSchema()
 				}
 
 				// the record's content has changed because it 
@@ -190,6 +191,7 @@ void ScanJoin :: run () {
 			}
 		}
 	}
+    
 }
 
 #endif

@@ -106,7 +106,7 @@ int main () {
         aggsToCompute.push_back (make_pair (MyDB_AggType :: cnt, "int[0]"));
         
         vector <string> groupings;
-        groupings.push_back("+([l_name], [l_nationkey])");
+        //groupings.push_back("+([l_name], [l_nationkey])");
         MyDB_SchemaPtr mySchemaOutAgain  = make_shared <MyDB_Schema> ();
         mySchemaOutAgain->appendAtt (make_pair ("mycnt", make_shared <MyDB_IntAttType> ()));
         MyDB_TablePtr aggTable = make_shared <MyDB_Table> ("aggOut", "aggOut.bin", mySchemaOutAgain);
