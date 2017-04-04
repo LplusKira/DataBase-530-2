@@ -1,6 +1,7 @@
 
 
 #include "MyDB_TableReaderWriter.h"
+#include "MyDB_PageReaderWriter.h"
 #include "Aggregate.h"
 #include <string>
 #include <utility>
@@ -46,10 +47,10 @@ void Aggregate::run () {
            cout << "att Name: sum, Type: " << atts.second->toString() << "\n";
         } else if (p.first == avg) {
            mySchemaOut->appendAtt (make_pair("avg", atts.second));
-            cout << "att Name: sum, Type: " << atts.second->toString() << "\n";
+            cout << "att Name: avg, Type: " << atts.second->toString() << "\n";
         } else if (p.first == cnt) {
             mySchemaOut->appendAtt (make_pair("count", atts.second));
-            cout << "att Name: sum, Type: " << atts.second->toString() << "\n";
+            cout << "att Name: count, Type: " << atts.second->toString() << "\n";
         }
     }
     // get all data
@@ -69,6 +70,7 @@ void Aggregate::run () {
     }
     
     MyDB_RecordPtr groupedRec = make_shared <MyDB_Record> (mySchemaOut);
+    MyDB_RecordIteratorAltPtr myIter = getIteratorAlt (allData);
     while (myIter->advance ()) {
         
         // hash the current record
