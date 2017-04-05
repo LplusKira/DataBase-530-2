@@ -106,8 +106,10 @@ int main () {
         aggsToCompute.push_back (make_pair (MyDB_AggType :: cnt, "int[0]"));
         
         vector <string> groupings;
-        //groupings.push_back("+([l_name], [l_nationkey])");
+        //groupings.push_back("[l_name]");
         MyDB_SchemaPtr mySchemaOutAgain  = make_shared <MyDB_Schema> ();
+        
+        //mySchemaOutAgain->appendAtt (make_pair ("l_name", make_shared <MyDB_StringAttType> ()));
         mySchemaOutAgain->appendAtt (make_pair ("mycnt", make_shared <MyDB_IntAttType> ()));
         MyDB_TablePtr aggTable = make_shared <MyDB_Table> ("aggOut", "aggOut.bin", mySchemaOutAgain);
         MyDB_TableReaderWriterPtr aggTableOut = make_shared <MyDB_TableReaderWriter> (aggTable, myMgr);
@@ -127,57 +129,57 @@ int main () {
         }
     }
     
-//    {
-//        // get the output schema and table
-//        MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
-//        mySchemaOut->appendAtt (make_pair ("l_name", make_shared <MyDB_StringAttType> ()));
-//        mySchemaOut->appendAtt (make_pair ("l_nationkey", make_shared <MyDB_StringAttType> ()));
-//        mySchemaOut->appendAtt (make_pair ("combined_stuff", make_shared <MyDB_StringAttType> ()));
-//        MyDB_TablePtr myTableOut = make_shared <MyDB_Table> ("supplierOut", "supplierOut.bin", mySchemaOut);
-//        MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
-//        
-//        vector <string> projections;
-//        projections.push_back ("[l_name]");
-//        projections.push_back ("[l_nationkey]");
-//        projections.push_back ("+ (+ (+ ([l_phone], string[ ]), + ([l_acctbal], string[ ])), [l_comment])");
-//        
-//        RegularSelection myOp (supplierTableL, supplierTableOut, "&& (== ([l_nationkey], int[1]), > ([l_name], string [Supplier#000009378]))", projections);
-//        myOp.run ();
-//        
-//        cout << "\nFirst result should be:\n";
-//        cout << "Supplier#000009428|1|11-896-966-5146 5429.370000 furiously regular pinto beans caj|\n\n";
-//        MyDB_RecordPtr temp = supplierTableOut->getEmptyRecord ();
-//        MyDB_RecordIteratorAltPtr myIter = supplierTableOut->getIteratorAlt ();
-//        
-//        while (myIter->advance ()) {
-//            myIter->getCurrent (temp);
-//            cout << temp << "\n";
-//        }
-//        
-//        // now, we count the total number of records
-//        vector <pair <MyDB_AggType, string>> aggsToCompute;
-//        aggsToCompute.push_back (make_pair (MyDB_AggType :: cnt, "int[0]"));
-//        
-//        vector <string> groupings;
-//        MyDB_SchemaPtr mySchemaOutAgain  = make_shared <MyDB_Schema> ();
-//        mySchemaOutAgain->appendAtt (make_pair ("mycnt", make_shared <MyDB_IntAttType> ()));
-//        MyDB_TablePtr aggTable = make_shared <MyDB_Table> ("aggOut", "aggOut.bin", mySchemaOutAgain);
-//        MyDB_TableReaderWriterPtr aggTableOut = make_shared <MyDB_TableReaderWriter> (aggTable, myMgr);
-//        
-//        Aggregate myOpAgain (supplierTableOut, aggTableOut, aggsToCompute, groupings, "bool[true]");
-//        cout << "running aggregate\n";
-//        myOpAgain.run ();
-//        
-//        temp = aggTableOut->getEmptyRecord ();
-//        myIter = aggTableOut->getIteratorAlt ();
-//        
-//        cout << "Now we count the records.";
-//        cout << "\nThe output should be 29:\n";
-//        while (myIter->advance ()) {
-//            myIter->getCurrent (temp);
-//            cout << temp << "\n";
-//        }
-//    }
+    {
+        // get the output schema and table
+        MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
+        mySchemaOut->appendAtt (make_pair ("l_name", make_shared <MyDB_StringAttType> ()));
+        mySchemaOut->appendAtt (make_pair ("l_nationkey", make_shared <MyDB_StringAttType> ()));
+        mySchemaOut->appendAtt (make_pair ("combined_stuff", make_shared <MyDB_StringAttType> ()));
+        MyDB_TablePtr myTableOut = make_shared <MyDB_Table> ("supplierOut", "supplierOut.bin", mySchemaOut);
+        MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
+        
+        vector <string> projections;
+        projections.push_back ("[l_name]");
+        projections.push_back ("[l_nationkey]");
+        projections.push_back ("+ (+ (+ ([l_phone], string[ ]), + ([l_acctbal], string[ ])), [l_comment])");
+        
+        RegularSelection myOp (supplierTableL, supplierTableOut, "&& (== ([l_nationkey], int[1]), > ([l_name], string [Supplier#000009378]))", projections);
+        myOp.run ();
+        
+        cout << "\nFirst result should be:\n";
+        cout << "Supplier#000009428|1|11-896-966-5146 5429.370000 furiously regular pinto beans caj|\n\n";
+        MyDB_RecordPtr temp = supplierTableOut->getEmptyRecord ();
+        MyDB_RecordIteratorAltPtr myIter = supplierTableOut->getIteratorAlt ();
+        
+        while (myIter->advance ()) {
+            myIter->getCurrent (temp);
+            cout << temp << "\n";
+        }
+        
+        // now, we count the total number of records
+        vector <pair <MyDB_AggType, string>> aggsToCompute;
+        aggsToCompute.push_back (make_pair (MyDB_AggType :: cnt, "int[0]"));
+        
+        vector <string> groupings;
+        MyDB_SchemaPtr mySchemaOutAgain  = make_shared <MyDB_Schema> ();
+        mySchemaOutAgain->appendAtt (make_pair ("mycnt", make_shared <MyDB_IntAttType> ()));
+        MyDB_TablePtr aggTable = make_shared <MyDB_Table> ("aggOut", "aggOut.bin", mySchemaOutAgain);
+        MyDB_TableReaderWriterPtr aggTableOut = make_shared <MyDB_TableReaderWriter> (aggTable, myMgr);
+        
+        Aggregate myOpAgain (supplierTableOut, aggTableOut, aggsToCompute, groupings, "bool[true]");
+        cout << "running aggregate\n";
+        myOpAgain.run ();
+        
+        temp = aggTableOut->getEmptyRecord ();
+        myIter = aggTableOut->getIteratorAlt ();
+        
+        cout << "Now we count the records.";
+        cout << "\nThe output should be 29:\n";
+        while (myIter->advance ()) {
+            myIter->getCurrent (temp);
+            cout << temp << "\n";
+        }
+    }
 //
 //    {
 //        

@@ -62,10 +62,12 @@ void Aggregate::run () {
            mySchemaOut->appendAtt (make_pair("avg", atts.second));
             cout << "att Name: avg, Type: " << atts.second->toString() << "\n";
         } else if (p.first == cnt) {
-            mySchemaOut->appendAtt (make_pair("count", atts.second));
+            mySchemaOut->appendAtt (make_pair("cnt", atts.second));
             cout << "att Name: count, Type: " << atts.second->toString() << "\n";
         }
     }
+//    mySchemaOut->appendAtt (make_pair ("[l_name]", make_shared <MyDB_StringAttType> ()));
+//    mySchemaOut->appendAtt (make_pair ("mycnt", make_shared <MyDB_IntAttType> ()));
     // get all data
     vector <MyDB_PageReaderWriter> allData;
     for (int i = 0; i < input->getNumPages (); i++) {
@@ -79,9 +81,9 @@ void Aggregate::run () {
     
     MyDB_RecordPtr groupedRec = make_shared <MyDB_Record> (mySchemaOut);
     MyDB_RecordIteratorAltPtr myIter = getIteratorAlt (allData);
-    int outpageNum = output->getNumPages();
+    
     int currPagecount = 0;
-    MyDB_PageReaderWriter toPage = output->getPinned(currPagecount);
+    
     while (myIter->advance ()) {
         
         // hash the current record
@@ -110,7 +112,12 @@ void Aggregate::run () {
             }
             for (auto p : aggFunc) {
                 sumMap[hashVal] = groupedRec->getAtt(i)->toDouble();
-                groupedRec->getAtt (i++)->set (p.second());
+                if (p.first == cnt) {
+                    MyDB_IntAttValPtr att = make_shared<MyDB_IntAttVal>();
+                    att->set(countMap[hashVal]);
+                    groupedRec->getAtt (i)->set (att);
+                }
+                //groupedRec->getAtt (i++)->set (p.second());
                 
             }
             cout << "output rec: " << groupedRec << "\n";
@@ -120,12 +127,23 @@ void Aggregate::run () {
             // or else the record's internal buffer may cause it
             // to write old values
             groupedRec->recordContentHasChanged ();
+            MyDB_PageReaderWriter toPage = output->getPinned(currPagecount);
             void* loc = toPage.appendAndReturnLocation(groupedRec);
+            MyDB_RecordPtr temp = output->getEmptyRecord ();
+            MyDB_RecordIteratorAltPtr myIter2 = toPage.getIteratorAlt ();
+            
+            cout << "count the records.";
+            
+            while (myIter2->advance ()) {
+                myIter2->getCurrent (temp);
+                cout << temp << "\n";
+            }
+            cout << "end of count\n";
             if (loc == nullptr) {
                 cout << currPagecount << " page fulls\n";
                 currPagecount++;
-                toPage = output->getPinned(currPagecount);
-                myHash [hashVal] = toPage.appendAndReturnLocation(groupedRec);
+                MyDB_PageReaderWriter toPages = output->getPinned(currPagecount);
+                myHash [hashVal] = toPages.appendAndReturnLocation(groupedRec);
             } else {
                 myHash [hashVal] = loc;
             }
@@ -135,6 +153,7 @@ void Aggregate::run () {
             //In hash? val+=newval
             //If you need to update the aggregate, you can use fromBinary () on the record to reconstitute it, then change the value as needed (using a pre-compiled func object) and then use toBinary () to write it back again.
             void* preLoc = groupedRec->fromBinary (myHash[hashVal]);
+            cout << "read from loc: " << preLoc << "\n";
             countMap[hashVal] += 1;
             int i = groupingFunc.size();
             cout << "agg att starts index " << i << "\n";
@@ -168,12 +187,15 @@ void Aggregate::run () {
                     cout << "COUNT\n";
                     MyDB_IntAttValPtr att = make_shared<MyDB_IntAttVal>();
                     att->set(countMap[hashVal]);
+                    cout << "pre the val: " << groupedRec->getAtt(i)->toInt() << "\n";
                     groupedRec->getAtt (i)->set (att);
+                    cout << "now the val: " << groupedRec->getAtt(i)->toInt() << "\n";
                     i++;
                 }
             }
             cout << "count: " << countMap[hashVal] << "\n";
             cout << "sum: " << sumMap[hashVal] << "\n";
+            groupedRec->recordContentHasChanged ();
             groupedRec->toBinary(preLoc);
             cout << "write back\n";
         }

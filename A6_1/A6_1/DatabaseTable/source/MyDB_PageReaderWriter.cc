@@ -82,7 +82,6 @@ void *MyDB_PageReaderWriter :: appendAndReturnLocation (MyDB_RecordPtr appendMe)
 	else
 		return nullptr;
 }
-
 bool MyDB_PageReaderWriter :: append (MyDB_RecordPtr appendMe) {
 	
 	size_t recSize = appendMe->getBinarySize ();

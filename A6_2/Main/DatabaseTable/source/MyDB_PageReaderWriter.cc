@@ -76,6 +76,7 @@ void MyDB_PageReaderWriter :: setType (MyDB_PageType toMe) {
 }
 
 void *MyDB_PageReaderWriter :: appendAndReturnLocation (MyDB_RecordPtr appendMe) {
+    cout << "record in page append: " << appendMe << "\n";
 	void *recLocation = NUM_BYTES_USED + (char *)  myPage->getBytes ();
 	if (append (appendMe))
 		return recLocation;
@@ -94,10 +95,11 @@ bool MyDB_PageReaderWriter :: append (MyDB_RecordPtr appendMe) {
 	appendMe->toBinary (NUM_BYTES_USED + (char *) address);
 	NUM_BYTES_USED += recSize;
 	myPage->wroteBytes ();
+    
 	return true;
 }
 
-void MyDB_PageReaderWriter :: 
+void MyDB_PageReaderWriter ::
 	sortInPlace (function <bool ()> comparator, MyDB_RecordPtr lhs,  MyDB_RecordPtr rhs) {
 
 	void *temp = malloc (pageSize);

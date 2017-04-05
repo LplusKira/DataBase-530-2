@@ -59,7 +59,8 @@ public:
 	// for (int i = 0; i < 10; i++) {
 	// 	loc = myRec.fromBinary (loc);
 	// }
-	// 	
+	//
+    appendAndReturnLocation
 	void *fromBinary (void *startPos);
 
 	// parse the contents of this record from the given string

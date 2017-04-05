@@ -126,7 +126,7 @@ public:
 	~MyDB_DoubleAttVal ();
 
 private:
-
+toBinary
 	double value;
 };
 
