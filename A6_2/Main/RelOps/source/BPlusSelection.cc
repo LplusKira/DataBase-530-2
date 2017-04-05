@@ -19,6 +19,12 @@ using namespace std;
 BPlusSelection :: BPlusSelection (MyDB_BPlusTreeReaderWriterPtr input, MyDB_TableReaderWriterPtr output,
                 MyDB_AttValPtr low, MyDB_AttValPtr high,
                                   string selectionPredicate, vector <string> projections){
+    this->input  = input;
+    this->output = output;
+    this->low = low;
+    this->high = high;
+    this->selectionPredicate = selectionPredicate;
+    this->projections = projections;
 }
 
 // execute the selection operation
