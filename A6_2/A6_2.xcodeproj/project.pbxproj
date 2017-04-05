@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		2D5AB0D01E9481CB00A49C91 /* BPlusSelection.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BPlusSelection.cc; sourceTree = "<group>"; };
 		C072835C1E918F490046D52F /* BPlusQUnit.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BPlusQUnit.cc; sourceTree = "<group>"; };
 		C072835F1E918F490046D52F /* CheckLRU.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckLRU.h; sourceTree = "<group>"; };
 		C07283601E918F490046D52F /* MyDB_BufferManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyDB_BufferManager.h; sourceTree = "<group>"; };
@@ -337,6 +338,7 @@
 			isa = PBXGroup;
 			children = (
 				C07283C51E91BCA40046D52F /* Aggregate.cc */,
+				2D5AB0D01E9481CB00A49C91 /* BPlusSelection.cc */,
 				C07283C41E91A18F0046D52F /* RegularSelection.cc */,
 				C07283A61E918F490046D52F /* ScanJoin.cc */,
 			);
@@ -453,8 +455,8 @@
 			buildConfigurationList = C07283561E918E710046D52F /* Build configuration list for PBXLegacyTarget "A6_2" */;
 			buildPhases = (
 			);
-			buildToolPath = /Users/kejunliu/.pyenv/versions/2.7/bin/scons;
-			buildWorkingDirectory = "/Users/kejunliu/Documents/DataBase-530-2/A6_2/Build";
+			buildToolPath = /usr/local/bin/scons;
+			buildWorkingDirectory = "/Users/xiajunru/Code/DataBase-530-2/A6_2/Build";
 			dependencies = (
 			);
 			name = A6_2;
