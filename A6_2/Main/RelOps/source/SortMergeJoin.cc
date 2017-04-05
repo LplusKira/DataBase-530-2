@@ -29,4 +29,5 @@ SortMergeJoin :: SortMergeJoin (MyDB_TableReaderWriterPtr leftInput, MyDB_TableR
 
 // execute the join
 void SortMergeJoin:: run (){
+    l;trd
 }
