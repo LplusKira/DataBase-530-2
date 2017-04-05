@@ -29,13 +29,7 @@ BPlusSelection :: BPlusSelection (MyDB_BPlusTreeReaderWriterPtr input, MyDB_Tabl
 
 // execute the selection operation
 void BPlusSelection :: run (){
-    vector <MyDB_PageReaderWriter> allData;
-    for (int i = 0; i < input->getNumPages (); i++) {
-        MyDB_PageReaderWriter temp = input->getPinned (i);
-        if (temp.getType () == MyDB_PageType :: RegularPage){
-            allData.push_back (input->getPinned (i));
-        }
-    }
+    
     MyDB_RecordPtr inputRec = input->getEmptyRecord ();
     func pred = inputRec->compileComputation (selectionPredicate);
     vector <func> finalComputations;
@@ -43,7 +37,7 @@ void BPlusSelection :: run (){
         finalComputations.push_back (inputRec->compileComputation (s));
     }
     
-    MyDB_RecordIteratorAltPtr myIter = getIteratorAlt (allData);
+    MyDB_RecordIteratorAltPtr myIter = input->getRangeIteratorAlt (low,high);
     // this is the output record
     MyDB_RecordPtr outputRec = output->getEmptyRecord ();
     
