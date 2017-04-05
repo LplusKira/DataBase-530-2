@@ -41,6 +41,15 @@ public:
 	
 	// execute the join
 	void run ();
+private:
+    MyDB_TableReaderWriterPtr leftInput;
+    MyDB_TableReaderWriterPtr rightInput;
+    MyDB_TableReaderWriterPtr output;
+    string finalSelectionPredicate;
+    vector <string> projections;
+    pair <string, string> equalityCheck;
+    string leftSelectionPredicate;
+    string rightSelectionPredicate;
 };
 
 #endif
