@@ -83,17 +83,18 @@ void Aggregate::run () {
     MyDB_RecordIteratorAltPtr myIter = getIteratorAlt (allData);
     
     int currPagecount = 0;
-    
+    int recNum = 0;
     while (myIter->advance ()) {
         
         // hash the current record
         myIter->getCurrent (inputRec);
-        cout << inputRec << "\n";
+        
+        recNum++;
         // see if it is accepted by the preicate
         if (!pred ()->toBool ()) {
             continue;
         }
-        
+        cout << inputRec << "\n";
         // compute its hash
         size_t hashVal = 0;
         for (auto f : groupingFunc) {
@@ -129,16 +130,16 @@ void Aggregate::run () {
             groupedRec->recordContentHasChanged ();
             MyDB_PageReaderWriter toPage = output->getPinned(currPagecount);
             void* loc = toPage.appendAndReturnLocation(groupedRec);
-            MyDB_RecordPtr temp = output->getEmptyRecord ();
-            MyDB_RecordIteratorAltPtr myIter2 = toPage.getIteratorAlt ();
-            
-            cout << "count the records.";
-            
-            while (myIter2->advance ()) {
-                myIter2->getCurrent (temp);
-                cout << temp << "\n";
-            }
-            cout << "end of count\n";
+//            MyDB_RecordPtr temp = output->getEmptyRecord ();
+//            MyDB_RecordIteratorAltPtr myIter2 = toPage.getIteratorAlt ();
+//            
+//            cout << "count the records.";
+//            
+//            while (myIter2->advance ()) {
+//                myIter2->getCurrent (temp);
+//                cout << temp << "\n";
+//            }
+//            cout << "end of count\n";
             if (loc == nullptr) {
                 cout << currPagecount << " page fulls\n";
                 currPagecount++;
@@ -152,8 +153,8 @@ void Aggregate::run () {
             cout << "in hash................\n";
             //In hash? val+=newval
             //If you need to update the aggregate, you can use fromBinary () on the record to reconstitute it, then change the value as needed (using a pre-compiled func object) and then use toBinary () to write it back again.
-            void* preLoc = groupedRec->fromBinary (myHash[hashVal]);
-            cout << "read from loc: " << preLoc << "\n";
+            groupedRec->fromBinary (myHash[hashVal]);
+            cout << "hash val: " << hashVal << "\n";
             countMap[hashVal] += 1;
             int i = groupingFunc.size();
             cout << "agg att starts index " << i << "\n";
@@ -196,13 +197,13 @@ void Aggregate::run () {
             cout << "count: " << countMap[hashVal] << "\n";
             cout << "sum: " << sumMap[hashVal] << "\n";
             groupedRec->recordContentHasChanged ();
-            groupedRec->toBinary(preLoc);
+            groupedRec->toBinary(myHash[hashVal]);
             cout << "write back\n";
         }
         
         
     }
-    
+    cout << recNum << "\n";
     
 }
 

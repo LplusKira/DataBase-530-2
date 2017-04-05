@@ -76,7 +76,7 @@ void MyDB_PageReaderWriter :: setType (MyDB_PageType toMe) {
 }
 
 void *MyDB_PageReaderWriter :: appendAndReturnLocation (MyDB_RecordPtr appendMe) {
-    cout << "record in page append: " << appendMe << "\n";
+    //cout << "record in page append: " << appendMe << "\n";
 	void *recLocation = NUM_BYTES_USED + (char *)  myPage->getBytes ();
 	if (append (appendMe))
 		return recLocation;

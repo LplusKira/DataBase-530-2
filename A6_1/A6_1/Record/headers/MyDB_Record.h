@@ -60,7 +60,7 @@ public:
 	// 	loc = myRec.fromBinary (loc);
 	// }
 	//
-    appendAndReturnLocation
+    
 	void *fromBinary (void *startPos);
 
 	// parse the contents of this record from the given string

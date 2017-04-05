@@ -48,7 +48,6 @@ ScanJoin :: ScanJoin (MyDB_TableReaderWriterPtr leftInputIn, MyDB_TableReaderWri
 		hadToSwapThem = true;
 	}
 }
-appendAndReturnLocation
 void ScanJoin :: run () {
 
 	// this is the hash map we'll use to look up data... the key is the hashed value
