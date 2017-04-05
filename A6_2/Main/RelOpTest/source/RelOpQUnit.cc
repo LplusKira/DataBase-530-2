@@ -65,10 +65,10 @@ int main () {
     // load up from a text file
     cout << "loading left table.\n";
     supplierTableL->loadFromTextFile ("smallSupplier.tbl");
-   	supplierTableL->loadFromTextFile ("Users/xiajunru/Code/DataBase-530-2/A6_2/Build/supplier.tbl");
+   	supplierTableL->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A6_2/Build/supplier.tbl");
     
     cout << "loading right table.\n";
-    supplierTableRNoBPlus->loadFromTextFile ("Users/xiajunru/Code/DataBase-530-2/A6_2/Build/supplierBig.tbl");
+    supplierTableRNoBPlus->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A6_2/Build/supplier.tbl");
    	// supplierTableRNoBPlus->loadFromTextFile ("supplierBig.tbl");
 
 //    {
@@ -106,10 +106,10 @@ int main () {
 //        aggsToCompute.push_back (make_pair (MyDB_AggType :: cnt, "int[0]"));
 //        
 //        vector <string> groupings;
-//        groupings.push_back("[l_name]");
+//        //groupings.push_back("[l_name]");
 //        MyDB_SchemaPtr mySchemaOutAgain  = make_shared <MyDB_Schema> ();
 //        
-//        mySchemaOutAgain->appendAtt (make_pair ("l_name", make_shared <MyDB_StringAttType> ()));
+//        //mySchemaOutAgain->appendAtt (make_pair ("l_name", make_shared <MyDB_StringAttType> ()));
 //        mySchemaOutAgain->appendAtt (make_pair ("mycnt", make_shared <MyDB_IntAttType> ()));
 //        MyDB_TablePtr aggTable = make_shared <MyDB_Table> ("aggOut", "aggOut.bin", mySchemaOutAgain);
 //        MyDB_TableReaderWriterPtr aggTableOut = make_shared <MyDB_TableReaderWriter> (aggTable, myMgr);
@@ -274,53 +274,53 @@ int main () {
 //    }
 
     MyDB_BPlusTreeReaderWriterPtr supplierTableR = make_shared <MyDB_BPlusTreeReaderWriter> ("r_address", myTableRight, myMgr);
-    MyDB_TablePtr myTableRightNoBPlus = make_shared <MyDB_Table> ("supplierRightNoBPlus", "supplierRightNoBPlus.bin", mySchemaR);
-    
-    cout << "loading right into B+-Tree indexed on r_address.\n";
-    supplierTableR->loadFromTextFile ("Users/xiajunru/Code/DataBase-530-2/A6_2/Build/supplierBig.tbl");
-    
-    {
-        
-        // get the output schema and table
-        MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
-        mySchemaOut->appendAtt (make_pair ("r_name", make_shared <MyDB_StringAttType> ()));
-        mySchemaOut->appendAtt (make_pair ("r_address", make_shared <MyDB_StringAttType> ()));
-        mySchemaOut->appendAtt (make_pair ("comment", make_shared <MyDB_StringAttType> ()));
-        
-        MyDB_TablePtr myTableOut = make_shared <MyDB_Table> ("supplierOut", "supplierOut.bin", mySchemaOut);
-        MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
-        
-        // This basically runs:
-        //
-        // SELECT r_name, r_address, "I love comments! " + r_comment
-        // FROM supplierRight
-        // WHERE r_address > "aa" AND r_address < "ab" AND r_name > "Supplier#000009000"
-        
-        vector <string> projections;
-        projections.push_back ("[r_name]");
-        projections.push_back ("[r_address]");
-        projections.push_back ("+ (string[I love comments! ], [r_comment])");
-        
-        MyDB_StringAttValPtr low = make_shared <MyDB_StringAttVal> ();
-        MyDB_StringAttValPtr high = make_shared <MyDB_StringAttVal> ();
-        low->set ("aa");
-        high->set ("ab");
-        BPlusSelection myOp (supplierTableR, supplierTableOut, low, high,
-                             "&& (&& ( > ([r_address], string[aa]), < ([r_address], string[ab])), > ([r_name], string[Supplier#000009000]))", projections);
-        
-        cout << "running selection\n";
-        myOp.run ();
-        
-        MyDB_RecordPtr temp = supplierTableOut->getEmptyRecord ();
-        MyDB_RecordIteratorAltPtr myIter = supplierTableOut->getIteratorAlt ();
-        
-        cout << "This should return 32 copies of 'Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular...'" << "\n";
-        while (myIter->advance ()) {
-            myIter->getCurrent (temp);
-            cout << temp << "\n";
-        }
-        
-    }
+//    MyDB_TablePtr myTableRightNoBPlus = make_shared <MyDB_Table> ("supplierRightNoBPlus", "supplierRightNoBPlus.bin", mySchemaR);
+//    
+//    cout << "loading right into B+-Tree indexed on r_address.\n";
+//    supplierTableR->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A6_2/Build/supplierBig.tbl");
+//    
+//    {
+//        
+//        // get the output schema and table
+//        MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
+//        mySchemaOut->appendAtt (make_pair ("r_name", make_shared <MyDB_StringAttType> ()));
+//        mySchemaOut->appendAtt (make_pair ("r_address", make_shared <MyDB_StringAttType> ()));
+//        mySchemaOut->appendAtt (make_pair ("comment", make_shared <MyDB_StringAttType> ()));
+//        
+//        MyDB_TablePtr myTableOut = make_shared <MyDB_Table> ("supplierOut", "supplierOut.bin", mySchemaOut);
+//        MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
+//        
+//        // This basically runs:
+//        //
+//        // SELECT r_name, r_address, "I love comments! " + r_comment
+//        // FROM supplierRight
+//        // WHERE r_address > "aa" AND r_address < "ab" AND r_name > "Supplier#000009000"
+//        
+//        vector <string> projections;
+//        projections.push_back ("[r_name]");
+//        projections.push_back ("[r_address]");
+//        projections.push_back ("+ (string[I love comments! ], [r_comment])");
+//        
+//        MyDB_StringAttValPtr low = make_shared <MyDB_StringAttVal> ();
+//        MyDB_StringAttValPtr high = make_shared <MyDB_StringAttVal> ();
+//        low->set ("aa");
+//        high->set ("ab");
+//        BPlusSelection myOp (supplierTableR, supplierTableOut, low, high,
+//                             "&& (&& ( > ([r_address], string[aa]), < ([r_address], string[ab])), > ([r_name], string[Supplier#000009000]))", projections);
+//        
+//        cout << "running selection\n";
+//        myOp.run ();
+//        
+//        MyDB_RecordPtr temp = supplierTableOut->getEmptyRecord ();
+//        MyDB_RecordIteratorAltPtr myIter = supplierTableOut->getIteratorAlt ();
+//        
+//        cout << "This should return 32 copies of 'Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular...'" << "\n";
+//        while (myIter->advance ()) {
+//            myIter->getCurrent (temp);
+//            cout << temp << "\n";
+//        }
+//        
+//    }
 //
 //    {
 //        vector <pair <MyDB_AggType, string>> aggsToCompute;
@@ -363,7 +363,7 @@ int main () {
 //            cout << temp << "\n";
 //        }
 //    }
-//    
+//
 //    {
 //        vector <pair <MyDB_AggType, string>> aggsToCompute;
 //        aggsToCompute.push_back (make_pair (MyDB_AggType :: avg, "* ([r_suppkey], double[1.0])"));
