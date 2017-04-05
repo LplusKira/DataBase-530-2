@@ -40,10 +40,10 @@ void SortMergeJoin:: run (){
     for (auto p : rightInput->getTable ()->getSchema ()->getAtts ())
         mySchemaOut->appendAtt (p);
     // get the combined record
-    MyDB_RecordPtr combinedRec = make_shared <MyDB_Record> (mySchemaOut);
+//    MyDB_RecordPtr combinedRec = make_shared <MyDB_Record> (mySchemaOut);
     
     // and make it a composite of the two input records
-    combinedRec->buildFrom (leftInputRec, rightInputRec);
+//    combinedRec->buildFrom (leftInputRec, rightInputRec);
     
     MyDB_RecordPtr leftInputRec2 = leftInput->getEmptyRecord ();
     MyDB_RecordPtr rightInputRec2 = rightInput->getEmptyRecord ();
@@ -160,4 +160,31 @@ void SortMergeJoin:: run (){
         }
     }
    
+}
+
+void SortMergeJoin:: mergeRecs (vector<MyDB_RecordPtr> left, vector<MyDB_RecordPtr> right, MyDB_TableReaderWriterPtr output, MyDB_SchemaPtr mySchemaOut){
+    for(MyDB_RecordPtr leftRec:left){
+        for(MyDB_RecordPtr rightRec:right){
+            MyDB_RecordPtr combinedRec = make_shared <MyDB_Record> (mySchemaOut);
+            combinedRec->buildFrom (leftRec, rightRec);
+//            func finalPredicate = combinedRec->compileComputation (this->finalSelectionPredicate);
+//            vector <func> finalComputations;
+//            for (string s : projections) {
+//                finalComputations.push_back (combinedRec->compileComputation (s));
+//            }
+            if (finalPredicate ()->toBool ()) {
+                
+                // run all of the computations
+                int i = 0;
+                for (auto f : finalComputations) {
+                    outputRec->getAtt (i++)->set (f());
+                }
+                outputRec->recordContentHasChanged ();
+                output->append (outputRec);	
+            }
+
+            output->append (combinedRec);
+            
+        }
+    }
 }
