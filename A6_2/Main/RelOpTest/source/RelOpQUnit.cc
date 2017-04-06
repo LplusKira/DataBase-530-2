@@ -68,7 +68,11 @@ int main () {
    	supplierTableL->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A6_2/Build/supplier.tbl");
     
     cout << "loading right table.\n";
+<<<<<<< HEAD
     supplierTableRNoBPlus->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A6_2/Build/supplierBig.tbl");
+=======
+    supplierTableRNoBPlus->loadFromTextFile ("/Users/xiajunru/Code/DataBase-530-2/A6_2/Build/supplierBig.tbl");
+>>>>>>> origin/master
    	// supplierTableRNoBPlus->loadFromTextFile ("supplierBig.tbl");
 
 //    {
@@ -227,13 +231,13 @@ int main () {
             cout << "running join\n";
             myOp.run ();
         } else if (res == 1) {
-//            SortMergeJoin myOp (supplierTableL, supplierTableRNoBPlus, supplierTableOut,
-//                                "&& ( == ([l_suppkey], [r_suppkey]), == ([l_name], [r_name]))", projections,
-//                                make_pair (string ("[l_suppkey]"), string ("[r_suppkey]")),
-//                                "|| ( == ([l_nationkey], int[3]), == ([l_nationkey], int[4]))",
-//                                "== ([r_nationkey], int[3])");
-//            cout << "running join\n";
-//            myOp.run ();
+            SortMergeJoin myOp (supplierTableL, supplierTableRNoBPlus, supplierTableOut,
+                                "&& ( == ([l_suppkey], [r_suppkey]), == ([l_name], [r_name]))", projections,
+                                make_pair (string ("[l_suppkey]"), string ("[r_suppkey]")),
+                                "|| ( == ([l_nationkey], int[3]), == ([l_nationkey], int[4]))",
+                                "== ([r_nationkey], int[3])");
+            cout << "running join\n";
+            myOp.run ();
         } else {
             cout << "I said 1 or 2!!!\n";
             return 3;
