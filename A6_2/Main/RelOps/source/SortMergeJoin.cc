@@ -6,6 +6,13 @@
 #include "MyDB_TableReaderWriter.h"
 #include "SortMergeJoin.h"
 #include <unordered_map>
+#include "Sorting.h"
+#include "MyDB_AttType.h"
+#include "MyDB_BufferManager.h"
+#include "MyDB_Catalog.h"
+#include "MyDB_Page.h"
+#include "MyDB_Record.h"
+#include "MyDB_Table.h"
 
 #include "MyDB_Schema.h"
 #include <iostream>
@@ -71,24 +78,31 @@ void SortMergeJoin:: run (){
     //func biggerR = combinedRecR->compileComputation (" > (" + equalityCheck.second + ", " + equalityCheck.second + ")");
     
     // left: get the various functions whose output we'll hash
-    func leftEqualities = leftInputRec->compileComputation (equalityCheck.first);
+
+    func leftEqualities;
+    leftEqualities = leftInputRec->compileComputation (equalityCheck.first);
     
     // right: get the various functions whose output we'll hash
-    func rightEqualities = rightInputRec->compileComputation (equalityCheck.second);
+    func rightEqualities;
+    rightEqualities = rightInputRec->compileComputation (equalityCheck.second);
     
     //-----------Sort phase--------
-    
-    MyDB_TableReaderWriterPtr leftSorted = make_shared<MyDB_TableReaderWriter>();
+    MyDB_TablePtr leftTable = make_shared <MyDB_Table> ("leftSorted", "leftSorted.bin", leftInput->getTable ()->getSchema ());
+    MyDB_BufferManagerPtr leftMgr = leftInput->getBufferMgr();
+    MyDB_TableReaderWriter leftSorted (leftTable, leftMgr);
+
     MyDB_RecordPtr lhsL = leftInput->getEmptyRecord();
     MyDB_RecordPtr rhsL = leftInput->getEmptyRecord();
     function <bool ()> f1 = buildRecordComparator(lhsL, rhsL, " < (" + equalityCheck.first + ", " + equalityCheck.first + ")");
-    sort (64, leftInput, leftSorted, f1, lhsL, rhsL);
+    sort (64, *leftInput, leftSorted, f1, lhsL, rhsL);
     
-    MyDB_TableReaderWriterPtr rightSorted = make_shared<MyDB_TableReaderWriter>();
+    MyDB_TablePtr rightTable = make_shared <MyDB_Table> ("rightSorted", "rightSorted.bin", rightInput->getTable ()->getSchema ());
+    MyDB_BufferManagerPtr rightMgr = rightInput->getBufferMgr();
+    MyDB_TableReaderWriter rightSorted (rightTable, rightMgr);
     MyDB_RecordPtr lhsR = leftInput->getEmptyRecord();
     MyDB_RecordPtr rhsR = leftInput->getEmptyRecord();
     function <bool ()> f2 = buildRecordComparator(lhsR, rhsR, " < (" + equalityCheck.second + ", " + equalityCheck.second + ")");
-    sort (64, rightInput, rightSorted, f2, lhsR, rhsR);
+    sort (64, *rightInput, rightSorted, f2, lhsR, rhsR);
     
     //---------Merge phase---------
     // now get the predicate
@@ -96,10 +110,10 @@ void SortMergeJoin:: run (){
     // now get the predicate
     func rightPred = rightInputRec->compileComputation (rightSelectionPredicate);
     
-    MyDB_RecordIteratorAltPtr iterL = leftSorted->getIteratorAlt ();
-    MyDB_RecordPtr recL = leftSorted->getEmptyRecord ();
-    MyDB_RecordIteratorAltPtr iterR = rightSorted->getIteratorAlt ();
-    MyDB_RecordPtr recR = rightSorted->getEmptyRecord ();
+    MyDB_RecordIteratorAltPtr iterL = leftSorted.getIteratorAlt ();
+    MyDB_RecordPtr recL = leftSorted.getEmptyRecord ();
+    MyDB_RecordIteratorAltPtr iterR = rightSorted.getIteratorAlt ();
+    MyDB_RecordPtr recR = rightSorted.getEmptyRecord ();
     iterL->advance();
     iterR->advance();
     while (true) {
@@ -107,21 +121,34 @@ void SortMergeJoin:: run (){
         iterR->getCurrent(recR);
         // see if it is accepted by the preicate
         if (!leftPred ()->toBool ()) {
-            continue;
+            if (!iterL->advance()) {
+                break;
+            }
         }
         // see if it is accepted by the preicate
         if (!rightPred ()->toBool ()) {
-            continue;
+            if (iterR->advance()) {
+                break;
+            }
         }
-        if (finalPredicate ()->toBool ()) {
-            
+        if (!finalPredicate ()->toBool ()) {
+            if (!iterL->advance()) {
+                break;
+            }
+            if (iterR->advance()) {
+                break;
+            }
         } else {
             if (leftSmaller ()->toBool ()) {
                 // left small
-                iterL->advance();
+                if (!iterL->advance()) {
+                    break;
+                }
             } else if (rightSmaller ()->toBool()){
                 // right small
-                iterR->advance();
+                if (iterR->advance()) {
+                    break;
+                }
             } else if (areEqual()->toBool()) {
                 // equal
                 // push all equal left to vector
@@ -161,7 +188,17 @@ void SortMergeJoin:: run (){
                     }
                     
                 }
+<<<<<<< HEAD
                 mergeRecs(leftBox, rightBox, output, mySchemaOut,finalComputations, finalPredicate);
+=======
+                mergRecs(leftBox, rightBox, output, mySchemaOut);
+                if (!iterL->advance()) {
+                    break;
+                }
+                if (iterR->advance()) {
+                    break;
+                }
+>>>>>>> origin/master
             }
         }
     }
