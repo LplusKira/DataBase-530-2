@@ -68,11 +68,7 @@ int main () {
    	supplierTableL->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A6_2/Build/supplier.tbl");
     
     cout << "loading right table.\n";
-<<<<<<< HEAD
     supplierTableRNoBPlus->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A6_2/Build/supplierBig.tbl");
-=======
-    supplierTableRNoBPlus->loadFromTextFile ("/Users/xiajunru/Code/DataBase-530-2/A6_2/Build/supplierBig.tbl");
->>>>>>> origin/master
    	// supplierTableRNoBPlus->loadFromTextFile ("supplierBig.tbl");
 
 //    {
