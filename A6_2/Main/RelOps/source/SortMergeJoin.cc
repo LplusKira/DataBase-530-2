@@ -155,7 +155,7 @@ void SortMergeJoin:: run (){
                     }
                     
                 }
-                
+                mergRecs(leftBox, rightBox, output, myschemaOut);
             }
         }
     }
