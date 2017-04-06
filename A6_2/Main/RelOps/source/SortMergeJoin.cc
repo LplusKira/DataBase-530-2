@@ -285,8 +285,8 @@ void SortMergeJoin:: run (){
     }
    
 }
+
 int checkSingleAcceptance(func pred, MyDB_RecordIteratorAltPtr iter, MyDB_RecordPtr rec) {
-   
         iter->getCurrent(rec);
         cout << "record: " << rec << "\n";
         
@@ -296,6 +296,7 @@ int checkSingleAcceptance(func pred, MyDB_RecordIteratorAltPtr iter, MyDB_Record
             if (!iterL->advance()) {
                 return 1;//end of the join
             } else {
+                iter->getCurrent(rec);
                 return 2;// continue
             }
             
@@ -314,6 +315,8 @@ int checkBothAcceptance(MyDB_RecordIteratorAltPtr iterL, MyDB_RecordPtr recL, My
         if (iterR->advance()) {
             return 1; //end of join
         }
+        iterL->getCurrent(recL);
+        iterR->getCurrent(recR);
         return 2; //continue
     } else {
         return 3;//keep on
