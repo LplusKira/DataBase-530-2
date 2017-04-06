@@ -114,15 +114,16 @@ void SortMergeJoin:: run (){
 //        cout << rec1 << "\n";
 //    }
     //---------Merge phase---------
-    // now get the predicate
-    func leftPred = leftInputRec->compileComputation (leftSelectionPredicate);
-    // now get the predicate
-    func rightPred = rightInputRec->compileComputation (rightSelectionPredicate);
+    
     
     MyDB_RecordIteratorAltPtr iterL = leftSorted.getIteratorAlt ();
     MyDB_RecordPtr recL = leftSorted.getEmptyRecord ();
     MyDB_RecordIteratorAltPtr iterR = rightSorted.getIteratorAlt ();
     MyDB_RecordPtr recR = rightSorted.getEmptyRecord ();
+    // now get the predicate
+    func leftPred = recL->compileComputation (leftSelectionPredicate);
+    // now get the predicate
+    func rightPred = recR->compileComputation (rightSelectionPredicate);
     iterL->advance();
     iterR->advance();
 //    bool ifcont = true;
@@ -285,49 +286,82 @@ void SortMergeJoin:: run (){
 //    }
     vector<MyDB_RecordPtr> leftBox;
     vector<MyDB_RecordPtr> rightBox;
+    bool leftMove = true;
+    bool rightMove = true;
     while (true){
+        cout << "\n\n\n";
         iterL->getCurrent(recL);
         iterR->getCurrent(recR);
         cout << "left rec" << recL << "\n";
         cout << "right rec" << recR << "\n";
         if(leftBox.size()==0||rightBox.size()==0){
-            int checkLeft=checkSingleAcceptance(leftPred,iterL,recL);
-            if(checkLeft==1){
-                // no more records
-                break;
-            }else if(checkLeft==2){
-                // not accepted
-                continue;
+            if (leftMove) {
+                int checkLeft=checkSingleAcceptance(leftPred,iterL,recL);
+                cout << "###############\n";
+                if(checkLeft==1){
+                    // no more records
+                    cout << "left no more records\n";
+                    break;
+                }else if(checkLeft==2){
+                    cout << "left not accepcted\n";
+                    leftMove = true;
+                    // not accepted
+                    continue;
+                }else {
+                    leftMove = false;
+                }
             }
-            int checkRight=checkSingleAcceptance(rightPred,iterR,recR);
-            if(checkRight==1){
-                // no more records
-                break;
-            }else if(checkRight==2){
-                // not accepted
-                continue;
+            if (rightMove) {
+                int checkRight=checkSingleAcceptance(rightPred,iterR,recR);
+                if(checkRight==1){
+                    // no more records
+                    cout << "right no more records\n";
+                    break;
+                }else if(checkRight==2){
+                    // not accepted
+                    cout << "right not accepcted\n";
+                    rightMove = true;
+                    continue;
+                } else {
+                    rightMove = false;
+                }
             }
+            
             if(leftSmaller ()->toBool ()){
                 if(!iterL->advance()){
+                    cout << "left no more records\n";
                     break;
                 }else{
+                    cout << "left smaller, jump to next record\n";
+                    leftMove = true;
+                    rightMove = false;
                     continue;
                 }
             }else if(rightSmaller ()->toBool ()){
                 if(!iterL->advance()){
+                    cout << "right no more records\n";
                     break;
                 }else{
+                    cout << "right smaller, jump to next record\n";
+                    leftMove = false;
+                    rightMove = true;
                     continue;
                 }
             }else{
+                cout << "equal ones, push to vec\n";
                 rightBox.push_back(recR);
                 leftBox.push_back(recL);
                 if(!iterL->advance()){
+                    cout << "left no more records\n";
                     break;
                 }
                 if(!iterR->advance()){
+                    cout << "right no more records\n";
                     break;
                 }
+                cout << "both jump to next\n";
+                leftMove = false;
+                rightMove = true;
             }
             
         }else{
@@ -390,24 +424,28 @@ int SortMergeJoin ::nextState(vector<MyDB_RecordPtr> vec, MyDB_RecordIteratorAlt
     
     
 int SortMergeJoin ::checkSingleAcceptance(func pred, MyDB_RecordIteratorAltPtr iter, MyDB_RecordPtr rec) {
+    cout << "######checkSingleAcceptance:\n";
         iter->getCurrent(rec);
         cout << "record: " << rec << "\n";
         
         // see if it is accepted by the preicate
         if (!pred ()->toBool ()) {
-            cout << "not qualified\n";
+            cout << "not qualified, move to next\n";
             if (!iter->advance()) {
                 return 1;//end of the join
             } else {
                 iter->getCurrent(rec);
+                cout << "now rec: " << rec << "\n";
                 return 2;// continue
             }
             
         } else {
+            cout << "pass!! stay still\n";
             return 3;//keep on
         }
 }
 int SortMergeJoin ::checkBothAcceptance(MyDB_RecordIteratorAltPtr iterL, MyDB_RecordPtr recL, MyDB_RecordIteratorAltPtr iterR, MyDB_RecordPtr recR, func pred) {
+    cout << "######checkBothAcceptance:\n";
     iterL->getCurrent(recL);
     iterR->getCurrent(recR);
     if (!pred ()->toBool ()) {
