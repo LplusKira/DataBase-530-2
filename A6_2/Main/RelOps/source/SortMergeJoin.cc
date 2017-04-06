@@ -9,6 +9,7 @@
 
 #include "MyDB_Schema.h"
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -70,14 +71,13 @@ void SortMergeJoin:: run (){
     //func biggerR = combinedRecR->compileComputation (" > (" + equalityCheck.second + ", " + equalityCheck.second + ")");
     
     // left: get the various functions whose output we'll hash
-    func leftEqualities;
-    leftEqualities.push_back (leftInputRec->compileComputation (p.first));
+    func leftEqualities = leftInputRec->compileComputation (equalityCheck.first);
     
     // right: get the various functions whose output we'll hash
-    func rightEqualities;
-    rightEqualities.push_back (rightInputRec->compileComputation (p.second));
+    func rightEqualities = rightInputRec->compileComputation (equalityCheck.second);
     
     //-----------Sort phase--------
+    
     MyDB_TableReaderWriterPtr leftSorted = make_shared<MyDB_TableReaderWriter>();
     MyDB_RecordPtr lhsL = leftInput->getEmptyRecord();
     MyDB_RecordPtr rhsL = leftInput->getEmptyRecord();
@@ -161,18 +161,18 @@ void SortMergeJoin:: run (){
                     }
                     
                 }
-                mergRecs(leftBox, rightBox, output, myschemaOut);
+                mergeRecs(leftBox, rightBox, output, mySchemaOut,finalComputations, finalPredicate);
             }
         }
     }
    
 }
 
-void SortMergeJoin:: mergeRecs (vector<MyDB_RecordPtr> left, vector<MyDB_RecordPtr> right, MyDB_TableReaderWriterPtr output, MyDB_SchemaPtr mySchemaOut, vector <func> finalComputations){
+void SortMergeJoin:: mergeRecs (vector<MyDB_RecordPtr> left, vector<MyDB_RecordPtr> right, MyDB_TableReaderWriterPtr output, MyDB_SchemaPtr mySchemaOut, vector <func> finalComputations, func finalPredicate){
     for(MyDB_RecordPtr leftRec:left){
         for(MyDB_RecordPtr rightRec:right){
             MyDB_RecordPtr outputRec = output->getEmptyRecord ();
-            if (finalSelectionPredicate ()->toBool ()) {
+            if (finalPredicate ()->toBool ()) {
                 
                 // run all of the computations
                 int i = 0;
@@ -182,8 +182,6 @@ void SortMergeJoin:: mergeRecs (vector<MyDB_RecordPtr> left, vector<MyDB_RecordP
                 outputRec->recordContentHasChanged ();
                 output->append (outputRec);	
             }
-
-            output->append (combinedRec);
             
         }
     }
