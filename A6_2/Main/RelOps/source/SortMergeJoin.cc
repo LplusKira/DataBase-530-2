@@ -40,15 +40,15 @@ void SortMergeJoin:: run (){
     for (auto p : rightInput->getTable ()->getSchema ()->getAtts ())
         mySchemaOut->appendAtt (p);
     // get the combined record
-//    MyDB_RecordPtr combinedRec = make_shared <MyDB_Record> (mySchemaOut);
+    MyDB_RecordPtr combinedRec = make_shared <MyDB_Record> (mySchemaOut);
     
     // and make it a composite of the two input records
-//    combinedRec->buildFrom (leftInputRec, rightInputRec);
+    combinedRec->buildFrom (leftInputRec, rightInputRec);
     
-    MyDB_RecordPtr leftInputRec2 = leftInput->getEmptyRecord ();
-    MyDB_RecordPtr rightInputRec2 = rightInput->getEmptyRecord ();
-    combinedRecL->buildFrom (leftInputRec, leftInputRec2);
-    combinedRecR->buildFrom (rightInputRec, rightInputRec2);
+//    MyDB_RecordPtr leftInputRec2 = leftInput->getEmptyRecord ();
+//    MyDB_RecordPtr rightInputRec2 = rightInput->getEmptyRecord ();
+//    combinedRecL->buildFrom (leftInputRec, leftInputRec2);
+//    combinedRecR->buildFrom (rightInputRec, rightInputRec2);
     
     // now, get the final predicate over it
     func finalPredicate = combinedRec->compileComputation (finalSelectionPredicate);
@@ -57,13 +57,13 @@ void SortMergeJoin:: run (){
     func rightSmaller = combinedRec->compileComputation (" > (" + equalityCheck.first + ", " + equalityCheck.second + ")");
     func areEqual = combinedRec->compileComputation (" == (" + equalityCheck.first + ", " + equalityCheck.second + ")");
     
-    func smallerL = combinedRec->compileComputation (" < (" + equalityCheck.first + ", " + equalityCheck.first + ")");
-    func equalL = combinedRec->compileComputation (" == (" + equalityCheck.first + ", " + equalityCheck.first + ")");
-    func biggerL = combinedRec->compileComputation (" > (" + equalityCheck.first + ", " + equalityCheck.first + ")");
+    //func smallerL = combinedRecL->compileComputation (" < (" + equalityCheck.first + ", " + equalityCheck.first + ")");
+    //func equalL = combinedRecL->compileComputation (" == (" + equalityCheck.first + ", " + equalityCheck.first + ")");
+    //func biggerL = combinedRecL->compileComputation (" > (" + equalityCheck.first + ", " + equalityCheck.first + ")");
     
-    func smallerR = combinedRec->compileComputation (" < (" + equalityCheck.second + ", " + equalityCheck.second + ")");
-    func equalR = combinedRec->compileComputation (" == (" + equalityCheck.second + ", " + equalityCheck.second + ")");
-    func biggerR = combinedRec->compileComputation (" > (" + equalityCheck.second + ", " + equalityCheck.second + ")");
+    //func smallerR = combinedRecR->compileComputation (" < (" + equalityCheck.second + ", " + equalityCheck.second + ")");
+    //func equalR = combinedRecR->compileComputation (" == (" + equalityCheck.second + ", " + equalityCheck.second + ")");
+    //func biggerR = combinedRecR->compileComputation (" > (" + equalityCheck.second + ", " + equalityCheck.second + ")");
     
     // left: get the various functions whose output we'll hash
     func leftEqualities;
@@ -77,12 +77,14 @@ void SortMergeJoin:: run (){
     MyDB_TableReaderWriterPtr leftSorted = make_shared<MyDB_TableReaderWriter>();
     MyDB_RecordPtr lhsL = leftInput->getEmptyRecord();
     MyDB_RecordPtr rhsL = leftInput->getEmptyRecord();
-    sort (64, leftInput, leftSorted, smallerL, lhsL, rhsL);
+    function <bool ()> f1 = buildRecordComparator(lhsL, rhsL, " < (" + equalityCheck.first + ", " + equalityCheck.first + ")");
+    sort (64, leftInput, leftSorted, f1, lhsL, rhsL);
     
     MyDB_TableReaderWriterPtr rightSorted = make_shared<MyDB_TableReaderWriter>();
     MyDB_RecordPtr lhsR = leftInput->getEmptyRecord();
     MyDB_RecordPtr rhsR = leftInput->getEmptyRecord();
-    sort (64, rightInput, rightSorted, smallerR, lhsR, rhsR);
+    function <bool ()> f2 = buildRecordComparator(lhsR, rhsR, " < (" + equalityCheck.second + ", " + equalityCheck.second + ")");
+    sort (64, rightInput, rightSorted, f2, lhsR, rhsR);
     
     //---------Merge phase---------
     // now get the predicate
