@@ -41,7 +41,11 @@ void SortMergeJoin:: run (){
         mySchemaOut->appendAtt (p);
     // get the combined record
     MyDB_RecordPtr combinedRec = make_shared <MyDB_Record> (mySchemaOut);
-    
+
+    vector <func> finalComputations;
+    for (string s : projections) {
+        finalComputations.push_back (combinedRec->compileComputation (s));
+    }
     // and make it a composite of the two input records
     combinedRec->buildFrom (leftInputRec, rightInputRec);
     
@@ -164,11 +168,11 @@ void SortMergeJoin:: run (){
    
 }
 
-void SortMergeJoin:: mergeRecs (vector<MyDB_RecordPtr> left, vector<MyDB_RecordPtr> right, MyDB_TableReaderWriterPtr output, MyDB_SchemaPtr mySchemaOut){
+void SortMergeJoin:: mergeRecs (vector<MyDB_RecordPtr> left, vector<MyDB_RecordPtr> right, MyDB_TableReaderWriterPtr output, MyDB_SchemaPtr mySchemaOut, vector <func> finalComputations){
     for(MyDB_RecordPtr leftRec:left){
         for(MyDB_RecordPtr rightRec:right){
             MyDB_RecordPtr outputRec = output->getEmptyRecord ();
-            if (finalPredicate ()->toBool ()) {
+            if (finalSelectionPredicate ()->toBool ()) {
                 
                 // run all of the computations
                 int i = 0;
