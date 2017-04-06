@@ -188,17 +188,15 @@ void SortMergeJoin:: run (){
                     }
                     
                 }
-<<<<<<< HEAD
+
                 mergeRecs(leftBox, rightBox, output, mySchemaOut,finalComputations, finalPredicate);
-=======
-                mergRecs(leftBox, rightBox, output, mySchemaOut);
+
                 if (!iterL->advance()) {
                     break;
                 }
                 if (iterR->advance()) {
                     break;
                 }
->>>>>>> origin/master
             }
         }
     }
