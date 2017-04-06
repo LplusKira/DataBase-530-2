@@ -165,13 +165,7 @@ void SortMergeJoin:: run (){
 void SortMergeJoin:: mergeRecs (vector<MyDB_RecordPtr> left, vector<MyDB_RecordPtr> right, MyDB_TableReaderWriterPtr output, MyDB_SchemaPtr mySchemaOut){
     for(MyDB_RecordPtr leftRec:left){
         for(MyDB_RecordPtr rightRec:right){
-            MyDB_RecordPtr combinedRec = make_shared <MyDB_Record> (mySchemaOut);
-            combinedRec->buildFrom (leftRec, rightRec);
-//            func finalPredicate = combinedRec->compileComputation (this->finalSelectionPredicate);
-//            vector <func> finalComputations;
-//            for (string s : projections) {
-//                finalComputations.push_back (combinedRec->compileComputation (s));
-//            }
+            MyDB_RecordPtr outputRec = output->getEmptyRecord ();
             if (finalPredicate ()->toBool ()) {
                 
                 // run all of the computations
