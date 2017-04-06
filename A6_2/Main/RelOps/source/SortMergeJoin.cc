@@ -107,21 +107,34 @@ void SortMergeJoin:: run (){
         iterR->getCurrent(recR);
         // see if it is accepted by the preicate
         if (!leftPred ()->toBool ()) {
-            continue;
+            if (!iterL->advance()) {
+                break;
+            }
         }
         // see if it is accepted by the preicate
         if (!rightPred ()->toBool ()) {
-            continue;
+            if (iterR->advance()) {
+                break;
+            }
         }
-        if (finalPredicate ()->toBool ()) {
-            
+        if (!finalPredicate ()->toBool ()) {
+            if (!iterL->advance()) {
+                break;
+            }
+            if (iterR->advance()) {
+                break;
+            }
         } else {
             if (leftSmaller ()->toBool ()) {
                 // left small
-                iterL->advance();
+                if (!iterL->advance()) {
+                    break;
+                }
             } else if (rightSmaller ()->toBool()){
                 // right small
-                iterR->advance();
+                if (iterR->advance()) {
+                    break;
+                }
             } else if (areEqual()->toBool()) {
                 // equal
                 // push all equal left to vector
@@ -162,6 +175,12 @@ void SortMergeJoin:: run (){
                     
                 }
                 mergRecs(leftBox, rightBox, output, myschemaOut);
+                if (!iterL->advance()) {
+                    break;
+                }
+                if (iterR->advance()) {
+                    break;
+                }
             }
         }
     }
