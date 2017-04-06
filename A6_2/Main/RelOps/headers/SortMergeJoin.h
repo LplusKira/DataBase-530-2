@@ -6,6 +6,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include "Sorting.h"
 
 // This class encapulates a sort merge join.  This is to be used in the case that the
 // two input tables are too large to be stored in RAM.
