@@ -585,9 +585,9 @@ int SortMergeJoin ::checkBothAcceptance(MyDB_RecordIteratorAltPtr iterL, MyDB_Re
         return 3;//keep on
     }
 }
-void SortMergeJoin:: mergeRecs (vector<MyDB_RecordPtr> left, vector<MyDB_RecordPtr> right, MyDB_TableReaderWriterPtr output, MyDB_SchemaPtr mySchemaOut, vector <func> finalComputations, func finalPredicate){
-    for(MyDB_RecordPtr leftRec:left){
-        for(MyDB_RecordPtr rightRec:right){
+void SortMergeJoin:: mergeRecs (vector<MyDB_PageReaderWriterPtr> left, vector<MyDB_PageReaderWriterPtr> right, MyDB_TableReaderWriterPtr output, MyDB_SchemaPtr mySchemaOut, vector <func> finalComputations, func finalPredicate){
+    for(MyDB_PageReaderWriterPtr leftRec:left){
+        for(MyDB_PageReaderWriterPtr rightRec:right){
             MyDB_RecordPtr outputRec = output->getEmptyRecord ();
             if (finalPredicate ()->toBool ()) {
                 
