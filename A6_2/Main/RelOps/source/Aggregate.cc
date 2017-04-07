@@ -178,7 +178,7 @@ void Aggregate::run () {
 //                    sum += groupedRec->getAtt(i)->toDouble();
                     sumMap[hashVal] += groupedRec->getAtt(i)->toDouble();
                     //groupedRec->getSchema()->getAtts.at(i).second->promotableToInt()
-                    if (groupedRec->getSchema()->getAtts().at(i).second->promotableToInt()) {
+                    if (groupedbRec->getSchema()->getAtts().at(i).second->promotableToInt()) {
                         cout << "int\n";
                         MyDB_IntAttValPtr att = make_shared<MyDB_IntAttVal>();
                         att->set((int)sum);
