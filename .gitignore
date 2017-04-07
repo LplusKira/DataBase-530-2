@@ -8,3 +8,15 @@ A6_1/A6_1.xcodeproj/project.xcworkspace/xcuserdata/kejunliu.xcuserdatad/UserInte
 A6_2/Build/.sconsign.dblite
 
 A6_2/Main/RelOps/source/SortMergeJoin.o
+
+A6_2/Build/bin/supplierRight.bin
+
+*.bin
+
+A6_2/Build/bin/aggOut.bin
+
+A6_2/Build/bin/aggOutOut.bin
+
+A6_2/Build/bin/supplierOut.bin
+
+A6_2/Build/bin/supplierRight.bin

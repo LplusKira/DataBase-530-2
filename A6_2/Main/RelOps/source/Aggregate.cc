@@ -43,7 +43,6 @@ void Aggregate::run () {
     MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
     for (auto p : output->getTable ()->getSchema ()->getAtts ()) {
         mySchemaOut->appendAtt (p);
-        cout << "append att: " << p << "\n";
     }
     vector <func> groupingFunc;
     for (auto p : groupings) {
@@ -56,46 +55,36 @@ void Aggregate::run () {
     
     vector <pair<MyDB_AggType, func>> aggFunc;
     for (auto p : aggsToCompute) {
-//        if (p.first == MyDB_AggType :: sum || p.first == MyDB_AggType :: avg) {
-//            aggFunc.push_back (inputRec->compileComputation ("+ (" + p.second + ", [MyDB_AggAtt" + to_string (i) + "])"));
         char *str = (char *) p.second.c_str ();
         pair <func, MyDB_AttTypePtr> atts = inputRec->compileHelper(str);
         pair<MyDB_AggType, func> pair = make_pair(p.first, atts.first);
         aggFunc.push_back (pair);
-//        if (p.first == sum) {
-//           mySchemaOut->appendAtt (make_pair("sum", atts.second));
-//           //cout << "att Name: sum, Type: " << atts.second->toString() << "\n";
-//        } else if (p.first == avg) {
-//           mySchemaOut->appendAtt (make_pair("avg", atts.second));
-//            //cout << "att Name: avg, Type: " << atts.second->toString() << "\n";
-//        } else if (p.first == cnt) {
-//            mySchemaOut->appendAtt (make_pair("cnt", atts.second));
-////            cout << "att Name: count, Type: " << atts.second->toString() << "\n";
-//        }
     }
-//    mySchemaOut->appendAtt (make_pair ("[l_name]", make_shared <MyDB_StringAttType> ()));
-//    mySchemaOut->appendAtt (make_pair ("mycnt", make_shared <MyDB_IntAttType> ()));
     // get all data
+    cout << "PAGES NUMBER "<< input->getNumPages() << "\n";
     vector <MyDB_PageReaderWriter> allData;
-    for (int i = 0; i < input->getNumPages (); i++) {
-        MyDB_PageReaderWriter temp = input->getPinned (i);
-        if (temp.getType () == MyDB_PageType :: RegularPage){
-            allData.push_back (input->getPinned (i));
-        }
-    }
+//    for (int i = 0; i < input->getNumPages (); i++) {
+//        MyDB_PageReaderWriter temp = input->getPinned (i);
+//        if (temp.getType () == MyDB_PageType :: RegularPage){
+//            allData.push_back (temp);
+//        }
+//    }
+    cout << "finished all data\n";
     func pred = inputRec->compileComputation (selectionPredicate);
     
     
     MyDB_RecordPtr groupedRec = make_shared <MyDB_Record> (mySchemaOut);
-    MyDB_RecordIteratorAltPtr myIter = getIteratorAlt (allData);
+    MyDB_RecordIteratorAltPtr myIter = input->getIteratorAlt (0,input->getNumPages());
     
     int currPagecount = 0;
     int recNum = 0;
+    cout << "start iter\n";
+
     while (myIter->advance ()) {
         
         // hash the current record
         myIter->getCurrent (inputRec);
-        
+//        cout << "INPUT REC "<< inputRec << "\n";
         recNum++;
         // see if it is accepted by the preicate
         if (!pred ()->toBool ()) {
@@ -119,11 +108,11 @@ void Aggregate::run () {
                 groupedRec->getAtt (i++)->set (f());
             }
             for (auto p : aggFunc) {
-//                sumMap[hashVal] = groupedRec->getAtt(i)->toDouble();
                 if (p.first == cnt) {
                     MyDB_IntAttValPtr att = make_shared<MyDB_IntAttVal>();
                     att->set(countMap[hashVal]);
                     groupedRec->getAtt (i)->set (att);
+                    i++;
                 }
                 if(p.first==sum){
                     groupedRec->getAtt (i)->set (p.second());
@@ -133,16 +122,11 @@ void Aggregate::run () {
                 }
                 if(p.first==avg){
                     groupedRec->getAtt (i)->set (p.second());
-//                    cout << "grouped Rec avg" << groupedRec->getAtt(i)->toDouble ()<< "\n";
-//                    cout << "countMap" << countMap[hashVal] << "\n";
                     sumMap[hashVal]=(groupedRec->getAtt(i)->toDouble())*countMap[hashVal];
-//                    cout << "sumMap" <<sumMap[hashVal] << "\n";
                     i=i+1;
                 }
-                //groupedRec->getAtt (i++)->set (p.second());
                 
             }
-//            cout << "output rec: " << groupedRec << "\n";
             // the record's content has changed because it
             // is now a composite of two records whose content
             // has changed via a read... we have to tell it this,
@@ -181,34 +165,21 @@ void Aggregate::run () {
 //            cout << "agg att starts index " << i << "\n";
             for (auto p : aggFunc) {
                 if (p.first == sum) {
-//                    cout << "SUM\n";
+                    cout << "SUM\n";
                     groupedRec->getAtt(i)->set(p.second());
-//                    cout << "sum groupedRec" <<groupedRec->getAtt(i)->toDouble();
+                    cout << "sum groupedRec" <<groupedRec->getAtt(i)->toDouble()<<"\n";
 //                    sum += groupedRec->getAtt(i)->toDouble();
                     sumMap[hashVal] += groupedRec->getAtt(i)->toDouble();
-                    //groupedRec->getSchema()->getAtts.at(i).second->promotableToInt()
-                    if (groupedRec->getSchema()->getAtts().at(i).second->promotableToInt()) {
-//                        cout << "int\n";
-                        MyDB_IntAttValPtr att = make_shared<MyDB_IntAttVal>();
-                        att->set((int)sum);
-                        groupedRec->getAtt (i)->set (att);
+                    cout << "sum hash" <<sumMap[hashVal] <<"\n";
+                    MyDB_IntAttValPtr att = make_shared<MyDB_IntAttVal>();
+                    att->set(sumMap[hashVal]);
+                    //                    cout << "pre the val: " << groupedRec->getAtt(i)->toInt() << "\n";
+                    groupedRec->getAtt (i)->set (att);
                         i++;
-                    } else {
-//                        cout << "double\n";
-                        MyDB_DoubleAttValPtr att = make_shared<MyDB_DoubleAttVal>();
-                        att->set(sum);
-                        groupedRec->getAtt (i)->set (att);
-                        i++;
-                    }
+            
                 } else if (p.first == avg) {
 //                    cout << "AVG\n";
                     groupedRec->getAtt(i)->set(p.second());
-//                    cout << "avg groupedRec"<<groupedRec->getAtt(i)->toDouble() << "\n";
-//                    cout << "avg" << groupedRec << "\n";
-//                    double average = sumMap[hashVal]/countMap[hashVal];
-//                    MyDB_DoubleAttValPtr att = make_shared<MyDB_DoubleAttVal>();
-//                    att->set(average);
-                    //groupedRec->getAtt (i)->set (att);
                     sumMap[hashVal]=(groupedRec->getAtt(i)->toDouble())*countMap[hashVal];
                     i++;
                 } else if (p.first == cnt) {
@@ -230,7 +201,4 @@ void Aggregate::run () {
         
         
     }
-    cout << recNum << "\n";
-    
 }
-
