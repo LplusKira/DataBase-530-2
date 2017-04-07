@@ -441,6 +441,7 @@ int SortMergeJoin ::checkSingleAcceptance(func pred, MyDB_RecordIteratorAltPtr i
             
         } else {
             cout << "pass!! stay still\n";
+
             return 3;//keep on
         }
 }

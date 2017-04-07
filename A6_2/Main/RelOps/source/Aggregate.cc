@@ -112,11 +112,23 @@ void Aggregate::run () {
                 groupedRec->getAtt (i++)->set (f());
             }
             for (auto p : aggFunc) {
-                sumMap[hashVal] = groupedRec->getAtt(i)->toDouble();
+//                sumMap[hashVal] = groupedRec->getAtt(i)->toDouble();
                 if (p.first == cnt) {
                     MyDB_IntAttValPtr att = make_shared<MyDB_IntAttVal>();
                     att->set(countMap[hashVal]);
                     groupedRec->getAtt (i)->set (att);
+                }
+                if(p.first==sum){
+                    groupedRec->getAtt (i++)->set (p.second());
+                    sumMap[hashVal]=groupedRec->getAtt(i)->toDouble();
+                }
+                if(p.first==avg){
+                    groupedRec->getAtt (i)->set (p.second());
+                    cout << "grouped Rec avg" << groupedRec->getAtt(i)->toDouble ()<< "\n";
+                    cout << "countMap" << countMap[hashVal] << "\n";
+                    sumMap[hashVal]=(groupedRec->getAtt(i)->toDouble())*countMap[hashVal];
+                    cout << "sumMap" <<sumMap[hashVal] << "\n";
+                    i=i+1;
                 }
                 //groupedRec->getAtt (i++)->set (p.second());
                 
@@ -159,10 +171,12 @@ void Aggregate::run () {
             int i = groupingFunc.size();
             cout << "agg att starts index " << i << "\n";
             for (auto p : aggFunc) {
-                sumMap[hashVal] += groupedRec->getAtt(i)->toDouble();
                 if (p.first == sum) {
                     cout << "SUM\n";
-                    double sum = sumMap[hashVal];
+                    groupedRec->getAtt(i)->set(p.second());
+                    cout << "sum groupedRec" <<groupedRec->getAtt(i)->toDouble();
+//                    sum += groupedRec->getAtt(i)->toDouble();
+                    sumMap[hashVal] += groupedRec->getAtt(i)->toDouble();
                     //groupedRec->getSchema()->getAtts.at(i).second->promotableToInt()
                     if (groupedRec->getSchema()->getAtts().at(i).second->promotableToInt()) {
                         cout << "int\n";
@@ -179,10 +193,14 @@ void Aggregate::run () {
                     }
                 } else if (p.first == avg) {
                     cout << "AVG\n";
-                    double average = sumMap[hashVal]/countMap[hashVal];
-                    MyDB_DoubleAttValPtr att = make_shared<MyDB_DoubleAttVal>();
-                    att->set(average);
-                    groupedRec->getAtt (i)->set (att);
+                    groupedRec->getAtt(i)->set(p.second());
+                    cout << "avg groupedRec"<<groupedRec->getAtt(i)->toDouble() << "\n";
+                    cout << "avg" << groupedRec << "\n";
+//                    double average = sumMap[hashVal]/countMap[hashVal];
+//                    MyDB_DoubleAttValPtr att = make_shared<MyDB_DoubleAttVal>();
+//                    att->set(average);
+                    //groupedRec->getAtt (i)->set (att);
+                    sumMap[hashVal]=(groupedRec->getAtt(i)->toDouble())*countMap[hashVal];
                     i++;
                 } else if (p.first == cnt) {
                     cout << "COUNT\n";
