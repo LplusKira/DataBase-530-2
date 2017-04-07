@@ -43,10 +43,7 @@ void Aggregate::run () {
     MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
     for (auto p : output->getTable ()->getSchema ()->getAtts ()) {
         mySchemaOut->appendAtt (p);
-<<<<<<< HEAD
-        //cout << "append att: " << p << "\n";
-=======
->>>>>>> origin/master
+
     }
     vector <func> groupingFunc;
     for (auto p : groupings) {
@@ -174,18 +171,13 @@ void Aggregate::run () {
                     cout << "sum groupedRec" <<groupedRec->getAtt(i)->toDouble()<<"\n";
 //                    sum += groupedRec->getAtt(i)->toDouble();
                     sumMap[hashVal] += groupedRec->getAtt(i)->toDouble();
-<<<<<<< HEAD
-                    i++;
-                    
-=======
                     cout << "sum hash" <<sumMap[hashVal] <<"\n";
                     MyDB_IntAttValPtr att = make_shared<MyDB_IntAttVal>();
                     att->set(sumMap[hashVal]);
                     //                    cout << "pre the val: " << groupedRec->getAtt(i)->toInt() << "\n";
                     groupedRec->getAtt (i)->set (att);
                     i++;
-                                
->>>>>>> origin/master
+                  
                 } else if (p.first == avg) {
 //                    cout << "AVG\n";
                     groupedRec->getAtt(i)->set(p.second());

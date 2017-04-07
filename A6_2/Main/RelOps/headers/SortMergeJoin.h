@@ -3,6 +3,8 @@
 #define SORT_JOIN_H
 
 #include "MyDB_TableReaderWriter.h"
+#include "MyDB_PageReaderWriter.h"
+#include "MyDB_BufferManager.h"
 #include <string>
 #include <utility>
 #include <vector>
@@ -42,7 +44,7 @@ public:
 	
 	// execute the join
 	void run ();
-    void mergeRecs (vector<MyDB_RecordPtr> left, vector<MyDB_RecordPtr> right, MyDB_TableReaderWriterPtr output, MyDB_SchemaPtr mySchemaOut, vector <func> finalComputations, func finalPredicate);
+    void mergeRecs (MyDB_RecordPtr leftRec, MyDB_RecordPtr rightRec, vector<MyDB_PageReaderWriter> left, vector<MyDB_PageReaderWriter> right, MyDB_TableReaderWriterPtr output, vector <func> finalComputations, func finalPredicate);
     int checkBothAcceptance(MyDB_RecordIteratorAltPtr iterL, MyDB_RecordPtr recL, MyDB_RecordIteratorAltPtr iterR, MyDB_RecordPtr recR, func pred);
     int checkSingleAcceptance(func pred, MyDB_RecordIteratorAltPtr iter, MyDB_RecordPtr rec) ;
     int nextState(string equality, vector<MyDB_RecordPtr> vec, MyDB_RecordIteratorAltPtr iter, MyDB_RecordPtr rec, func pred);

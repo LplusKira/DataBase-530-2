@@ -284,8 +284,8 @@ void SortMergeJoin:: run (){
 //            }
 //        }
 //    }
-    vector<MyDB_PageReaderWriterPtr> leftBox;
-    vector<MyDB_PageReaderWriterPtr> rightBox;
+    vector<MyDB_PageReaderWriter> leftBox;
+    vector<MyDB_PageReaderWriter> rightBox;
     bool leftMove = true;
     bool rightMove = true;
     while (true){
@@ -354,10 +354,10 @@ void SortMergeJoin:: run (){
                 }
             }else{
                 cout << "equal ones, push to vec\n";
-                MyDB_PageReaderWriterPtr prwL = make_shared<MyDB_PageReaderWriter>(leftInput->getBufferMgr());
-                MyDB_PageReaderWriterPtr prwR = make_shared<MyDB_PageReaderWriter>(rightInput->getBufferMgr());
-                prwL->append(recRTemp);
-                prwR->append(recLTemp);
+                MyDB_PageReaderWriter prwL(*leftInput->getBufferMgr());
+                MyDB_PageReaderWriter prwR (*rightInput->getBufferMgr());
+                prwL.append(recRTemp);
+                prwR.append(recLTemp);
                 rightBox.push_back(prwL);
                 leftBox.push_back(prwR);
                 if(!iterL->advance()){
@@ -379,7 +379,7 @@ void SortMergeJoin:: run (){
             if (leftMove) {
                 //int rightNextState=nextState(equalityCheck.second, rightBox,iterR,recR,rightPred);
                 MyDB_RecordPtr temp = leftSorted.getEmptyRecord ();
-                MyDB_RecordIteratorAltPtr myIter = leftBox.front()->getIteratorAlt ();
+                MyDB_RecordIteratorAltPtr myIter = leftBox.front().getIteratorAlt ();
                 myIter->getCurrent (temp);
                 cout << "vec rec: " << temp << "\n";
                 
@@ -390,21 +390,26 @@ void SortMergeJoin:: run (){
                     int check = checkSingleAcceptance(leftPred,iterL,recL);
                     if(check ==1){
                         if(leftBox.size()!=0&&rightBox.size()!=0){
-                            mergeRecs(leftBox, rightBox, output, mySchemaOut,finalComputations, finalPredicate);
+                            MyDB_RecordPtr recl = leftSorted.getEmptyRecord ();
+                            MyDB_RecordPtr recr = rightSorted.getEmptyRecord ();
+                            mergeRecs(recl, recr, leftBox, rightBox, output, finalComputations, finalPredicate);
                         }
                         break;
                     }else if(check==2){
                         continue;
                     } else {
                         cout << "L: push...\n";
-                        if (!leftBox.back()->append(recL)) {
-                            MyDB_PageReaderWriterPtr newPage = make_shared<MyDB_PageReaderWriter>(leftInput->getBufferMgr());
-                            newPage->append(recL);
+                        if (!leftBox.back().append(recL)) {
+                            MyDB_PageReaderWriter newPage(*leftInput->getBufferMgr());
+                            newPage.append(recL);
                             leftBox.push_back(newPage);
                         }
                         if(!iterL->advance()){
                             if(leftBox.size()!=0&&rightBox.size()!=0){
-                                mergeRecs(leftBox, rightBox, output, mySchemaOut,finalComputations, finalPredicate);
+                                MyDB_RecordPtr recl = leftSorted.getEmptyRecord ();
+                                MyDB_RecordPtr recr = rightSorted.getEmptyRecord ();
+                                mergeRecs(recl, recr, leftBox, rightBox, output, finalComputations, finalPredicate);
+
                             }
                         }
                         
@@ -420,7 +425,7 @@ void SortMergeJoin:: run (){
                 
                 //int rightNextState=nextState(equalityCheck.second, rightBox,iterR,recR,rightPred);
                 MyDB_RecordPtr temp = rightSorted.getEmptyRecord ();
-                MyDB_RecordIteratorAltPtr myIter = rightBox.front()->getIteratorAlt ();
+                MyDB_RecordIteratorAltPtr myIter = rightBox.front().getIteratorAlt ();
                 myIter->getCurrent (temp);
                 cout << "vec rec: " << temp << "\n";
 
@@ -431,21 +436,26 @@ void SortMergeJoin:: run (){
                     int check = checkSingleAcceptance(rightPred,iterR,recR);
                     if(check ==1){
                         if(leftBox.size()!=0&&rightBox.size()!=0){
-                            mergeRecs(leftBox, rightBox, output, mySchemaOut,finalComputations, finalPredicate);
+                            MyDB_RecordPtr recl = leftSorted.getEmptyRecord ();
+                            MyDB_RecordPtr recr = rightSorted.getEmptyRecord ();
+                            mergeRecs(recl, recr, leftBox, rightBox, output, finalComputations, finalPredicate);
                         }
                         break;
                     }else if(check==2){
                         continue;
                     } else {
                         cout << "R: push...\n";
-                        if (!rightBox.back()->append(recR)) {
-                            MyDB_PageReaderWriterPtr newPage = make_shared<MyDB_PageReaderWriter>(rightInput->getBufferMgr());
-                            newPage->append(recR);
+                        if (!rightBox.back().append(recR)) {
+                            MyDB_PageReaderWriter newPage (*rightInput->getBufferMgr());
+                            newPage.append(recR);
                             leftBox.push_back(newPage);
                         }
                         if(!iterR->advance()){
                             if(leftBox.size()!=0&&rightBox.size()!=0){
-                                mergeRecs(leftBox, rightBox, output, mySchemaOut,finalComputations, finalPredicate);
+                                MyDB_RecordPtr recl = leftSorted.getEmptyRecord ();
+                                MyDB_RecordPtr recr = rightSorted.getEmptyRecord ();
+                                mergeRecs(recl, recr, leftBox, rightBox, output, finalComputations, finalPredicate);
+
                             }
                         }
                     }
@@ -459,47 +469,49 @@ void SortMergeJoin:: run (){
             
             cout << "L vec:\n";
             MyDB_RecordPtr temp = leftSorted.getEmptyRecord ();
-            for (MyDB_PageReaderWriterPtr p: leftBox) {
-                MyDB_RecordIteratorAltPtr myIter = p->getIteratorAlt ();
+            for (MyDB_PageReaderWriter p: leftBox) {
+                MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
                 while (myIter->advance ()) {
                     myIter->getCurrent (temp);
                     cout << temp << "\n";
                 }
             }
             cout << "R vec: \n";
-            for (MyDB_PageReaderWriterPtr p: rightBox) {
+            for (MyDB_PageReaderWriter p: rightBox) {
                 MyDB_RecordPtr temp = rightSorted.getEmptyRecord ();
-                for (MyDB_PageReaderWriterPtr p: rightBox) {
-                    MyDB_RecordIteratorAltPtr myIter = p->getIteratorAlt ();
+                
+                    MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
                     while (myIter->advance ()) {
                         myIter->getCurrent (temp);
                         cout << temp << "\n";
                     }
-                }
+                
             }
             
             if(!rightMove && !leftMove){
                 cout << "L vec:\n";
-                MyDB_RecordPtr temp = leftSorted.getEmptyRecord ();
-                for (MyDB_PageReaderWriterPtr p: leftBox) {
-                    MyDB_RecordIteratorAltPtr myIter = p->getIteratorAlt ();
+                
+                for (MyDB_PageReaderWriter p: leftBox) {
+                    MyDB_RecordPtr temp = leftSorted.getEmptyRecord ();
+                    MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
                     while (myIter->advance ()) {
                         myIter->getCurrent (temp);
                         cout << temp << "\n";
                     }
                 }
                 cout << "R vec: \n";
-                for (MyDB_PageReaderWriterPtr p: rightBox) {
+                for (MyDB_PageReaderWriter p: rightBox) {
                     MyDB_RecordPtr temp = rightSorted.getEmptyRecord ();
-                    for (MyDB_PageReaderWriterPtr p: rightBox) {
-                        MyDB_RecordIteratorAltPtr myIter = p->getIteratorAlt ();
+                    MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
                         while (myIter->advance ()) {
                             myIter->getCurrent (temp);
                             cout << temp << "\n";
                         }
-                    }
+                    
                 }
-                mergeRecs(leftBox, rightBox, output, mySchemaOut,finalComputations, finalPredicate);
+                MyDB_RecordPtr recl = leftSorted.getEmptyRecord ();
+                MyDB_RecordPtr recr = rightSorted.getEmptyRecord ();
+                mergeRecs(recl, recr, leftBox, rightBox, output, finalComputations, finalPredicate);
                 leftBox.clear();
                 rightBox.clear();
                 leftMove = true;
@@ -585,9 +597,14 @@ int SortMergeJoin ::checkBothAcceptance(MyDB_RecordIteratorAltPtr iterL, MyDB_Re
         return 3;//keep on
     }
 }
-void SortMergeJoin:: mergeRecs (vector<MyDB_PageReaderWriterPtr> left, vector<MyDB_PageReaderWriterPtr> right, MyDB_TableReaderWriterPtr output, MyDB_SchemaPtr mySchemaOut, vector <func> finalComputations, func finalPredicate){
-    for(MyDB_PageReaderWriterPtr leftRec:left){
-        for(MyDB_PageReaderWriterPtr rightRec:right){
+void SortMergeJoin:: mergeRecs (MyDB_RecordPtr leftRec, MyDB_RecordPtr rightRec, vector<MyDB_PageReaderWriter> left, vector<MyDB_PageReaderWriter> right, MyDB_TableReaderWriterPtr output, vector <func> finalComputations, func finalPredicate){
+    MyDB_RecordIteratorAltPtr iterL = getIteratorAlt(left);
+    MyDB_RecordIteratorAltPtr iterR = getIteratorAlt(right);
+    
+    while(iterL->advance()){
+        iterL->getCurrent(leftRec);
+        while(iterR->advance()){
+            iterR->getCurrent(rightRec);
             MyDB_RecordPtr outputRec = output->getEmptyRecord ();
             if (finalPredicate ()->toBool ()) {
                 
