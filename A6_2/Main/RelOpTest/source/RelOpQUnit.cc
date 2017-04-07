@@ -359,74 +359,74 @@ int main () {
 //        }
 //    }
     
-//    {
-//        vector <pair <MyDB_AggType, string>> aggsToCompute;
-//        aggsToCompute.push_back (make_pair (MyDB_AggType :: avg, "* ([r_suppkey], double[1.0])"));
-//        aggsToCompute.push_back (make_pair (MyDB_AggType :: avg, "[r_acctbal]"));
-//        aggsToCompute.push_back (make_pair (MyDB_AggType :: cnt, "int[0]"));
-//        
-//        vector <string> groupings;
-//        groupings.push_back ("/ ([r_suppkey], int[100])");
-//        
-//        MyDB_SchemaPtr mySchemaOutAgain  = make_shared <MyDB_Schema> ();
-//        mySchemaOutAgain->appendAtt (make_pair ("r_suppkey", make_shared <MyDB_IntAttType> ()));
-//        mySchemaOutAgain->appendAtt (make_pair ("r_suppkey_avg", make_shared <MyDB_DoubleAttType> ()));
-//        mySchemaOutAgain->appendAtt (make_pair ("r_acctbal_avg", make_shared <MyDB_DoubleAttType> ()));
-//        mySchemaOutAgain->appendAtt (make_pair ("r_cnt", make_shared <MyDB_IntAttType> ()));
-//        MyDB_TablePtr aggTable = make_shared <MyDB_Table> ("aggOut", "aggOut.bin", mySchemaOutAgain);
-//        MyDB_TableReaderWriterPtr aggTableOut = make_shared <MyDB_TableReaderWriter> (aggTable, myMgr);
-//        
-//        Aggregate myOpAgain (supplierTableR, aggTableOut, aggsToCompute, groupings, "bool [true]");
-//        
-//        // This basically runs:
-//        //
-//        // SELECT r_suppkey / 100, AVG (r_suppkey * 1.0), AVG (r_acctbal), COUNT (0)
-//        // FROM supplierLeft
-//        // GROUP BY r_suppkey / 100
-//        //
-//        cout << "running agg\n";
-//        myOpAgain.run ();
-//        MyDB_RecordPtr temp = aggTableOut->getEmptyRecord ();
-//        MyDB_RecordIteratorAltPtr myIter = aggTableOut->getIteratorAlt ();
-//        
-//        cout << "\nThere should be 101 groups, each with 3200 records, except for the first and last,\n";
-//        cout << "These should be '0|50.000000|4017.558586|3168|' and\n";
-//        cout << "'100|10000.000000|8968.420000|32|' respectively.\n";
-//        while (myIter->advance ()) {
-//            myIter->getCurrent (temp);
-//            cout << temp << "\n";
-//        }
-//        
-//        aggsToCompute.clear ();
-//        aggsToCompute.push_back (make_pair (MyDB_AggType :: sum, "[r_cnt]"));
-//        
-//        groupings.clear ();
-//        
-//        MyDB_SchemaPtr mySchemaOutAgainAgain = make_shared <MyDB_Schema> ();
-//        mySchemaOutAgainAgain->appendAtt (make_pair ("final_cnt", make_shared <MyDB_IntAttType> ()));
-//        MyDB_TablePtr aggTableFinal = make_shared <MyDB_Table> ("aggOutOut", "aggOutOut.bin", mySchemaOutAgainAgain);
-//        MyDB_TableReaderWriterPtr aggTableOutFinal = make_shared <MyDB_TableReaderWriter> (aggTableFinal, myMgr);
-//        
-//        Aggregate myOpOnceAgain (aggTableOut, aggTableOutFinal, aggsToCompute, groupings, "bool [true]");
-//        //
-//        // Assuming that the output of the last query has the schema (r_suppkey, r_suppkey_avg, r_acctbal_avg, r_cnt)
-//        //
-//        // This basically runs:
-//        //
-//        // SELECT SUM (r_cnt)
-//        // FROM lastResult
-//        //
-//        myOpOnceAgain.run ();
-//        
-//        cout << "\nThere should be one result: 320000.\n";
-//        temp = aggTableOutFinal->getEmptyRecord ();
-//        myIter = aggTableOutFinal->getIteratorAlt ();
-//        
-//        while (myIter->advance ()) {
-//            myIter->getCurrent (temp);
-//            cout << temp << "\n";
-//        }
-//    }
+    {
+        vector <pair <MyDB_AggType, string>> aggsToCompute;
+        aggsToCompute.push_back (make_pair (MyDB_AggType :: avg, "* ([r_suppkey], double[1.0])"));
+        aggsToCompute.push_back (make_pair (MyDB_AggType :: avg, "[r_acctbal]"));
+        aggsToCompute.push_back (make_pair (MyDB_AggType :: cnt, "int[0]"));
+        
+        vector <string> groupings;
+        groupings.push_back ("/ ([r_suppkey], int[100])");
+        
+        MyDB_SchemaPtr mySchemaOutAgain  = make_shared <MyDB_Schema> ();
+        mySchemaOutAgain->appendAtt (make_pair ("r_suppkey", make_shared <MyDB_IntAttType> ()));
+        mySchemaOutAgain->appendAtt (make_pair ("r_suppkey_avg", make_shared <MyDB_DoubleAttType> ()));
+        mySchemaOutAgain->appendAtt (make_pair ("r_acctbal_avg", make_shared <MyDB_DoubleAttType> ()));
+        mySchemaOutAgain->appendAtt (make_pair ("r_cnt", make_shared <MyDB_IntAttType> ()));
+        MyDB_TablePtr aggTable = make_shared <MyDB_Table> ("aggOut", "aggOut.bin", mySchemaOutAgain);
+        MyDB_TableReaderWriterPtr aggTableOut = make_shared <MyDB_TableReaderWriter> (aggTable, myMgr);
+        
+        Aggregate myOpAgain (supplierTableR, aggTableOut, aggsToCompute, groupings, "bool [true]");
+        
+        // This basically runs:
+        //
+        // SELECT r_suppkey / 100, AVG (r_suppkey * 1.0), AVG (r_acctbal), COUNT (0)
+        // FROM supplierLeft
+        // GROUP BY r_suppkey / 100
+        //
+        cout << "running agg\n";
+        myOpAgain.run ();
+        MyDB_RecordPtr temp = aggTableOut->getEmptyRecord ();
+        MyDB_RecordIteratorAltPtr myIter = aggTableOut->getIteratorAlt ();
+        
+        cout << "\nThere should be 101 groups, each with 3200 records, except for the first and last,\n";
+        cout << "These should be '0|50.000000|4017.558586|3168|' and\n";
+        cout << "'100|10000.000000|8968.420000|32|' respectively.\n";
+        while (myIter->advance ()) {
+            myIter->getCurrent (temp);
+            cout << temp << "\n";
+        }
+        
+        aggsToCompute.clear ();
+        aggsToCompute.push_back (make_pair (MyDB_AggType :: sum, "[r_cnt]"));
+        
+        groupings.clear ();
+        
+        MyDB_SchemaPtr mySchemaOutAgainAgain = make_shared <MyDB_Schema> ();
+        mySchemaOutAgainAgain->appendAtt (make_pair ("final_cnt", make_shared <MyDB_IntAttType> ()));
+        MyDB_TablePtr aggTableFinal = make_shared <MyDB_Table> ("aggOutOut", "aggOutOut.bin", mySchemaOutAgainAgain);
+        MyDB_TableReaderWriterPtr aggTableOutFinal = make_shared <MyDB_TableReaderWriter> (aggTableFinal, myMgr);
+        
+        Aggregate myOpOnceAgain (aggTableOut, aggTableOutFinal, aggsToCompute, groupings, "bool [true]");
+        //
+        // Assuming that the output of the last query has the schema (r_suppkey, r_suppkey_avg, r_acctbal_avg, r_cnt)
+        //
+        // This basically runs:
+        //
+        // SELECT SUM (r_cnt)
+        // FROM lastResult
+        //
+        myOpOnceAgain.run ();
+        
+        cout << "\nThere should be one result: 320000.\n";
+        temp = aggTableOutFinal->getEmptyRecord ();
+        myIter = aggTableOutFinal->getIteratorAlt ();
+        
+        while (myIter->advance ()) {
+            myIter->getCurrent (temp);
+            cout << temp << "\n";
+        }
+    }
 //
 //    {
 //        // get the output schema and table

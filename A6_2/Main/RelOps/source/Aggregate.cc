@@ -175,11 +175,7 @@ void Aggregate::run () {
                     att->set(sumMap[hashVal]);
                     //                    cout << "pre the val: " << groupedRec->getAtt(i)->toInt() << "\n";
                     groupedRec->getAtt (i)->set (att);
-
-                        MyDB_IntAttValPtr att = make_shared<MyDB_IntAttVal>();
-                        att->set((int)sum);
-                        groupedRec->getAtt (i)->set (att);
-                        i++;
+                    i++;
                                 
                 } else if (p.first == avg) {
 //                    cout << "AVG\n";
