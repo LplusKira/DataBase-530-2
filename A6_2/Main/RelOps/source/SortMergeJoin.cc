@@ -117,32 +117,32 @@ void SortMergeJoin:: run (){
     bool leftEnd = false;
     bool rightEnd = false;
     while (!leftEnd || !rightEnd){
-        cout << "\n\n\n";
+//        cout << "\n\n\n";
         iterL->getCurrent(recL);
         iterR->getCurrent(recR);
-        cout << "left rec" << recL << "\n";
-        cout << "right rec" << recR << "\n";
+        //        cout << "right rec" << recR << "\n";
         //MyDB_RecordPtr recLTemp = leftSorted.getEmptyRecord ();
         //MyDB_RecordPtr recRTemp = rightSorted.getEmptyRecord ();
         //        iterL->getCurrent(recLTemp);
         //        iterR->getCurrent(recRTemp);
         if(leftBox.size()==0||rightBox.size()==0){
-            cout << "empty vec\n";
+//            cout << "empty vec\n";
             if (leftMove) {
+                cout << "left rec" << recL << "\n";
                 cout << "left move\n";
                 // now get the predicate
                 func leftPred = recL->compileComputation (leftSelectionPredicate);
                 
                 int checkLeft=checkSingleAcceptance(leftPred,iterL,recL);
-                cout << "###############\n";
+//                cout << "###############\n";
                 if(checkLeft==1){
                     // no more records
-                    cout << "left no more records\n";
+//                    cout << "left no more records\n";
                     leftEnd = true;
                     leftMove = false;
                     continue;
                 }else if(checkLeft==2){
-                    cout << "left not accepcted\n";
+//                    cout << "left not accepcted\n";
                     leftMove = true;
                     // not accepted
                     continue;
@@ -151,19 +151,19 @@ void SortMergeJoin:: run (){
                 }
             }
             if (rightMove) {
-                cout << "right move\n";
+//                cout << "right move\n";
                 // now get the predicate
                 func rightPred = recR->compileComputation (rightSelectionPredicate);
                 int checkRight=checkSingleAcceptance(rightPred,iterR,recR);
                 if(checkRight==1){
                     // no more records
-                    cout << "right no more records\n";
+//                    cout << "right no more records\n";
                     rightEnd = true;
                     rightMove = false;
                     continue;
                 }else if(checkRight==2){
                     // not accepted
-                    cout << "right not accepcted\n";
+//                    cout << "right not accepcted\n";
                     rightMove = true;
                     continue;
                 } else {
@@ -183,29 +183,30 @@ void SortMergeJoin:: run (){
             func areEqual = combinedRec->compileComputation (" == (" + equalityCheck.first + ", " + equalityCheck.second + ")");
             if(leftSmaller ()->toBool ()){
                 if(!iterL->advance()){
-                    cout << "left no more records\n";
+//                    cout << "left no more records\n";
                     leftEnd = true;
                     continue;
                 }else{
-                    cout << "left smaller, jump to next record\n";
+//                    cout << "left smaller, jump to next record\n";
                     leftMove = true;
                     rightMove = false;
                     continue;
                 }
             }else if(rightSmaller ()->toBool ()){
                 if(!iterR->advance()){
-                    cout << "right no more records\n";
+//                    cout << "right no more records\n";
                     rightEnd = true;
                     rightMove = false;
                     continue;
                 }else{
-                    cout << "right smaller, jump to next record\n";
+//                    cout << "right smaller, jump to next record\n";
                     leftMove = false;
                     rightMove = true;
                     continue;
                 }
             }else if (areEqual() ->toBool()){
                 cout << "equal ones, push to vec\n";
+                cout << "right vec" << recR<<"\n";
                 MyDB_PageReaderWriter prwL(*leftInput->getBufferMgr());
                 MyDB_PageReaderWriter prwR (*rightInput->getBufferMgr());
                 prwL.append(recL);
@@ -213,23 +214,26 @@ void SortMergeJoin:: run (){
                 leftBox.push_back(prwL);
                 rightBox.push_back(prwR);
                 if(!iterL->advance()){
-                    cout << "left no more records\n";
+//                    cout << "left no more records\n";
                     leftEnd = true;
                     leftMove = false;
-                    continue;
+                }else{
+                    leftMove=true;
                 }
                 if(!iterR->advance()){
-                    cout << "right no more records\n";
+//                    cout << "right no more records\n";
                     rightEnd= true;
-                    continue;
+                    rightMove=false;
+                }else{
+                    rightMove=true;
                 }
-                cout << "both jump to next\n";
-                leftMove = true;
-                rightMove = true;
+//                cout << "both jump to next\n";
+//                leftMove = true;
+//                rightMove = true;
             }
             
         }else{
-            cout << "non-empty vec\n";
+//            cout << "non-empty vec\n";
             int stillNum=0;
             if (leftMove) {
                 //int rightNextState=nextState(equalityCheck.second, rightBox,iterR,recR,rightPred);
@@ -241,7 +245,7 @@ void SortMergeJoin:: run (){
                 function <bool ()> f1 = buildRecordComparator(temp, recL, equalityCheck.first);
                 function <bool ()> f2 = buildRecordComparator(recL, temp, equalityCheck.first);
                 if(!f1() && !f2()){
-                    cout << "L: rec = vec.rec\n";
+//                    cout << "L: rec = vec.rec\n";
                     // now get the predicate
                     func leftPred = recL->compileComputation (leftSelectionPredicate);
                     int check = checkSingleAcceptance(leftPred,iterL,recL);
@@ -251,7 +255,7 @@ void SortMergeJoin:: run (){
                     }else if(check==2){
                         continue;
                     } else {
-                        cout << "L: push...\n";
+//                        cout << "L: push...\n";
                         if (!leftBox.back().append(recL)) {
                             MyDB_PageReaderWriter newPage(*leftInput->getBufferMgr());
                             newPage.append(recL);
@@ -264,8 +268,8 @@ void SortMergeJoin:: run (){
                         
                     }
                 }else{
-                    cout << "L: rec != vec.rec\n";
-                    cout << "L still.\n";
+//                    cout << "L: rec != vec.rec\n";
+//                    cout << "L still.\n";
                     stillNum++;
                     leftMove = false;
                 }
@@ -281,7 +285,7 @@ void SortMergeJoin:: run (){
                 function <bool ()> f1 = buildRecordComparator(temp, recR, equalityCheck.second);
                 function <bool ()> f2 = buildRecordComparator(recR, temp, equalityCheck.second);
                 if(!f1() && !f2()){
-                    cout << "R: rec = vec.rec\n";
+//                    cout << "R: rec = vec.rec\n";
                     // now get the predicate
                     func rightPred = recR->compileComputation (rightSelectionPredicate);
                     int check = checkSingleAcceptance(rightPred,iterR,recR);
@@ -291,7 +295,7 @@ void SortMergeJoin:: run (){
                     }else if(check==2){
                         continue;
                     } else {
-                        cout << "R: push...\n";
+//                        cout << "R: push...\n";
                         if (!rightBox.back().append(recR)) {
                             MyDB_PageReaderWriter newPage (*rightInput->getBufferMgr());
                             newPage.append(recR);
@@ -303,40 +307,40 @@ void SortMergeJoin:: run (){
                         }
                     }
                 }else{
-                    cout << "R: rec != vec.rec\n";
-                    cout << "R: right still.\n";
+//                    cout << "R: rec != vec.rec\n";
+//                    cout << "R: right still.\n";
                     stillNum++;
                     rightMove = false;
                 }
             }
-            cout << "L vec:\n";
+//            cout << "L vec:\n";
             
-            for (MyDB_PageReaderWriter p: leftBox) {
-                MyDB_RecordPtr temp = leftSorted.getEmptyRecord ();
-                MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
-                while (myIter->advance ()) {
-                    myIter->getCurrent (temp);
-                    cout << temp << "\n";
-                }
-            }
-            cout << "R vec: \n";
-            for (MyDB_PageReaderWriter p: rightBox) {
-                MyDB_RecordPtr temp = rightSorted.getEmptyRecord ();
-                MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
-                while (myIter->advance ()) {
-                    myIter->getCurrent (temp);
-                    cout << temp << "\n";
-                }
-                
-            }
+//            for (MyDB_PageReaderWriter p: leftBox) {
+//                MyDB_RecordPtr temp = leftSorted.getEmptyRecord ();
+//                MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
+//                while (myIter->advance ()) {
+//                    myIter->getCurrent (temp);
+//                    cout << temp << "\n";
+//                }
+//            }
+//            cout << "R vec: \n";
+//            for (MyDB_PageReaderWriter p: rightBox) {
+//                MyDB_RecordPtr temp = rightSorted.getEmptyRecord ();
+//                MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
+//                while (myIter->advance ()) {
+//                    myIter->getCurrent (temp);
+//                    cout << temp << "\n";
+//                }
+//                
+//            }
             if(!rightMove && !leftMove){
                 MyDB_RecordPtr recl = leftSorted.getEmptyRecord ();
                 MyDB_RecordPtr recr = rightSorted.getEmptyRecord ();
-                cout << "ready to merge\n";
+//                cout << "ready to merge\n";
                 mergeRecs(recl, recr, leftBox, rightBox, output,mySchemaOut);
                 leftBox.clear();
                 rightBox.clear();
-                cout << "finish clear\n";
+//                cout << "finish clear\n";
                 leftMove = true;
                 rightMove = true;
             }
@@ -347,7 +351,7 @@ void SortMergeJoin:: run (){
 }
 
 int SortMergeJoin ::checkSingleAcceptance(func pred, MyDB_RecordIteratorAltPtr iter, MyDB_RecordPtr rec) {
-    cout << "######checkSingleAcceptance:\n";
+//    cout << "######checkSingleAcceptance:\n";
     iter->getCurrent(rec);
     //        cout << "record: " << rec << "\n";
     
@@ -363,17 +367,17 @@ int SortMergeJoin ::checkSingleAcceptance(func pred, MyDB_RecordIteratorAltPtr i
         }
         
     } else {
-        cout << "qualify\n";
+//        cout << "qualify\n";
         
         return 3;//keep on
     }
 }
 int SortMergeJoin ::checkBothAcceptance(MyDB_RecordIteratorAltPtr iterL, MyDB_RecordPtr recL, MyDB_RecordIteratorAltPtr iterR, MyDB_RecordPtr recR, func pred) {
-    cout << "######checkBothAcceptance:\n";
+//    cout << "######checkBothAcceptance:\n";
     iterL->getCurrent(recL);
     iterR->getCurrent(recR);
     if (!pred ()->toBool ()) {
-        cout << "both not qualified\n";
+//        cout << "both not qualified\n";
         if (!iterL->advance()) {
             return 1;//end of join
         }
@@ -410,7 +414,7 @@ void SortMergeJoin:: mergeRecs (MyDB_RecordPtr leftRec, MyDB_RecordPtr rightRec,
             //cout << "rightRec" << rightRec <<"\n";
             MyDB_RecordPtr outputRec = output->getEmptyRecord ();
             if (finalPredicate ()->toBool ()) {
-                cout << "qualify for final predicate\n";
+//                cout << "qualify for final predicate\n";
                 // run all of the computations
                 int i = 0;
                 for (auto f : finalComputations) {
@@ -418,8 +422,8 @@ void SortMergeJoin:: mergeRecs (MyDB_RecordPtr leftRec, MyDB_RecordPtr rightRec,
                 }
                 
                 outputRec->recordContentHasChanged ();
-                cout << "output: " << outputRec << "\n";
-                output->append (outputRec);	
+//                cout << "output: " << outputRec << "\n";
+                output->append (outputRec);
             }
             
         }

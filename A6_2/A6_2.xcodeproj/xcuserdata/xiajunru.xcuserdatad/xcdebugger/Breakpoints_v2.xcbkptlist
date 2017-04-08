@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/RelOpTest/source/RelOpQUnit.cc"
-            timestampString = "513288015.230195"
+            timestampString = "513379650.462002"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "400"
-            endingLineNumber = "400">
+            startingLineNumber = "478"
+            endingLineNumber = "478">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -56,11 +56,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/RelOpTest/source/RelOpQUnit.cc"
-            timestampString = "513289193.77835"
+            timestampString = "513379650.462002"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "419"
-            endingLineNumber = "419">
+            startingLineNumber = "497"
+            endingLineNumber = "497">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -70,11 +70,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/RelOpTest/source/RelOpQUnit.cc"
-            timestampString = "513290395.534019"
+            timestampString = "513379650.462002"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "581"
-            endingLineNumber = "581">
+            startingLineNumber = "659"
+            endingLineNumber = "659">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -148,7 +148,7 @@
                   moduleName = "relOpUnitTest"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/ScanJoin.cc"
-                  timestampString = "513366002.576465"
+                  timestampString = "513381334.860668"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "138"
@@ -163,7 +163,7 @@
                   moduleName = "relOpUnitTest"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/ScanJoin.cc"
-                  timestampString = "513366002.579216"
+                  timestampString = "513381334.868675"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "138"
@@ -180,343 +180,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/RelOps/source/SortMergeJoin.cc"
-            timestampString = "513379211.685229"
+            timestampString = "513381334.481362"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "578"
-            endingLineNumber = "578">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.583196"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "1379">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.584818"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "1419">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.586426"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "1503">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.588016"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "2816">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.5896"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "2880">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.591178"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "15422">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.592748"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "16220">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.594315"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "21852">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.596867"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "24455">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.599598"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "27930">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.602131"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "28238">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.604553"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "28287">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.606857"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "29539">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.609115"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "30569">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.611798"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "33871">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.614616"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "34179">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.617397"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "34228">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.620146"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "35492">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.622366"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "36522">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.624596"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "38031">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.627588"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "39278">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.629243"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "41031">
-               </Location>
-            </Locations>
+            startingLineNumber = "582"
+            endingLineNumber = "582">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -526,343 +194,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/RelOps/source/SortMergeJoin.cc"
-            timestampString = "513379211.685229"
+            timestampString = "513381334.481362"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "647"
-            endingLineNumber = "647">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.6415"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "1379">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.64346"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "1419">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.646078"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "1503">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.650352"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "2816">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.65325"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "2880">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.655131"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "15422">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.656865"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "16220">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.659395"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "21852">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.662135"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "24455">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.664191"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "27930">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.665827"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "28238">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.667414"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "28287">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.668996"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "29539">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.670572"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "30569">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.672146"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "33871">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.673728"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "34179">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.67561"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "34228">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.678349"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "35492">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.680076"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "36522">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.681696"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "38031">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.683306"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "39278">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.684912"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "41031">
-               </Location>
-            </Locations>
+            startingLineNumber = "651"
+            endingLineNumber = "651">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -872,343 +208,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/RelOps/source/SortMergeJoin.cc"
-            timestampString = "513379211.685229"
+            timestampString = "513381334.481362"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "714"
-            endingLineNumber = "714">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.697568"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "1379">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.700124"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "1419">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.702294"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "1503">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.70468"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "2816">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.707254"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "2880">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.709948"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "15422">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.712808"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "16220">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.714554"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "21852">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.716183"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "24455">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.71778"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "27930">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.719374"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "28238">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.720959"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "28287">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.722545"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "29539">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.72414"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "30569">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.725725"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "33871">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.72748"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "34179">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.730229"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "34228">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.732958"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "35492">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.735688"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "36522">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.738396"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "38031">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.741128"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "39278">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.74386"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "41031">
-               </Location>
-            </Locations>
+            startingLineNumber = "718"
+            endingLineNumber = "718">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1218,343 +222,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/RelOps/source/SortMergeJoin.cc"
-            timestampString = "513379211.685229"
+            timestampString = "513381334.481362"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "688"
-            endingLineNumber = "688">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.757623"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "1379">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.759257"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "1419">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.760852"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "1503">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.762441"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "2816">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.764027"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "2880">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.765613"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "15422">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.767204"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "16220">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.768793"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "21852">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.770471"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "24455">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.772095"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "27930">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.773698"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "28238">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.775295"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "28287">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.776889"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "29539">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.778474"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "30569">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.780065"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "33871">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.781652"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "34179">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.783243"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "34228">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.784828"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "35492">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.786422"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "36522">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.788008"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "38031">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.789601"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "39278">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "SortMergeJoin::run()"
-                  moduleName = "relOpUnitTest"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/SortMergeJoin.cc"
-                  timestampString = "513366002.791185"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "742"
-                  endingLineNumber = "742"
-                  offsetFromSymbolStart = "41031">
-               </Location>
-            </Locations>
+            startingLineNumber = "692"
+            endingLineNumber = "692">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1564,11 +236,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/RelOps/source/SortMergeJoin.cc"
-            timestampString = "513379211.685229"
+            timestampString = "513381334.481362"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "770"
-            endingLineNumber = "770">
+            startingLineNumber = "774"
+            endingLineNumber = "774">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1578,11 +250,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/RelOps/source/SortMergeJoin.cc"
-            timestampString = "513379211.685229"
+            timestampString = "513381334.481362"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "466"
-            endingLineNumber = "466">
+            startingLineNumber = "470"
+            endingLineNumber = "470">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1592,11 +264,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/RelOps/source/SortMergeJoin.cc"
-            timestampString = "513379211.685229"
+            timestampString = "513381334.481362"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "798"
-            endingLineNumber = "798">
+            startingLineNumber = "802"
+            endingLineNumber = "802">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Main/RelOps/source/SortMergeJoin.cc"
+            timestampString = "513381260.357172"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "215"
+            endingLineNumber = "215"
+            landmarkName = "SortMergeJoin:: run ()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
