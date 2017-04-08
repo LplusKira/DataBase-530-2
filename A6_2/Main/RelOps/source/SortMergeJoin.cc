@@ -467,26 +467,26 @@ void SortMergeJoin:: run (){
                 }
             }
             
-            cout << "L vec:\n";
-            MyDB_RecordPtr temp = leftSorted.getEmptyRecord ();
-            for (MyDB_PageReaderWriter p: leftBox) {
-                MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
-                while (myIter->advance ()) {
-                    myIter->getCurrent (temp);
-                    cout << temp << "\n";
-                }
-            }
-            cout << "R vec: \n";
-            for (MyDB_PageReaderWriter p: rightBox) {
-                MyDB_RecordPtr temp = rightSorted.getEmptyRecord ();
-                
-                    MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
-                    while (myIter->advance ()) {
-                        myIter->getCurrent (temp);
-                        cout << temp << "\n";
-                    }
-                
-            }
+//            cout << "L vec:\n";
+//            MyDB_RecordPtr temp = leftSorted.getEmptyRecord ();
+//            for (MyDB_PageReaderWriter p: leftBox) {
+//                MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
+//                while (myIter->advance ()) {
+//                    myIter->getCurrent (temp);
+//                    cout << temp << "\n";
+//                }
+//            }
+//            cout << "R vec: \n";
+//            for (MyDB_PageReaderWriter p: rightBox) {
+//                MyDB_RecordPtr temp = rightSorted.getEmptyRecord ();
+//                
+//                    MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
+//                    while (myIter->advance ()) {
+//                        myIter->getCurrent (temp);
+//                        cout << temp << "\n";
+//                    }
+//                
+//            }
             
             if(!rightMove && !leftMove){
                 cout << "L vec:\n";
@@ -559,8 +559,8 @@ void SortMergeJoin:: run (){
 int SortMergeJoin ::checkSingleAcceptance(func pred, MyDB_RecordIteratorAltPtr iter, MyDB_RecordPtr rec) {
     cout << "######checkSingleAcceptance:\n";
         iter->getCurrent(rec);
-        cout << "record: " << rec << "\n";
-        
+//        cout << "record: " << rec << "\n";
+    
         // see if it is accepted by the preicate
         if (!pred ()->toBool ()) {
             cout << "not qualified, move to next\n";
@@ -568,12 +568,12 @@ int SortMergeJoin ::checkSingleAcceptance(func pred, MyDB_RecordIteratorAltPtr i
                 return 1;//end of the join
             } else {
                 iter->getCurrent(rec);
-                cout << "now rec: " << rec << "\n";
+//                cout << "now rec: " << rec << "\n";
                 return 2;// continue
             }
             
         } else {
-            cout << "pass!! stay still\n";
+//            cout << "pass!! stay still\n";
 
             return 3;//keep on
         }
@@ -605,12 +605,15 @@ void SortMergeJoin:: mergeRecs (MyDB_RecordPtr leftRec, MyDB_RecordPtr rightRec,
         iterL->getCurrent(leftRec);
         while(iterR->advance()){
             iterR->getCurrent(rightRec);
+            cout << "join---\n";
+            
             MyDB_RecordPtr outputRec = output->getEmptyRecord ();
             if (finalPredicate ()->toBool ()) {
-                
+                cout << "qualify for final predicate\n";
                 // run all of the computations
                 int i = 0;
                 for (auto f : finalComputations) {
+                    cout << "function output: " << f()->toString() << "\n";
                     outputRec->getAtt (i++)->set (f());
                 }
                 outputRec->recordContentHasChanged ();

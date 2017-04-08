@@ -177,6 +177,7 @@ void ScanJoin :: run () {
 				// run all of the computations
 				int i = 0;
 				for (auto f : finalComputations) {
+                    // << "function output: " << f()->toString() << "\n";
 					outputRec->getAtt (i++)->set (f());
 				}
 
