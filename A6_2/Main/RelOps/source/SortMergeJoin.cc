@@ -702,6 +702,8 @@ void SortMergeJoin:: run (){
             rightShouldMove=false;
         }
         
+        
+        
         if(leftShouldAdd){
             MyDB_PageReaderWriter prwL(*leftInput->getBufferMgr());
             prwL.append(recL);
@@ -712,20 +714,21 @@ void SortMergeJoin:: run (){
                 }else{
                     iterL->getCurrent(recLNext);
                     cout << "left add rec" << recL << "\n";
-
+                    
                 }
+                cout << equalityCheck.first << "\n";
                 function <bool ()> f1 = buildRecordComparator(recLNext, recL, equalityCheck.first);
                 function <bool ()> f2 = buildRecordComparator(recL, recLNext, equalityCheck.first);
                 // 若左边vector的元素与该元素相同
                 if(!f1() && !f2()){
                     prwL.append(recL);
-                    leftBox.push_back(prwL);
                 } else {
                     leftShouldMove=false;
                     break;
                 }
             }
         }
+
         
         if(rightShouldAdd){
             MyDB_PageReaderWriter prwR(*rightInput->getBufferMgr());
@@ -736,13 +739,12 @@ void SortMergeJoin:: run (){
                     break;
                 }else{
                     iterR->getCurrent(recRNext);
-                    cout << "right add rec" << recL << "\n";
-
+                    cout << "right add rec" << recR << "\n";
+                    cout << "right next rec "<<recRNext << "\n";
                 }
-                function <bool ()> f1 = buildRecordComparator(recRNext, recR, equalityCheck.first);
-                function <bool ()> f2 = buildRecordComparator(recR, recRNext, equalityCheck.first);
-                // 若左边vector的元素与该元素相同
-                if(!f1() && !f2()){
+                function <bool ()> f3 = buildRecordComparator(recRNext, recR, equalityCheck.second);
+                function <bool ()> f4 = buildRecordComparator(recR, recRNext, equalityCheck.second);
+                if(!f4() && !f3()){
                     prwR.append(recR);
                 } else {
                     rightShouldMove=false;

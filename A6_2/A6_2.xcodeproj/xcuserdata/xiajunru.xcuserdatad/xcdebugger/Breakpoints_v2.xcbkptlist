@@ -292,7 +292,7 @@
                   moduleName = "relOpUnitTest"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/ScanJoin.cc"
-                  timestampString = "513317245.278611"
+                  timestampString = "513320429.333579"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "138"
@@ -307,7 +307,7 @@
                   moduleName = "relOpUnitTest"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/ScanJoin.cc"
-                  timestampString = "513317245.296199"
+                  timestampString = "513320429.337375"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "138"
@@ -345,6 +345,38 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "666"
             endingLineNumber = "666"
+            landmarkName = "SortMergeJoin:: run ()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Main/RelOps/source/SortMergeJoin.cc"
+            timestampString = "513320427.864574"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "733"
+            endingLineNumber = "733"
+            landmarkName = "SortMergeJoin:: run ()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Main/RelOps/source/SortMergeJoin.cc"
+            timestampString = "513320421.2667"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "707"
+            endingLineNumber = "707"
             landmarkName = "SortMergeJoin:: run ()"
             landmarkType = "7">
          </BreakpointContent>
