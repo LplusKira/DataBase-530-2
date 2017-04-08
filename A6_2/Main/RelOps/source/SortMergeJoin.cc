@@ -682,6 +682,8 @@ void SortMergeJoin:: run (){
         if(!leftPred ()->toBool ()){
             leftShouldMove=true;
             continue;
+        }else {
+            leftShouldMove=false;
         }
         
         if(rightShouldMove){
@@ -696,6 +698,8 @@ void SortMergeJoin:: run (){
         if(!rightPred ()->toBool ()){
             rightShouldMove=true;
             continue;
+        }else {
+            rightShouldMove=false;
         }
         
         if(leftShouldAdd){
