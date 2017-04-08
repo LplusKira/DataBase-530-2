@@ -50,36 +50,14 @@ void SortMergeJoin:: run (){
     // get the combined record
     MyDB_RecordPtr combinedRec = make_shared <MyDB_Record> (mySchemaOut);
     // now, get the final predicate over it
-//    func finalPredicate = combinedRec->compileComputation (finalSelectionPredicate);
-//    vector <func> finalComputations;
-//    for (string s : projections) {
-//        cout << "s in projections" << s << "\n";
-//        finalComputations.push_back (combinedRec->compileComputation (s));
-//    }
-//    for (auto f : finalComputations) {
-//        cout << "FUNCTION" << f()->toString()<<"\n";
-//    }
+
     // and make it a composite of the two input records
     combinedRec->buildFrom (leftInputRec, rightInputRec);
-    
-//    MyDB_RecordPtr leftInputRec2 = leftInput->getEmptyRecord ();
-//    MyDB_RecordPtr rightInputRec2 = rightInput->getEmptyRecord ();
-//    combinedRecL->buildFrom (leftInputRec, leftInputRec2);
-//    combinedRecR->buildFrom (rightInputRec, rightInputRec2);
-    
     
     // get some compare func
     func leftSmaller = combinedRec->compileComputation (" < (" + equalityCheck.first + ", " + equalityCheck.second + ")");
     func rightSmaller = combinedRec->compileComputation (" > (" + equalityCheck.first + ", " + equalityCheck.second + ")");
     func areEqual = combinedRec->compileComputation (" == (" + equalityCheck.first + ", " + equalityCheck.second + ")");
-    
-    //func smallerL = combinedRecL->compileComputation (" < (" + equalityCheck.first + ", " + equalityCheck.first + ")");
-    //func equalL = combinedRecL->compileComputation (" == (" + equalityCheck.first + ", " + equalityCheck.first + ")");
-    //func biggerL = combinedRecL->compileComputation (" > (" + equalityCheck.first + ", " + equalityCheck.first + ")");
-    
-    //func smallerR = combinedRecR->compileComputation (" < (" + equalityCheck.second + ", " + equalityCheck.second + ")");
-    //func equalR = combinedRecR->compileComputation (" == (" + equalityCheck.second + ", " + equalityCheck.second + ")");
-    //func biggerR = combinedRecR->compileComputation (" > (" + equalityCheck.second + ", " + equalityCheck.second + ")");
     
     // left: get the various functions whose output we'll hash
 
@@ -110,13 +88,6 @@ void SortMergeJoin:: run (){
     function <bool ()> f2 = buildRecordComparator(lhsR, rhsR, equalityCheck.second);
     sort (64, *rightInput, rightSorted, f2, lhsR, rhsR);
     
-//    MyDB_RecordIteratorAltPtr myIter = rightSorted.getIteratorAlt ();
-//    
-//    MyDB_RecordPtr rec1 = rightInput->getEmptyRecord ();
-//    while (myIter->advance ()) {
-//        myIter->getCurrent (rec1);
-//        cout << rec1 << "\n";
-//    }
     //---------Merge phase---------
     
     
@@ -292,17 +263,17 @@ void SortMergeJoin:: run (){
     vector<MyDB_PageReaderWriter> rightBox;
     bool leftMove = true;
     bool rightMove = true;
-<<<<<<< HEAD
+
     while (true){
         cout << "\n\n\n";
         iterL->getCurrent(recL);
         iterR->getCurrent(recR);
         cout << "left rec" << recL << "\n";
         cout << "right rec" << recR << "\n";
-        MyDB_RecordPtr recLTemp = leftSorted.getEmptyRecord ();
-        MyDB_RecordPtr recRTemp = rightSorted.getEmptyRecord ();
-        iterL->getCurrent(recLTemp);
-        iterR->getCurrent(recRTemp);
+        //MyDB_RecordPtr recLTemp = leftSorted.getEmptyRecord ();
+        //MyDB_RecordPtr recRTemp = rightSorted.getEmptyRecord ();
+//        iterL->getCurrent(recLTemp);
+//        iterR->getCurrent(recRTemp);
         if(leftBox.size()==0||rightBox.size()==0){
             cout << "empty vec\n";
             if (leftMove) {
@@ -336,7 +307,17 @@ void SortMergeJoin:: run (){
                     rightMove = false;
                 }
             }
+            // get the combined record
+            MyDB_RecordPtr combinedRec = make_shared <MyDB_Record> (mySchemaOut);
+            // now, get the final predicate over it
             
+            // and make it a composite of the two input records
+            combinedRec->buildFrom (recL, recR);
+            
+            // get some compare func
+            func leftSmaller = combinedRec->compileComputation (" < (" + equalityCheck.first + ", " + equalityCheck.second + ")");
+            func rightSmaller = combinedRec->compileComputation (" > (" + equalityCheck.first + ", " + equalityCheck.second + ")");
+            func areEqual = combinedRec->compileComputation (" == (" + equalityCheck.first + ", " + equalityCheck.second + ")");
             if(leftSmaller ()->toBool ()){
                 if(!iterL->advance()){
                     cout << "left no more records\n";
@@ -357,12 +338,12 @@ void SortMergeJoin:: run (){
                     rightMove = true;
                     continue;
                 }
-            }else{
+            }else if (areEqual() ->toBool()){
                 cout << "equal ones, push to vec\n";
                 MyDB_PageReaderWriter prwL(*leftInput->getBufferMgr());
                 MyDB_PageReaderWriter prwR (*rightInput->getBufferMgr());
-                prwL.append(recRTemp);
-                prwR.append(recLTemp);
+                prwL.append(recL);
+                prwR.append(recR);
                 rightBox.push_back(prwL);
                 leftBox.push_back(prwR);
                 if(!iterL->advance()){
@@ -397,7 +378,7 @@ void SortMergeJoin:: run (){
                         if(leftBox.size()!=0&&rightBox.size()!=0){
                             MyDB_RecordPtr recl = leftSorted.getEmptyRecord ();
                             MyDB_RecordPtr recr = rightSorted.getEmptyRecord ();
-                            mergeRecs(recl, recr, leftBox, rightBox, output, finalComputations, finalPredicate);
+                            mergeRecs(recl, recr, leftBox, rightBox, output, mySchemaOut);
                         }
                         break;
                     }else if(check==2){
@@ -413,7 +394,8 @@ void SortMergeJoin:: run (){
                             if(leftBox.size()!=0&&rightBox.size()!=0){
                                 MyDB_RecordPtr recl = leftSorted.getEmptyRecord ();
                                 MyDB_RecordPtr recr = rightSorted.getEmptyRecord ();
-                                mergeRecs(recl, recr, leftBox, rightBox, output, finalComputations, finalPredicate);
+                                mergeRecs(recl, recr, leftBox, rightBox, output, mySchemaOut);
+
 
                             }
                         }
@@ -443,7 +425,8 @@ void SortMergeJoin:: run (){
                         if(leftBox.size()!=0&&rightBox.size()!=0){
                             MyDB_RecordPtr recl = leftSorted.getEmptyRecord ();
                             MyDB_RecordPtr recr = rightSorted.getEmptyRecord ();
-                            mergeRecs(recl, recr, leftBox, rightBox, output, finalComputations, finalPredicate);
+                            mergeRecs(recl, recr, leftBox, rightBox, output, mySchemaOut);
+
                         }
                         break;
                     }else if(check==2){
@@ -459,7 +442,8 @@ void SortMergeJoin:: run (){
                             if(leftBox.size()!=0&&rightBox.size()!=0){
                                 MyDB_RecordPtr recl = leftSorted.getEmptyRecord ();
                                 MyDB_RecordPtr recr = rightSorted.getEmptyRecord ();
-                                mergeRecs(recl, recr, leftBox, rightBox, output, finalComputations, finalPredicate);
+                                mergeRecs(recl, recr, leftBox, rightBox, output, mySchemaOut);
+
 
                             }
                         }
@@ -471,27 +455,6 @@ void SortMergeJoin:: run (){
                     rightMove = false;
                 }
             }
-            
-//            cout << "L vec:\n";
-//            MyDB_RecordPtr temp = leftSorted.getEmptyRecord ();
-//            for (MyDB_PageReaderWriter p: leftBox) {
-//                MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
-//                while (myIter->advance ()) {
-//                    myIter->getCurrent (temp);
-//                    cout << temp << "\n";
-//                }
-//            }
-//            cout << "R vec: \n";
-//            for (MyDB_PageReaderWriter p: rightBox) {
-//                MyDB_RecordPtr temp = rightSorted.getEmptyRecord ();
-//                
-//                    MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
-//                    while (myIter->advance ()) {
-//                        myIter->getCurrent (temp);
-//                        cout << temp << "\n";
-//                    }
-//                
-//            }
             
             if(!rightMove && !leftMove){
                 cout << "L vec:\n";
@@ -516,7 +479,7 @@ void SortMergeJoin:: run (){
                 }
                 MyDB_RecordPtr recl = leftSorted.getEmptyRecord ();
                 MyDB_RecordPtr recr = rightSorted.getEmptyRecord ();
-                mergeRecs(recl, recr, leftBox, rightBox, output, finalComputations, finalPredicate);
+                mergeRecs(recl, recr, leftBox, rightBox, output,mySchemaOut);
                 leftBox.clear();
                 rightBox.clear();
                 leftMove = true;
@@ -524,243 +487,6 @@ void SortMergeJoin:: run (){
             }
         }
     }
-=======
-//    while (true){
-//        cout << "\n\n\n";
-//        iterL->getCurrent(recL);
-//        iterR->getCurrent(recR);
-//        cout << "left rec" << recL << "\n";
-//        cout << "right rec" << recR << "\n";
-//        MyDB_RecordPtr recLTemp = leftSorted.getEmptyRecord ();
-//        MyDB_RecordPtr recRTemp = rightSorted.getEmptyRecord ();
-//        iterL->getCurrent(recLTemp);
-//        iterR->getCurrent(recRTemp);
-//        if(leftBox.size()==0||rightBox.size()==0){
-//            cout << "empty vec\n";
-//            if (leftMove) {
-//                int checkLeft=checkSingleAcceptance(leftPred,iterL,recL);
-//                cout << "###############\n";
-//                if(checkLeft==1){
-//                    // no more records
-//                    cout << "left no more records\n";
-//                    break;
-//                }else if(checkLeft==2){
-//                    cout << "left not accepcted\n";
-//                    leftMove = true;
-//                    // not accepted
-//                    continue;
-//                }else {
-//                    leftMove = false;
-//                }
-//            }
-//            if (rightMove) {
-//                int checkRight=checkSingleAcceptance(rightPred,iterR,recR);
-//                if(checkRight==1){
-//                    // no more records
-//                    cout << "right no more records\n";
-//                    break;
-//                }else if(checkRight==2){
-//                    // not accepted
-//                    cout << "right not accepcted\n";
-//                    rightMove = true;
-//                    continue;
-//                } else {
-//                    rightMove = false;
-//                }
-//            }
-//            
-//            if(leftSmaller ()->toBool ()){
-//                if(!iterL->advance()){
-//                    cout << "left no more records\n";
-//                    break;
-//                }else{
-//                    cout << "left smaller, jump to next record\n";
-//                    leftMove = true;
-//                    rightMove = false;
-//                    continue;
-//                }
-//            }else if(rightSmaller ()->toBool ()){
-//                if(!iterL->advance()){
-//                    cout << "right no more records\n";
-//                    break;
-//                }else{
-//                    cout << "right smaller, jump to next record\n";
-//                    leftMove = false;
-//                    rightMove = true;
-//                    continue;
-//                }
-//            }else{
-//                cout << "equal ones, push to vec\n";
-//                MyDB_PageReaderWriter prwL(*leftInput->getBufferMgr());
-//                MyDB_PageReaderWriter prwR (*rightInput->getBufferMgr());
-//                prwL.append(recRTemp);
-//                prwR.append(recLTemp);
-//                rightBox.push_back(prwL);
-//                leftBox.push_back(prwR);
-//                if(!iterL->advance()){
-//                    cout << "left no more records\n";
-//                    break;
-//                }
-//                if(!iterR->advance()){
-//                    cout << "right no more records\n";
-//                    break;
-//                }
-//                cout << "both jump to next\n";
-//                leftMove = true;
-//                rightMove = true;
-//            }
-//            
-//        }else{
-//            cout << "non-empty vec\n";
-//            int stillNum=0;
-//            if (leftMove) {
-//                //int rightNextState=nextState(equalityCheck.second, rightBox,iterR,recR,rightPred);
-//                MyDB_RecordPtr temp = leftSorted.getEmptyRecord ();
-//                MyDB_RecordIteratorAltPtr myIter = leftBox.front().getIteratorAlt ();
-//                myIter->getCurrent (temp);
-//                cout << "vec rec: " << temp << "\n";
-//                
-//                function <bool ()> f1 = buildRecordComparator(temp, recL, equalityCheck.first);
-//                function <bool ()> f2 = buildRecordComparator(recL, temp, equalityCheck.first);
-//                if(!f1() && !f2()){
-//                    cout << "L: rec = vec.rec\n";
-//                    int check = checkSingleAcceptance(leftPred,iterL,recL);
-//                    if(check ==1){
-//                        if(leftBox.size()!=0&&rightBox.size()!=0){
-//                            MyDB_RecordPtr recl = leftSorted.getEmptyRecord ();
-//                            MyDB_RecordPtr recr = rightSorted.getEmptyRecord ();
-//                            mergeRecs(recl, recr, leftBox, rightBox, output, mySchemaOut);
-//                        }
-//                        break;
-//                    }else if(check==2){
-//                        continue;
-//                    } else {
-//                        cout << "L: push...\n";
-//                        if (!leftBox.back().append(recL)) {
-//                            MyDB_PageReaderWriter newPage(*leftInput->getBufferMgr());
-//                            newPage.append(recL);
-//                            leftBox.push_back(newPage);
-//                        }
-//                        if(!iterL->advance()){
-//                            if(leftBox.size()!=0&&rightBox.size()!=0){
-//                                MyDB_RecordPtr recl = leftSorted.getEmptyRecord ();
-//                                MyDB_RecordPtr recr = rightSorted.getEmptyRecord ();
-//                                mergeRecs(recl, recr, leftBox, rightBox, output, mySchemaOut);
->>>>>>> origin/master
-//
-//
-//                            }
-//                        }
-//                        
-//                    }
-//                }else{
-//                    cout << "L: rec != vec.rec\n";
-//                    cout << "L still.\n";
-//                    stillNum++;
-//                    leftMove = false;
-//                }
-//            }
-//            if (rightMove) {
-//                
-//                //int rightNextState=nextState(equalityCheck.second, rightBox,iterR,recR,rightPred);
-//                MyDB_RecordPtr temp = rightSorted.getEmptyRecord ();
-//                MyDB_RecordIteratorAltPtr myIter = rightBox.front().getIteratorAlt ();
-//                myIter->getCurrent (temp);
-//                cout << "vec rec: " << temp << "\n";
-//
-//                function <bool ()> f1 = buildRecordComparator(temp, recR, equalityCheck.second);
-//                function <bool ()> f2 = buildRecordComparator(recR, temp, equalityCheck.second);
-//                if(!f1() && !f2()){
-//                    cout << "R: rec = vec.rec\n";
-//                    int check = checkSingleAcceptance(rightPred,iterR,recR);
-//                    if(check ==1){
-//                        if(leftBox.size()!=0&&rightBox.size()!=0){
-//                            MyDB_RecordPtr recl = leftSorted.getEmptyRecord ();
-//                            MyDB_RecordPtr recr = rightSorted.getEmptyRecord ();
-//                            mergeRecs(recl, recr, leftBox, rightBox, output, mySchemaOut);
-//
-//                        }
-//                        break;
-//                    }else if(check==2){
-//                        continue;
-//                    } else {
-//                        cout << "R: push...\n";
-//                        if (!rightBox.back().append(recR)) {
-//                            MyDB_PageReaderWriter newPage (*rightInput->getBufferMgr());
-//                            newPage.append(recR);
-//                            leftBox.push_back(newPage);
-//                        }
-//                        if(!iterR->advance()){
-//                            if(leftBox.size()!=0&&rightBox.size()!=0){
-//                                MyDB_RecordPtr recl = leftSorted.getEmptyRecord ();
-//                                MyDB_RecordPtr recr = rightSorted.getEmptyRecord ();
-//                                mergeRecs(recl, recr, leftBox, rightBox, output, mySchemaOut);
-//
-//
-//                            }
-//                        }
-//                    }
-//                }else{
-//                    cout << "R: rec != vec.rec\n";
-//                    cout << "R: right still.\n";
-//                    stillNum++;
-//                    rightMove = false;
-//                }
-//            }
-//            
-//            cout << "L vec:\n";
-//            MyDB_RecordPtr temp = leftSorted.getEmptyRecord ();
-//            for (MyDB_PageReaderWriter p: leftBox) {
-//                MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
-//                while (myIter->advance ()) {
-//                    myIter->getCurrent (temp);
-//                    cout << temp << "\n";
-//                }
-//            }
-//            cout << "R vec: \n";
-//            for (MyDB_PageReaderWriter p: rightBox) {
-//                MyDB_RecordPtr temp = rightSorted.getEmptyRecord ();
-//                
-//                    MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
-//                    while (myIter->advance ()) {
-//                        myIter->getCurrent (temp);
-//                        cout << temp << "\n";
-//                    }
-//                
-//            }
-//            
-//            if(!rightMove && !leftMove){
-//                cout << "L vec:\n";
-//                
-//                for (MyDB_PageReaderWriter p: leftBox) {
-//                    MyDB_RecordPtr temp = leftSorted.getEmptyRecord ();
-//                    MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
-//                    while (myIter->advance ()) {
-//                        myIter->getCurrent (temp);
-//                        cout << temp << "\n";
-//                    }
-//                }
-//                cout << "R vec: \n";
-//                for (MyDB_PageReaderWriter p: rightBox) {
-//                    MyDB_RecordPtr temp = rightSorted.getEmptyRecord ();
-//                    MyDB_RecordIteratorAltPtr myIter = p.getIteratorAlt ();
-//                        while (myIter->advance ()) {
-//                            myIter->getCurrent (temp);
-//                            cout << temp << "\n";
-//                        }
-//                    
-//                }
-//                MyDB_RecordPtr recl = leftSorted.getEmptyRecord ();
-//                MyDB_RecordPtr recr = rightSorted.getEmptyRecord ();
-//                mergeRecs(recl, recr, leftBox, rightBox, output,mySchemaOut);
-//                leftBox.clear();
-//                rightBox.clear();
-//                leftMove = true;
-//                rightMove = true;
-//            }
-//        }
-//    }
-////
 //}
 
 //
@@ -897,119 +623,119 @@ void SortMergeJoin:: run (){
 //        
 //    }
 //}
-    bool leftShouldMove=true;
-    bool rightShouldMove=true;
-    bool leftShouldAdd=true;
-    bool rightShouldAdd=true;
-    MyDB_RecordPtr recLNext = leftSorted.getEmptyRecord ();
-    MyDB_RecordPtr recRNext = leftSorted.getEmptyRecord ();
-    while(true){
-        if(leftShouldMove){
-            if(!iterL->advance()){
-                break;
-            }else{
-                iterL->getCurrent(recL);
-                cout << "left rec" << recL << "\n";
-            }
-        }
-        
-        if(!leftPred ()->toBool ()){
-            leftShouldMove=true;
-            continue;
-        }else {
-            leftShouldMove=false;
-        }
-        
-        if(rightShouldMove){
-            if(!iterR->advance()){
-                break;
-            }else{
-                iterR->getCurrent(recR);
-                cout << "right rec" << recR << "\n";
-
-            }
-        }
-        if(!rightPred ()->toBool ()){
-            rightShouldMove=true;
-            continue;
-        }else {
-            rightShouldMove=false;
-        }
-        
-        
-        
-        if(leftShouldAdd){
-            MyDB_PageReaderWriter prwL(*leftInput->getBufferMgr());
-            prwL.append(recL);
-            leftBox.push_back(prwL);
-            while(true){
-                if(!iterL->advance()){
-                    break;
-                }else{
-                    iterL->getCurrent(recLNext);
-                    cout << "left add rec" << recL << "\n";
-                    
-                }
-                cout << equalityCheck.first << "\n";
-                function <bool ()> f1 = buildRecordComparator(recLNext, recL, equalityCheck.first);
-                function <bool ()> f2 = buildRecordComparator(recL, recLNext, equalityCheck.first);
-                // 若左边vector的元素与该元素相同
-                if(!f1() && !f2()){
-                    prwL.append(recL);
-                } else {
-                    leftShouldMove=false;
-                    break;
-                }
-            }
-        }
-
-        
-        if(rightShouldAdd){
-            MyDB_PageReaderWriter prwR(*rightInput->getBufferMgr());
-            prwR.append(recR);
-            rightBox.push_back(prwR);
-            while(true){
-                if(!iterR->advance()){
-                    break;
-                }else{
-                    iterR->getCurrent(recRNext);
-                    cout << "right add rec" << recR << "\n";
-                    cout << "right next rec "<<recRNext << "\n";
-                }
-                function <bool ()> f3 = buildRecordComparator(recRNext, recR, equalityCheck.second);
-                function <bool ()> f4 = buildRecordComparator(recR, recRNext, equalityCheck.second);
-                if(!f4() && !f3()){
-                    prwR.append(recR);
-                } else {
-                    rightShouldMove=false;
-                    break;
-                }
-            }
-        }
-        
-        if(leftSmaller()->toBool()){
-            leftShouldAdd=true;
-            rightShouldAdd=false;
-            recL=recLNext;
-            leftBox.clear();
-        } else if(rightSmaller()->toBool()){
-            leftShouldAdd=false;
-            rightShouldAdd=true;
-            recR=recRNext;
-            rightBox.clear();
-            
-        } else{
-            
-            mergeRecs(recL, recR, leftBox, rightBox, output,mySchemaOut);
-            leftShouldAdd=true;
-            rightShouldAdd=true;
-            recR=recRNext;
-            recL=recLNext;
-            leftBox.clear();
-            rightBox.clear();
-        }
-        
-    }
+//    bool leftShouldMove=true;
+//    bool rightShouldMove=true;
+//    bool leftShouldAdd=true;
+//    bool rightShouldAdd=true;
+//    MyDB_RecordPtr recLNext = leftSorted.getEmptyRecord ();
+//    MyDB_RecordPtr recRNext = leftSorted.getEmptyRecord ();
+//    while(true){
+//        if(leftShouldMove){
+//            if(!iterL->advance()){
+//                break;
+//            }else{
+//                iterL->getCurrent(recL);
+//                cout << "left rec" << recL << "\n";
+//            }
+//        }
+//        
+//        if(!leftPred ()->toBool ()){
+//            leftShouldMove=true;
+//            continue;
+//        }else {
+//            leftShouldMove=false;
+//        }
+//        
+//        if(rightShouldMove){
+//            if(!iterR->advance()){
+//                break;
+//            }else{
+//                iterR->getCurrent(recR);
+//                cout << "right rec" << recR << "\n";
+//
+//            }
+//        }
+//        if(!rightPred ()->toBool ()){
+//            rightShouldMove=true;
+//            continue;
+//        }else {
+//            rightShouldMove=false;
+//        }
+//        
+//        
+//        
+//        if(leftShouldAdd){
+//            MyDB_PageReaderWriter prwL(*leftInput->getBufferMgr());
+//            prwL.append(recL);
+//            leftBox.push_back(prwL);
+//            while(true){
+//                if(!iterL->advance()){
+//                    break;
+//                }else{
+//                    iterL->getCurrent(recLNext);
+//                    cout << "left add rec" << recL << "\n";
+//                    
+//                }
+//                cout << equalityCheck.first << "\n";
+//                function <bool ()> f1 = buildRecordComparator(recLNext, recL, equalityCheck.first);
+//                function <bool ()> f2 = buildRecordComparator(recL, recLNext, equalityCheck.first);
+//                // 若左边vector的元素与该元素相同
+//                if(!f1() && !f2()){
+//                    prwL.append(recL);
+//                } else {
+//                    leftShouldMove=false;
+//                    break;
+//                }
+//            }
+//        }
+//
+//        
+//        if(rightShouldAdd){
+//            MyDB_PageReaderWriter prwR(*rightInput->getBufferMgr());
+//            prwR.append(recR);
+//            rightBox.push_back(prwR);
+//            while(true){
+//                if(!iterR->advance()){
+//                    break;
+//                }else{
+//                    iterR->getCurrent(recRNext);
+//                    cout << "right add rec" << recR << "\n";
+//                    cout << "right next rec "<<recRNext << "\n";
+//                }
+//                function <bool ()> f3 = buildRecordComparator(recRNext, recR, equalityCheck.second);
+//                function <bool ()> f4 = buildRecordComparator(recR, recRNext, equalityCheck.second);
+//                if(!f4() && !f3()){
+//                    prwR.append(recR);
+//                } else {
+//                    rightShouldMove=false;
+//                    break;
+//                }
+//            }
+//        }
+//        
+//        if(leftSmaller()->toBool()){
+//            leftShouldAdd=true;
+//            rightShouldAdd=false;
+//            recL=recLNext;
+//            leftBox.clear();
+//        } else if(rightSmaller()->toBool()){
+//            leftShouldAdd=false;
+//            rightShouldAdd=true;
+//            recR=recRNext;
+//            rightBox.clear();
+//            
+//        } else{
+//            
+//            mergeRecs(recL, recR, leftBox, rightBox, output,mySchemaOut);
+//            leftShouldAdd=true;
+//            rightShouldAdd=true;
+//            recR=recRNext;
+//            recL=recLNext;
+//            leftBox.clear();
+//            rightBox.clear();
+//        }
+//        
+//    }
 
 }
     
@@ -1074,19 +800,13 @@ void SortMergeJoin:: mergeRecs (MyDB_RecordPtr leftRec, MyDB_RecordPtr rightRec,
         
         while(iterR->advance()){
             iterR->getCurrent(rightRec);
-<<<<<<< HEAD
-            cout << "join---\n";
-            
-=======
-//            cout << "rightRec" << leftRec <<"\n";
->>>>>>> origin/master
+
             MyDB_RecordPtr outputRec = output->getEmptyRecord ();
             if (finalPredicate ()->toBool ()) {
                 cout << "qualify for final predicate\n";
                 // run all of the computations
                 int i = 0;
                 for (auto f : finalComputations) {
-                    cout << "function output: " << f()->toString() << "\n";
                     outputRec->getAtt (i++)->set (f());
                 }
                 
