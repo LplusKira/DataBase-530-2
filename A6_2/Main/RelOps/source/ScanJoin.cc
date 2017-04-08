@@ -135,7 +135,9 @@ void ScanJoin :: run () {
 	for (string s : projections) {
 		finalComputations.push_back (combinedRec->compileComputation (s));
 	}
-
+    for (auto f : finalComputations) {
+        cout << "FUNCTION" << f()->toString()<<"\n";
+    }
 	// this is the output record
 	MyDB_RecordPtr outputRec = output->getEmptyRecord ();
 	

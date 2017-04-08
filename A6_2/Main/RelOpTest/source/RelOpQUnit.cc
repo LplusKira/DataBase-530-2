@@ -65,10 +65,10 @@ int main () {
     // load up from a text file
     cout << "loading left table.\n";
     // supplierTableL->loadFromTextFile ("smallSupplier.tbl");
-   	supplierTableL->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A6_2/Build/supplier.tbl");
+   	supplierTableL->loadFromTextFile ("/Users/xiajunru/Code/DataBase-530-2/A6_2/Build/supplier.tbl");
     
     cout << "loading right table.\n";
-    supplierTableRNoBPlus->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A6_2/Build/supplierBig.tbl");
+    supplierTableRNoBPlus->loadFromTextFile ("/Users/xiajunru/Code/DataBase-530-2/A6_2/Build/supplierBig.tbl");
    	// supplierTableRNoBPlus->loadFromTextFile ("supplierBig.tbl");
     
     
@@ -166,11 +166,11 @@ int main () {
         }
     }
     
-    MyDB_BPlusTreeReaderWriterPtr supplierTableR = make_shared <MyDB_BPlusTreeReaderWriter> ("r_address", myTableRight, myMgr);
-    MyDB_TablePtr myTableRightNoBPlus = make_shared <MyDB_Table> ("supplierRightNoBPlus", "supplierRightNoBPlus.bin", mySchemaR);
+    //MyDB_BPlusTreeReaderWriterPtr supplierTableR = make_shared <MyDB_BPlusTreeReaderWriter> ("r_address", myTableRight, myMgr);
+//    MyDB_TablePtr myTableRightNoBPlus = make_shared <MyDB_Table> ("supplierRightNoBPlus", "supplierRightNoBPlus.bin", mySchemaR);
     
-    cout << "loading right into B+-Tree indexed on r_address.\n";
-    supplierTableR->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A6_2/Build/supplierBig.tbl");
+  //  cout << "loading right into B+-Tree indexed on r_address.\n";
+    //supplierTableR->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A6_2/Build/supplierBig.tbl");
     
 
 }
