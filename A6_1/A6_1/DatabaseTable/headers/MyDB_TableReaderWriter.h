@@ -55,7 +55,7 @@ public:
 
 	// load a text file into this table
 	void loadFromTextFile (string fromMe);
-
+getCurrent
 	// dump the contents of this table into a text file
 	void writeIntoTextFile (string toMe);
 
