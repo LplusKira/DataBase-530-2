@@ -697,3 +697,704 @@ The output should be 11103008:
 11103008|
 Testing OK (0 tests, 0 ok, 0 failed)
 Program ended with exit code: 0
+
+
+loading left table.
+loading right table.
+
+Running selection.
+First result should be:
+Supplier#000000003|1|11-383-516-1199 4192.400000 furiously regular instructions impress slyly! carefu|
+
+Supplier#000000003|1|11-383-516-1199 4192.400000 furiously regular instructions impress slyly! carefu|
+Supplier#000000029|1|11-555-705-5922 -811.620000 blithely pending theodolites are carefully ironic requests! fluffily express instructions ab|
+Supplier#000000071|1|11-743-919-7272 8179.680000 ironic requests after the regular, bold|
+Supplier#000000127|1|11-265-565-1616 2502.950000 special, special deposits wake carefully across the even theodolites. slyly even|
+Supplier#000000184|1|11-802-685-1889 7448.530000 express deposits print. carefu|
+Supplier#000000186|1|11-398-253-5445 4397.480000 carefully final packages against the slyly final packages doubt blithely along th|
+Supplier#000000203|1|11-257-649-3327 2150.780000 bold instructions integrate carefully ironic request|
+Supplier#000000230|1|11-819-222-2128 2975.980000 ironic deposits lose furiously. furiously iron|
+Supplier#000000244|1|11-556-986-9638 5489.080000 fluffily pending requests haggle carefully express theodolite|
+Supplier#000000297|1|11-562-493-7660 4954.570000 bold foxes haggle quickly silent |
+Supplier#000000336|1|11-866-373-2323 3603.620000 carefully even packages promise slyly according to the regular excuses? slyly bold r|
+Supplier#000000363|1|11-220-343-2951 505.690000 carefully ironic dolphins above the carefully ironic accounts cajole quickly furiously|
+Supplier#000000430|1|11-541-204-3496 939.220000 express requests cajole blithely ironic deposits. carefully pending packages breach carefully abou|
+Supplier#000000485|1|11-779-798-5195 6282.720000 regular hockey players cajole carefully furiously regular asymptotes. foxes about the furi|
+Supplier#000000518|1|11-853-939-1266 -199.770000 final, final packages after the quickly brave requests sleep quickly according |
+Supplier#000000521|1|11-887-652-3799 507.990000 bold accounts lose slyly alongside of the express, final accounts. furio|
+Supplier#000000539|1|11-844-496-3836 5976.600000 fluffily regular packages hang slyly deposits. special acc|
+Supplier#000000544|1|11-471-707-9878 9042.700000 regular, ironic accounts across the regular courts haggle care|
+Supplier#000000567|1|11-390-878-2811 5264.910000 doggedly unusual ideas wake furiously ir|
+Supplier#000000624|1|11-487-571-9291 9497.650000 express, daring deposits mold. fluffily even asymptotes lose sometimes across the pending dependen|
+Supplier#000000678|1|11-465-565-3513 -58.410000 carefully final deposits cajole carefully. carefully unusua|
+Supplier#000000714|1|11-165-805-5563 6077.060000 blithely dogged requests nag carefully. |
+Supplier#000000721|1|11-788-642-3247 4179.150000 idle foxes wake about the furiously regular packages. regular packages wake car|
+Supplier#000000725|1|11-382-323-5460 9077.740000 ideas use carefully besides the |
+Supplier#000000730|1|11-468-792-6804 5903.850000 fluffily express foxes sleep |
+Supplier#000000748|1|11-549-384-3124 1084.180000 final forges cajole quickly careful|
+Supplier#000000792|1|11-678-517-4073 4128.400000 furiously even accounts nod enticingly about the final requests. blith|
+Supplier#000000801|1|11-673-791-6926 976.530000 quickly bold frays are blithely. furiously regular foxes ar|
+Supplier#000000836|1|11-892-817-2809 -256.130000 final accounts cajole. furious pinto beans haggle furiously acros|
+Supplier#000000849|1|11-608-566-4693 1955.970000 regular, even requests integrate slyly regular attainments: quic|
+Supplier#000000852|1|11-574-892-3228 213.410000 Customer into beans haggle fRecommendsuctions. |
+Supplier#000000868|1|11-255-295-8702 6239.020000 slyly bold packages integrate furi|
+Supplier#000000873|1|11-253-186-4222 -951.700000 regular instructions wake furiously. furiously unu|
+Supplier#000000886|1|11-329-720-1904 -158.080000 special Tiresias are across the |
+Supplier#000000945|1|11-785-307-6941 1706.260000 carefully final deposits haggle foxe|
+Supplier#000000950|1|11-888-171-3390 4992.530000 even excuses wake closely around the furiously final pack|
+Supplier#000000985|1|11-131-656-2612 3524.100000 slyly unusual theodolites mold. regular, r|
+Supplier#000000989|1|11-895-219-9405 9098.640000 quickly quick instructions subl|
+Supplier#000001020|1|11-878-636-2246 8957.030000 quickly final sentiments about the regular reques|
+Supplier#000001076|1|11-392-708-2761 -127.820000 requests cajole across the slyly permanent deposits. foxes boost about the bl|
+Supplier#000001084|1|11-649-814-3238 6342.390000 slyly bold deposits nag carefully ironic dependencies. busily careful gifts wake. even accounts hagg|
+Supplier#000001110|1|11-569-316-3148 8684.910000 carefully express requests snooze quickly atop the|
+Supplier#000001124|1|11-219-426-9501 7147.220000 bravely unusual accounts are blithely. silent requests nag fluffily among the final foxes.|
+Supplier#000001136|1|11-934-752-5769 1058.120000 furiously even instructions play permanently quick instructions. regul|
+Supplier#000001186|1|11-965-958-9493 2177.900000 carefully pending deposits detect. ideas nag unusual pinto beans. careful, unu|
+Supplier#000001213|1|11-983-419-9576 4528.360000 slyly even pinto beans wake against the bu|
+Supplier#000001224|1|11-130-646-8654 681.750000 blithely even courts believe furiously unusual |
+Supplier#000001270|1|11-361-350-6820 -931.300000 furiously regular deposits w|
+Supplier#000001280|1|11-150-679-8962 -239.730000 slyly regular accounts are. furiously unusual reque|
+Supplier#000001360|1|11-456-537-2079 8831.620000 accounts among the final, regular requests sleep fluffily among the braids. blithel|
+Supplier#000001402|1|11-772-363-1023 4318.640000 blithely final packages boost slyly blithely even courts. unusual, bold packages nag even, |
+Supplier#000001509|1|11-279-103-1417 3202.800000 furiously final theodolites thrash furiously across the unusual deposits. even |
+Supplier#000001533|1|11-951-380-7283 3905.030000 courts boost after the furiously regular |
+Supplier#000001544|1|11-583-499-2115 4875.650000 carefully ironic accounts haggle. dolphins are carefully. deposits are quick|
+Supplier#000001573|1|11-442-876-5702 8879.380000 ironic, regular requests wake. excuses haggle quickly. regu|
+Supplier#000001596|1|11-975-377-2012 4476.880000 slyly unusual ideas detect. slyly express cour|
+Supplier#000001647|1|11-385-158-8420 3980.160000 carefully even foxes integrate deposits. theodolites nod along the slyly iro|
+Supplier#000001660|1|11-776-129-4391 5160.520000 quickly final foxes are about the quic|
+Supplier#000001734|1|11-870-214-4915 4289.210000 slyly special pinto beans wake b|
+Supplier#000001743|1|11-207-443-2441 1789.340000 slyly bold requests above the carefully bold dependencies are slyly fluffily e|
+Supplier#000001771|1|11-454-451-6630 96.690000 blithely final asymptotes hinder fluffily across the express dependenci|
+Supplier#000001810|1|11-898-840-2232 8872.570000 final, bold deposits among the furiously iron|
+Supplier#000001811|1|11-386-195-3467 3308.010000 final accounts boost blithely|
+Supplier#000001823|1|11-830-153-4103 1531.110000 furiously regular accounts boost blithely. carefully silent asymptotes use. even|
+Supplier#000001854|1|11-745-535-4762 4165.950000 express notornis accordin|
+Supplier#000001884|1|11-365-480-4166 6534.520000 carefully silent theodolites nag carefully accor|
+Supplier#000001902|1|11-946-831-5480 4439.840000 ideas detect carefully against the blithely unusual theodolites. quic|
+Supplier#000001918|1|11-217-221-7821 1596.800000 furiously ironic packages wake slyly about the a|
+Supplier#000001936|1|11-551-397-1062 5431.480000 furiously bold requests cajole |
+Supplier#000001957|1|11-515-919-7083 5059.140000 carefully furious instructions cajole blithely. quickly express realms|
+Supplier#000001965|1|11-456-304-1204 8277.830000 slyly even platelets among the slyly bold frays need |
+Supplier#000001991|1|11-471-846-5069 -32.990000 carefully express pinto beans are furiously even w|
+Supplier#000002017|1|11-940-342-7501 6990.210000 blithely regular accounts haggle blithely. furiously regular asympt|
+Supplier#000002052|1|11-224-324-5343 7307.430000 ruthlessly regular courts boost according to the carefully ironic courts. slyly ironi|
+Supplier#000002057|1|11-681-744-9905 1303.420000 blithely final packages about the carefully final patterns are above the carefully bold instruc|
+Supplier#000002058|1|11-980-686-5901 3580.780000 quickly pending instructions sleep blithe|
+Supplier#000002107|1|11-908-103-6980 3497.990000 brave, unusual dependencies dazzle doggedly quickly unusual dependencies. even, |
+Supplier#000002111|1|11-737-158-4268 5010.930000 regular ideas boost; slyly blithe packages are blithely acro|
+Supplier#000002122|1|11-783-408-5959 5166.330000 final, even requests are slyly. furiously bold theodolite|
+Supplier#000002128|1|11-399-786-1151 2609.040000 slyly regular requests doubt. carefully special packages about the carefully bold foxes are qui|
+Supplier#000002143|1|11-501-507-4162 6328.840000 final sauternes detect slyly around the packages. fluffily final deposits cajole carefully express |
+Supplier#000002174|1|11-235-588-6823 2472.940000 slyly regular platelets are fluffily. slyly regula|
+Supplier#000002199|1|11-949-843-4841 3241.140000 regular, regular dolphins against the quickly regular decoys|
+Supplier#000002250|1|11-700-606-9453 -547.480000 unusual, regular pinto beans cajole fluffily furiously regular requests. furiously regular deposits |
+Supplier#000002291|1|11-877-834-5524 134.300000 final foxes wake: packages nag furiously regular packages. carefully regular p|
+Supplier#000002316|1|11-715-299-6551 -431.150000 always final theodolites unwind slyly blithely ironic requests. furiously ironic packages s|
+Supplier#000002320|1|11-550-946-1118 7565.720000 furious, unusual packages wake. slyly regular realms are after the slyly |
+Supplier#000002332|1|11-222-148-3911 8583.560000 furiously regular foxes x-ray quickly slowly pending excuses. pending, bold ideas sleep sheaves. r|
+Supplier#000002359|1|11-732-769-1277 9493.580000 regular pinto beans nag slyly above the regular excuses. express packages integrate alon|
+Supplier#000002429|1|11-874-703-1500 374.710000 final, regular pinto beans sleep furiously. furiously even excuse|
+Supplier#000002463|1|11-936-730-2756 1228.970000 accounts sleep enticing, regular epitaphs. pending ideas affix! ironic, expre|
+Supplier#000002491|1|11-501-249-4467 6986.490000 carefully unusual excuses haggle quickly bold, final requests: requests are. pending pinto beans a|
+Supplier#000002493|1|11-286-640-4677 4095.800000 quickly final foxes haggle furiously alongside of the express, ironic deposits. carefully|
+Supplier#000002502|1|11-806-724-3037 5344.680000 fluffily final deposits wake carefully bold accounts; silent accounts s|
+Supplier#000002515|1|11-930-354-3487 3826.430000 ironic deposits wake. instructions according to the carefully regular packages haggle fluff|
+Supplier#000002519|1|11-817-659-6741 6121.850000 furiously express packages haggle. slyly regular instructions wake blithely. |
+Supplier#000002547|1|11-535-325-9392 1652.660000 theodolites are boldly according to the even |
+Supplier#000002612|1|11-841-636-6934 4890.380000 idly bold dugouts could have to poach-- slyly iron|
+Supplier#000002633|1|11-157-698-5285 9234.140000 unusual pinto beans use slyly quickly special hockey players! final, ironic theodolites after the |
+Supplier#000002686|1|11-817-316-3479 3249.790000 fluffily unusual requests boost carefully. regular a|
+Supplier#000002733|1|11-998-190-8682 7284.290000 carefully silent requests cajole furiously across the ironi|
+Supplier#000002734|1|11-251-919-8885 6168.310000 slyly close packages integrate blithel|
+Supplier#000002745|1|11-409-317-7941 9599.250000 slyly final accounts wake slyly furiously final foxes. quickly regular requests haggl|
+Supplier#000002762|1|11-404-694-4902 8039.560000 slyly pending requests cajole silently regular requests. permanent, f|
+Supplier#000002803|1|11-452-177-8866 6214.590000 regular, pending pinto beans nag carefully. blithely unusual requests sleep along|
+Supplier#000002808|1|11-279-836-2483 5547.470000 final requests affix carefully. requests are. pending attainments cajole about|
+Supplier#000002821|1|11-556-875-5083 3844.020000 slyly stealthy instructions according to the quietly reg|
+Supplier#000002843|1|11-544-776-8269 9685.370000 ironic braids cajole blithely. quickly final braids haggle silent, regular depth|
+Supplier#000002880|1|11-518-907-4132 -192.700000 final packages promise sly|
+Supplier#000002883|1|11-895-494-6558 7060.570000 regular deposits sleep. final dolphins are slyly. furiously ironic requests play caref|
+Supplier#000002886|1|11-653-573-9355 8715.180000 quickly ironic accounts cajole carefully about the slyly ir|
+Supplier#000002899|1|11-995-163-2776 4854.300000 furiously regular packages wake carefully even ideas. ruthless tit|
+Supplier#000002928|1|11-292-804-3769 2722.160000 fluffily pending deposits haggl|
+Supplier#000002957|1|11-471-704-2831 2521.470000 furiously express requests cajole slyly alongside of the |
+Supplier#000002977|1|11-983-724-5780 5582.070000 quickly special packages after the sometim|
+Supplier#000002982|1|11-661-855-9797 8085.360000 bold theodolites wake. slyly final packages might use slyly c|
+Supplier#000003005|1|11-352-166-3995 -361.140000 blithely regular accounts haggle carefully carefully close asymptotes. quickly pending dolphins|
+Supplier#000003006|1|11-335-383-5953 227.500000 fluffily blithe requests wake quickly packages. final acco|
+Supplier#000003010|1|11-900-702-4200 8793.400000 quickly regular deposits above the |
+Supplier#000003065|1|11-110-407-1470 6515.910000 pending, unusual gifts wake slyly. furiou|
+Supplier#000003119|1|11-940-295-5414 4589.250000 furiously express excuses wake slyly foxes. slyly final theodolites |
+Supplier#000003174|1|11-951-431-9601 4217.050000 bold packages haggle grou|
+Supplier#000003194|1|11-240-988-6083 9494.430000 furiously final requests use careful forges. idl|
+Supplier#000003209|1|11-553-898-5474 9560.500000 furiously silent asymptotes detect quickly. regular plat|
+Supplier#000003210|1|11-430-492-3540 4437.400000 blithely bold ideas are furiously. ironic, thin asympto|
+Supplier#000003311|1|11-456-830-2285 9302.810000 requests are carefully final requests. special |
+Supplier#000003321|1|11-342-967-5637 7271.070000 regular accounts across the ironi|
+Supplier#000003351|1|11-368-852-9514 9703.050000 bold asymptotes integrate slyly. pending deposits nag blithely final packages. even excuses are alon|
+Supplier#000003404|1|11-874-231-3852 -505.040000 fluffily regular asymptotes sleep quickly according to the unusual theodolites: stealthily|
+Supplier#000003426|1|11-479-973-3507 6152.010000 carefully regular platelets dazzle closely at the packages. carefully special requests caj|
+Supplier#000003453|1|11-164-380-2986 3173.490000 fluffily final pinto beans use about the express packages. carefully permanent theodolites use. |
+Supplier#000003483|1|11-219-915-8886 7331.510000 blithely final deposits haggle blithely along the special instructions. furiously ironic r|
+Supplier#000003495|1|11-927-394-9110 -93.290000 slyly final dolphins are enticingl|
+Supplier#000003510|1|11-925-703-8843 2028.230000 carefully regular theodolites wake alongside of the carefully ironic accounts. quickly even|
+Supplier#000003512|1|11-623-505-6498 3552.830000 unusual ideas detect requests. furiously final waters sleep blithely |
+Supplier#000003535|1|11-193-489-5402 8988.090000 slyly unusual accounts use carefully. final somas unwind furious|
+Supplier#000003554|1|11-249-333-7495 4704.160000 blithely even dependencies nag. re|
+Supplier#000003559|1|11-331-124-2627 980.950000 regular, unusual deposits among the special deposits nag waters. theodolites|
+Supplier#000003570|1|11-463-717-2694 9353.400000 blithely final pinto beans among the even, quiet accounts solve among the quietly unusua|
+Supplier#000003581|1|11-700-180-8215 -280.900000 final foxes wake slyly along the enticing|
+Supplier#000003601|1|11-798-621-2278 -576.520000 quickly final accounts affix after the idle asymptotes. quic|
+Supplier#000003636|1|11-865-296-4467 -542.480000 accounts boost slyly against the|
+Supplier#000003661|1|11-310-974-9282 5975.220000 slowly bold requests maintain according to|
+Supplier#000003743|1|11-124-390-7542 316.950000 slyly express packages against the pinto beans run carefully among |
+Supplier#000003787|1|11-436-875-7720 8135.920000 regular accounts haggle slyly quickly regular fo|
+Supplier#000003789|1|11-732-905-1016 2104.990000 enticing depths believe final hockey players! quickly|
+Supplier#000003790|1|11-386-956-2273 463.920000 furiously even deposits against the quickly special deposits sleep fluffily slyly e|
+Supplier#000003791|1|11-480-272-8893 7079.180000 slyly express packages are furiously after the accounts. even foxes must sleep according to t|
+Supplier#000003804|1|11-224-172-1030 1887.820000 Customer express foxes poach slyly according to the slyly final waComplaints|
+Supplier#000003813|1|11-184-678-5219 16.610000 regular, express pinto beans boost carefully furiously bold instructions. bol|
+Supplier#000003816|1|11-268-642-8469 13.060000 always final packages wake blithely final instructio|
+Supplier#000003841|1|11-315-160-3060 4900.910000 blithely even platelets cajole furiously quickl|
+Supplier#000003859|1|11-545-322-2116 -476.920000 slyly special platelets solve slyly. slyly |
+Supplier#000003916|1|11-405-825-7031 7977.200000 even requests above the blithely final instructions print slyly even foxes. sile|
+Supplier#000004004|1|11-463-394-3524 5878.410000 carefully final asymptotes af|
+Supplier#000004050|1|11-991-167-1187 6157.880000 final, special foxes among the final packages|
+Supplier#000004053|1|11-430-753-8401 1759.730000 regular deposits use fluffily aroun|
+Supplier#000004080|1|11-889-871-5275 1276.510000 regular, final theodolites alongside of the blithely reg|
+Supplier#000004189|1|11-516-663-3922 5722.600000 slyly thin packages haggle carefully regular excuses. fluffily special accounts cajole carefully a|
+Supplier#000004198|1|11-246-592-1391 -257.710000 slyly ironic dolphins wak|
+Supplier#000004210|1|11-364-327-7484 1901.230000 furiously pending deposits above the regular accounts use furiously furiously f|
+Supplier#000004213|1|11-113-216-9762 5147.600000 pending requests haggle ca|
+Supplier#000004214|1|11-934-860-6515 9689.560000 excuses are alongside of the b|
+Supplier#000004227|1|11-223-593-6259 8581.150000 quickly ironic dolphins wake along the final ideas. spe|
+Supplier#000004248|1|11-406-712-9604 6169.940000 slyly ironic courts should wake according to |
+Supplier#000004252|1|11-477-385-8392 -167.040000 furious deposits haggle according to the fluffily ironic asymptotes. furious de|
+Supplier#000004277|1|11-321-241-8114 9768.100000 slyly special packages haggle among the fina|
+Supplier#000004282|1|11-776-775-8792 9923.080000 pinto beans cajole regularly. quick|
+Supplier#000004301|1|11-318-701-1107 8670.570000 accounts haggle final hockey pl|
+Supplier#000004309|1|11-949-992-8497 7025.860000 regular patterns haggle above the slyly e|
+Supplier#000004344|1|11-675-830-4768 1263.790000 special, ironic foxes cajole fluffily along the blit|
+Supplier#000004350|1|11-991-829-4202 -784.440000 blithely express packages for the regular, f|
+Supplier#000004359|1|11-348-761-5898 8407.100000 regular deposits wake slyly about the furiously regu|
+Supplier#000004385|1|11-905-713-8552 233.110000 fluffily even instructions use blithely. deposits cajole slyly about the c|
+Supplier#000004407|1|11-242-234-5325 2175.340000 never unusual excuses are. even packages nag careful|
+Supplier#000004434|1|11-180-941-4852 3568.700000 quickly express deposits nod carefully final, fina|
+Supplier#000004457|1|11-528-153-5161 9563.110000 unusual, unusual foxes nod carefully. slyly final |
+Supplier#000004466|1|11-575-885-9085 7507.870000 furiously regular packages cajole quickly against the even pinto beans. silent requests against t|
+Supplier#000004503|1|11-689-225-1159 9141.110000 furiously even accounts cajole carefully across the fluffily bold dolphins; furiously fina|
+Supplier#000004550|1|11-116-978-6838 -857.610000 ironic packages sleep acc|
+Supplier#000004573|1|11-815-500-7034 -220.670000 deposits sleep. slyly unusual accounts use. regular deposits cajole slyl|
+Supplier#000004581|1|11-817-998-5780 6754.330000 carefully ironic foxes maintain among the even, regular packages. pending frets nag reg|
+Supplier#000004584|1|11-370-348-9815 -942.930000 quickly express theodolites detect carefully grouches; slyly final packages sublate slyly |
+Supplier#000004593|1|11-519-428-6393 9095.310000 sly, regular accounts believe slyly even deposits! furiously pending d|
+Supplier#000004605|1|11-719-718-7122 7487.860000 carefully pending deposits poach. unusual, ironic deposits afte|
+Supplier#000004627|1|11-365-279-1630 547.620000 hockey players wake furiously through the asymptotes. quickly regular packages dazzle car|
+Supplier#000004640|1|11-752-437-5966 233.820000 slyly regular instructions above the deposits are above the final, iron|
+Supplier#000004646|1|11-545-572-2776 8865.600000 final theodolites haggle furiously. excuses among the instructions boost furiously about the re|
+Supplier#000004745|1|11-842-819-5519 2605.870000 quickly unusual instructions haggle busily against the slyly regular deposits. fi|
+Supplier#000004756|1|11-495-288-1993 7941.830000 fluffily ironic accounts nag carefully |
+Supplier#000004762|1|11-235-666-1986 4300.500000 slyly final packages haggle. slyly regular packages after the slyly ironic deposit|
+Supplier#000004773|1|11-927-176-6534 6669.900000 fluffily pending instructions cajole against the carefully ironic courts. furiously enticin|
+Supplier#000004777|1|11-253-268-4805 4433.560000 furiously special excuses across the expres|
+Supplier#000004798|1|11-617-801-8409 8902.210000 fluffily unusual instructi|
+Supplier#000004803|1|11-856-290-9381 3193.580000 dependencies are blithely sly|
+Supplier#000004834|1|11-459-399-3120 3111.600000 warthogs affix blithely silent theodolites. quickly final packages promise sometimes|
+Supplier#000004841|1|11-147-598-6829 6909.010000 slyly even packages detect slyly at t|
+Supplier#000004863|1|11-202-391-2896 4706.050000 blithely final accounts integrate blithely at the accounts. final dolphins c|
+Supplier#000004881|1|11-892-463-7553 8004.560000 special foxes are. carefully regular accounts after|
+Supplier#000004892|1|11-130-125-8633 3584.410000 ironic, close accounts above the fluffily|
+Supplier#000004909|1|11-793-193-3798 556.830000 daringly regular theodolites wake d|
+Supplier#000005006|1|11-843-342-5499 233.410000 idly ironic requests boost carefully unusual asymptotes. regul|
+Supplier#000005011|1|11-737-696-2345 2565.790000 blithely express packages are. bold, |
+Supplier#000005014|1|11-572-644-1147 5535.260000 furiously final accounts sleep according to the even depe|
+Supplier#000005054|1|11-250-265-4737 234.750000 carefully unusual packages haggle above the carefully special deposits. quickly i|
+Supplier#000005059|1|11-693-374-7519 2298.870000 fluffily unusual packages are carefully ironic, silent foxes. slyly ir|
+Supplier#000005091|1|11-489-724-4275 8724.660000 blithely unusual ideas haggle furiousl|
+Supplier#000005098|1|11-810-329-5965 6232.880000 courts poach slyly. slyly special requests sleep blithely slyly special asymptotes. quickly bol|
+Supplier#000005118|1|11-539-770-3350 -797.250000 furiously final ideas cajole alongside of |
+Supplier#000005126|1|11-290-424-9612 3006.990000 silent, final pinto beans|
+Supplier#000005132|1|11-848-121-8561 3979.100000 ironic instructions cajole fluffily. sometimes regular accounts haggle blit|
+Supplier#000005189|1|11-624-175-7408 4100.430000 blithely ironic accounts haggle. regular, regular requests |
+Supplier#000005202|1|11-526-435-3834 2463.460000 pending deposits cajole slyly. silent, unusual decoys play regular, unusual somas: deposits nag fu|
+Supplier#000005203|1|11-214-499-8004 8344.140000 Tiresias wake slyly final foxes. fluffily final asymptotes breach blithely |
+Supplier#000005214|1|11-240-411-9546 1784.320000 pending platelets wake quickly. stealthily even instructions nag furiously according to the slyl|
+Supplier#000005249|1|11-736-568-8463 2470.750000 carefully regular foxes detect slyly. furiousl|
+Supplier#000005314|1|11-561-100-9470 2064.620000 carefully regular deposits are fluffily final packages. quickly special waters acr|
+Supplier#000005324|1|11-272-990-3856 5768.930000 express foxes after the quickly pending deposits print carefully slyly regular instruct|
+Supplier#000005328|1|11-370-937-1426 7978.980000 slyly regular packages would cajole after the bold hockey playe|
+Supplier#000005341|1|11-322-276-9107 5300.560000 silent, fluffy deposits use. carefully even requests sleep bli|
+Supplier#000005342|1|11-646-881-6213 6604.910000 packages haggle against the carefully even accounts. regular excuses sleep furiously a|
+Supplier#000005356|1|11-157-573-1034 7806.950000 pinto beans mold slyly ironic asymptotes. quickly regular deposits|
+Supplier#000005364|1|11-883-386-6571 8871.480000 quickly special pinto beans boost regular deposits|
+Supplier#000005411|1|11-541-551-7273 8153.240000 fluffily even requests sleep blithely carefully regular requests. blithely regul|
+Supplier#000005482|1|11-156-303-6195 6914.940000 carefully ironic theodolites across the final pinto beans cajole|
+Supplier#000005483|1|11-754-883-4135 2428.150000 orbits breach quickly slyly regula|
+Supplier#000005521|1|11-737-993-5777 3457.730000 blithely ironic platelets use regul|
+Supplier#000005532|1|11-484-785-7262 2526.810000 quickly ironic deposits nag fluffily. caref|
+Supplier#000005538|1|11-123-902-2596 9586.440000 carefully final notornis shall have to wake quickly after the quickly regula|
+Supplier#000005564|1|11-413-101-9840 3404.650000 dependencies among the accounts detect furiously quickly bold instruct|
+Supplier#000005584|1|11-492-434-5408 7178.390000 regular, regular deposits wake blithely after the furi|
+Supplier#000005592|1|11-794-377-7804 7862.970000 furiously final ideas haggle blithely deposits. carefully regular requests cajole blithely sl|
+Supplier#000005597|1|11-119-455-3973 5832.730000 evenly sly deposits sleep. furiously final accounts believe blithely above the special fox|
+Supplier#000005600|1|11-715-776-4145 2290.860000 carefully bold instructions detect blithely according to the iro|
+Supplier#000005624|1|11-833-440-6623 1052.140000 quickly even theodolites cajole blit|
+Supplier#000005628|1|11-744-565-6737 5224.320000 carefully final foxes sleep slyly blithely even pinto beans. slyly ironic instructions haggle sl|
+Supplier#000005634|1|11-193-504-6953 2614.110000 blithely enticing dependencies against the theodolites are furiously up the fluffily express excus|
+Supplier#000005638|1|11-790-276-9308 4182.820000 ironic instructions eat instructions. slyly regular |
+Supplier#000005644|1|11-976-815-6424 3675.690000 pending, regular accounts wake furiously requests. blithe, even pinto |
+Supplier#000005660|1|11-379-189-4913 1673.410000 ironic requests against the quickly final deposits hag|
+Supplier#000005693|1|11-716-502-9928 3528.000000 instructions haggle blithely alongside of the furiously pending ideas. bold platelets shou|
+Supplier#000005738|1|11-245-699-6773 1229.580000 carefully regular instructions are pinto beans. silent gifts haggl|
+Supplier#000005739|1|11-660-918-5876 5541.490000 slyly even accounts haggle |
+Supplier#000005759|1|11-746-668-5794 2631.720000 final pinto beans cajole quickly reg|
+Supplier#000005783|1|11-904-393-6389 1248.710000 regular deposits boost carefully among the carefully ironic pa|
+Supplier#000005817|1|11-416-479-2168 7104.560000 bold theodolites are across the ironic theodolite|
+Supplier#000005860|1|11-241-464-1923 6483.100000 slyly special instructions boost-- final ideas wake unusual, even request|
+Supplier#000005883|1|11-595-897-4629 2135.520000 carefully fluffy platelets sleep carefully c|
+Supplier#000005884|1|11-137-953-9158 7598.050000 platelets among the unusual packages sleep fluffily regular|
+Supplier#000005887|1|11-632-582-5967 1099.830000 regular instructions after the stealthily pending deposits are furiously furiously express dep|
+Supplier#000005889|1|11-510-132-4502 4051.720000 furiously regular pinto beans across the somas cajo|
+Supplier#000005944|1|11-301-158-8313 8947.060000 deposits affix quickly. slyly express dolphins detect. furiously regular deposits above the speci|
+Supplier#000005960|1|11-806-364-9633 2964.750000 quickly silent requests d|
+Supplier#000005963|1|11-896-628-1373 761.900000 dependencies haggle above the regular requests. slyly ironic requests nod quickly. quickly pending|
+Supplier#000005972|1|11-832-540-3456 6156.020000 slyly final deposits boost slyly. blithely final deposits use against the slyly |
+Supplier#000005987|1|11-688-883-4586 9821.110000 fluffily ironic packages sleep fluffily blithe|
+Supplier#000006029|1|11-488-306-3669 9410.910000 slyly pending instructions must have to haggle among the s|
+Supplier#000006030|1|11-166-588-6851 9261.330000 furiously unusual deposits haggle enticingly packag|
+Supplier#000006039|1|11-694-980-5971 3486.790000 regular platelets breach platelets. ideas along the ironic frays wake slyly ironic requests. express|
+Supplier#000006049|1|11-991-560-6553 3846.260000 even requests haggle slyly across the slyly final deposits. sl|
+Supplier#000006064|1|11-581-536-8932 9535.480000 express platelets about the blithely bold excuses h|
+Supplier#000006101|1|11-262-814-1479 4054.580000 pending ideas cajole blithely. |
+Supplier#000006102|1|11-580-909-9223 9343.630000 ironic deposits use fluffily alongside of the even accounts|
+Supplier#000006127|1|11-630-893-3735 8766.330000 furiously regular packages are |
+Supplier#000006132|1|11-732-590-2065 2882.230000 blithely silent asymptotes are fluffily-- closely ironic dep|
+Supplier#000006193|1|11-208-207-5184 6753.330000 blithely ironic packages haggle ironically|
+Supplier#000006197|1|11-623-824-1214 8563.410000 ruthless pinto beans hinder carefully. regular, regular ideas nag. express foxes haggle. care|
+Supplier#000006240|1|11-242-258-8709 3518.190000 packages integrate never even deposits. quickly ironi|
+Supplier#000006265|1|11-741-337-7382 6514.720000 slyly final packages are carefully special request|
+Supplier#000006336|1|11-518-414-3019 9024.110000 blithely sly deposits are. regular, f|
+Supplier#000006356|1|11-670-108-2673 1499.780000 even, furious packages cajole regular instructions. ironic packages haggle. deposits sleep acco|
+Supplier#000006365|1|11-662-645-2588 9770.020000 carefully bold sentiments boost. slyly regular requests wa|
+Supplier#000006393|1|11-712-520-5154 3733.560000 regular, express deposits wake. silent deposits nag. furiously |
+Supplier#000006401|1|11-506-872-5124 3198.840000 blithely silent pinto beans wake across the blithely regular instructions. regular, unus|
+Supplier#000006405|1|11-943-664-7522 3772.740000 final dependencies should use ironic theodolites. unusual accounts ac|
+Supplier#000006496|1|11-704-240-1504 618.000000 slyly permanent requests run slyly slyl|
+Supplier#000006588|1|11-239-687-8913 1169.370000 fluffily even hockey players haggle slyly special req|
+Supplier#000006590|1|11-817-638-9323 7440.780000 regular, final ideas haggle. carefully even forges wake. final instructions nag fluffily sl|
+Supplier#000006593|1|11-676-929-1226 2690.880000 carefully express deposits wake furiously at the silentl|
+Supplier#000006594|1|11-794-494-3265 2668.250000 slyly bold instructions wake about the fluffily pending deposits. pending,|
+Supplier#000006600|1|11-834-174-2914 2686.040000 pending pinto beans are furiously. carefully unusual grouches play. furiously close t|
+Supplier#000006602|1|11-262-302-9138 7691.910000 excuses haggle carefully. escapades sleep. special a|
+Supplier#000006608|1|11-892-425-6686 5578.200000 carefully bold accounts haggle. unusual, ironic multipliers cajole carefully. slyly re|
+Supplier#000006618|1|11-187-565-8631 6075.040000 carefully regular foxes cajole carefully among the|
+Supplier#000006671|1|11-876-975-7891 2595.790000 fluffily express deposits among t|
+Supplier#000006714|1|11-859-742-1776 1760.840000 bravely pending foxes above the quickly fina|
+Supplier#000006783|1|11-879-159-6019 3279.410000 requests sleep quickly among the final, sly hockey p|
+Supplier#000006788|1|11-878-632-8562 2108.760000 quickly even warhorses integrate slyly permane|
+Supplier#000006838|1|11-703-493-8571 5799.350000 regular escapades cajole furiously. carefully final ideas haggle slyly. quickly final req|
+Supplier#000006906|1|11-460-499-9621 783.580000 carefully regular dolphins sleep after the pending packages. slyly regular orbits use. sly|
+Supplier#000006964|1|11-529-924-4414 54.350000 quiet, express packages after the somas lose blithely about the finally pen|
+Supplier#000006970|1|11-276-801-2193 7662.040000 final ideas cajole furiously re|
+Supplier#000007031|1|11-494-218-8250 6921.710000 carefully express platelet|
+Supplier#000007035|1|11-243-514-9527 1711.340000 fluffily final theodolites cajole close|
+Supplier#000007041|1|11-194-454-8672 4388.960000 sometimes bold platelets us|
+Supplier#000007118|1|11-780-159-8657 5874.470000 slyly even deposits nag quickly express, regular accounts. furiously ironic instructions detec|
+Supplier#000007126|1|11-745-331-7130 -865.650000 even, even packages use slyly above the slyly f|
+Supplier#000007140|1|11-951-404-8797 9547.110000 blithely special accounts affix blithely|
+Supplier#000007153|1|11-180-518-2987 5239.340000 slyly silent theodolites are. regular, silent pinto beans detect slyl|
+Supplier#000007184|1|11-750-116-8427 9769.310000 blithely unusual accounts haggle among the quickly pending ideas. quickly ironic the|
+Supplier#000007204|1|11-479-802-6397 3556.630000 slyly even pinto beans among the express packages haggle sometimes about the blithely regular fr|
+Supplier#000007212|1|11-332-864-9431 3862.070000 furiously regular packages according|
+Supplier#000007214|1|11-808-331-6755 4426.580000 blithely express pinto beans haggle caref|
+Supplier#000007243|1|11-559-591-5678 3958.360000 regular, bold platelets cajole fluffily ironic pa|
+Supplier#000007254|1|11-458-333-5500 2948.600000 carefully express requests detect final instructions. slyly unusual requests bo|
+Supplier#000007260|1|11-953-899-5018 6094.290000 furiously special ideas hang furiously unusual w|
+Supplier#000007273|1|11-151-346-1839 57.930000 fluffily regular accounts haggle furiously carefully pending pinto beans.|
+Supplier#000007281|1|11-972-878-2238 1436.110000 carefully unusual accounts haggle furiously. blithely silent requests affix furiously|
+Supplier#000007349|1|11-615-661-3009 2236.240000 pending accounts are blithely. always iron|
+Supplier#000007380|1|11-912-946-9060 4219.920000 ironic, special theodolites above the special foxes cajole thinly alongside|
+Supplier#000007388|1|11-603-534-9813 7218.480000 bravely ironic forges sleep fluffily along the furi|
+Supplier#000007435|1|11-448-269-3587 4711.160000 quickly express requests cajole. slyly special|
+Supplier#000007445|1|11-107-152-7059 5090.780000 accounts dazzle slyly against the ironic deposits. ironic, permanent accounts haggle |
+Supplier#000007510|1|11-714-273-4551 387.760000 idly regular deposits sleep blithely ironic excuses. bl|
+Supplier#000007519|1|11-511-610-5276 6133.960000 deposits use among the deposits. furiously regular a|
+Supplier#000007598|1|11-858-435-3889 61.560000 ironic requests are slyly above the pinto beans. |
+Supplier#000007615|1|11-988-945-1706 1135.320000 platelets boost slyly. quickly final theodolites use blithely. unus|
+Supplier#000007685|1|11-251-650-9168 8227.980000 special asymptotes among the quickly final deposits haggle fluffily furiously pend|
+Supplier#000007693|1|11-898-179-8103 -120.330000 carefully silent packages sleep above the car|
+Supplier#000007698|1|11-577-530-7950 6284.490000 unusual packages use slyly. pending theodolites nag. deposits cajole slyly. final accounts wake|
+Supplier#000007699|1|11-168-845-2149 -566.620000 slyly silent dolphins haggle furiously carefully|
+Supplier#000007701|1|11-767-398-7074 5086.740000 final tithes sleep quickly|
+Supplier#000007728|1|11-478-665-9769 -448.000000 carefully even excuses run carefully furiou|
+Supplier#000007733|1|11-739-165-5524 5725.930000 quickly pending accounts use blithely against the blithely regular accounts. ironic accounts s|
+Supplier#000007736|1|11-464-772-6240 2940.750000 special pinto beans cajole th|
+Supplier#000007811|1|11-148-611-9104 1323.490000 permanent, final forges against the deposits haggle regular, final excuses. carefully permanent requ|
+Supplier#000007814|1|11-802-580-9519 1731.450000 bold requests boost. regular accounts |
+Supplier#000007824|1|11-359-394-9378 7295.280000 pending, special dependencies boost quickly carefully express foxes. some|
+Supplier#000007832|1|11-875-310-2765 3585.710000 blithely special requests boost slyly a|
+Supplier#000007867|1|11-506-283-2588 5562.610000 blithely final deposits among the requests en|
+Supplier#000007931|1|11-904-868-7162 9500.540000 dugouts integrate quickly unusual instruct|
+Supplier#000008016|1|11-819-551-4538 6948.620000 tithes could have to boost even, even instructio|
+Supplier#000008021|1|11-923-670-6983 6228.670000 quickly brave packages wake quickly. foxes sleep excus|
+Supplier#000008023|1|11-610-522-7569 9010.570000 ironic, final instructions along the ruthlessly i|
+Supplier#000008036|1|11-461-650-4235 1845.410000 regular deposits cajole fluffily. even, regular requests across the regular excuses sleep|
+Supplier#000008037|1|11-402-790-6442 4838.670000 carefully bold dolphins integrate slyly blithely ironic requests. carefully bold pinto beans be|
+Supplier#000008042|1|11-732-273-4839 -882.770000 slyly bold foxes wake carefully. slyly reg|
+Supplier#000008069|1|11-736-652-2346 6117.720000 regular packages about the fur|
+Supplier#000008072|1|11-742-643-5639 5340.800000 carefully regular requests detect! furiously daring deposits according to the fluffily bol|
+Supplier#000008092|1|11-567-871-6576 -809.130000 regular accounts detect across the furiously ironic foxes. furiously unusual deposits according to t|
+Supplier#000008151|1|11-693-539-5693 2302.310000 quickly express platelets use fluffily af|
+Supplier#000008223|1|11-512-882-5007 8817.990000 fluffily even accounts are slyly instructions. regular deposits across the carefully reg|
+Supplier#000008282|1|11-231-892-1749 2399.600000 quickly final packages dazzle slyly. quietly ironic deposits haggle slyly a|
+Supplier#000008286|1|11-957-208-2220 8768.760000 regular, dogged requests sleep furiously. regular foxes cajole above the carefully specia|
+Supplier#000008299|1|11-789-363-9257 8081.750000 quickly even ideas use. regular packages cajole ab|
+Supplier#000008300|1|11-925-285-3502 35.290000 fluffily sly deposits are carefully at the furio|
+Supplier#000008311|1|11-549-774-3596 8294.320000 final, regular dinos cajo|
+Supplier#000008350|1|11-100-393-5411 9571.650000 blithely ironic packages lose quickly unusual foxes. carefully express accounts cajole! carefu|
+Supplier#000008368|1|11-357-976-6093 797.450000 ironic instructions affix. regular re|
+Supplier#000008380|1|11-258-914-7061 524.030000 deposits haggle. bold accounts thrash slyly blithely regular s|
+Supplier#000008397|1|11-398-138-4822 -543.260000 quickly unusual requests print slyly|
+Supplier#000008413|1|11-775-936-1233 2179.220000 final, regular requests along the slyly regular ideas boost across the furiously sly dependencies.|
+Supplier#000008453|1|11-293-826-4540 2144.320000 carefully regular packages nag furiously re|
+Supplier#000008501|1|11-167-579-7313 1338.710000 slow deposits above the carefully brave requests nag quickly special theodolites.|
+Supplier#000008536|1|11-262-452-2654 -613.820000 regular, express platelets are quickly car|
+Supplier#000008550|1|11-816-674-5599 8539.380000 dependencies according to the requests |
+Supplier#000008555|1|11-878-821-5627 7193.130000 furiously pending platelets against the quickly regular deposits ar|
+Supplier#000008564|1|11-562-252-2472 5382.160000 idly regular asymptotes are fluffily against the blithely expre|
+Supplier#000008573|1|11-327-567-3040 4645.240000 busily ironic packages above the blithely pending requests run carefully about the quic|
+Supplier#000008621|1|11-797-806-5347 4175.930000 blithely ironic dependencies use blithely slyly dogged deposits. packages sleep blithely|
+Supplier#000008630|1|11-530-317-6499 6833.500000 blithely final foxes affix furiously ironic instructions. blithely ironic |
+Supplier#000008763|1|11-596-985-3447 6003.480000 quickly ironic platelets affix boldly about the blithely bold attainments. regular, sp|
+Supplier#000008801|1|11-419-695-2043 90.290000 carefully fluffy platelets are. furiously pending packages solve careful|
+Supplier#000008836|1|11-808-231-8424 762.270000 ironic ideas mold. final, re|
+Supplier#000008855|1|11-503-966-2355 9615.510000 regular instructions boost carefully quietly final ideas. special courts sleep |
+Supplier#000008865|1|11-869-386-7434 8189.770000 furiously unusual platelets serve furiously. furiously unusual package|
+Supplier#000008897|1|11-168-337-8356 3784.150000 slyly ironic dependencies sleep express pinto beans. special packages according to the|
+Supplier#000008907|1|11-665-786-1699 3707.490000 never regular packages use requests. ruthlessly regular instructions haggle. regular hoc|
+Supplier#000008925|1|11-817-315-3677 -516.670000 quickly bold foxes are slyly. |
+Supplier#000008979|1|11-447-925-1778 6638.050000 furiously ironic packages boost quickly regular reques|
+Supplier#000009011|1|11-690-330-1559 2600.880000 blithely ironic theodolites sleep unus|
+Supplier#000009039|1|11-980-238-8041 968.070000 even requests until the express platelets wake quickly|
+Supplier#000009066|1|11-223-726-7237 281.130000 express, even packages thrash blithely. packages sleep furiou|
+Supplier#000009092|1|11-390-819-7605 1354.170000 regular foxes are against the slyly special sheaves. furiously even packages wake above the slyly |
+Supplier#000009093|1|11-274-769-7251 9543.460000 slyly regular foxes above the unusual dep|
+Supplier#000009148|1|11-849-244-8989 9734.960000 slyly regular deposits sleep furiously. ex|
+Supplier#000009154|1|11-562-658-6307 2712.280000 unusual, special pinto beans about the even courts are final, ironic pin|
+Supplier#000009208|1|11-634-874-6154 6423.330000 blithely enticing deposits again|
+Supplier#000009223|1|11-611-493-4880 6325.420000 furiously regular epitaphs haggle final requests. express instructions around the blithely re|
+Supplier#000009229|1|11-538-888-5944 3195.240000 furiously pending accounts eat carefully across|
+Supplier#000009244|1|11-205-683-4279 5419.370000 blithely even foxes cajole around the carefully pending accounts. doggedly pending dependenci|
+Supplier#000009312|1|11-780-379-3162 1551.090000 final somas wake furiously bold foxes. fluffily express ideas use. qui|
+Supplier#000009325|1|11-412-424-5957 1048.960000 sly, special accounts haggle slyly even, silent instructio|
+Supplier#000009350|1|11-864-789-8663 5907.270000 quickly regular theodolites cajole quickly deposits-- blithely even theodolites mold careful|
+Supplier#000009428|1|11-896-966-5146 5429.370000 furiously regular pinto beans caj|
+Supplier#000009431|1|11-731-702-3171 4537.200000 carefully final pinto beans nag furiously above th|
+Supplier#000009448|1|11-945-401-8077 1681.000000 quickly regular requests breach quickly. s|
+Supplier#000009469|1|11-934-586-5383 5140.630000 express, regular frays wake|
+Supplier#000009507|1|11-332-398-3201 -471.220000 packages boost quickly. blithely silent pearl|
+Supplier#000009570|1|11-524-770-2559 82.600000 slyly bold accounts sleep |
+Supplier#000009623|1|11-796-392-8340 7067.640000 deposits are furiously! bold forges haggle carefully.|
+Supplier#000009627|1|11-459-329-1759 7425.470000 dugouts affix. instructions sleep slyly daring deposits. slyly ironic requests wake carefully|
+Supplier#000009644|1|11-481-644-1220 2435.780000 deposits hang idly slyly idle pinto beans. fluffily silent theodolites ar|
+Supplier#000009692|1|11-597-962-7139 9309.380000 special packages across the expr|
+Supplier#000009700|1|11-622-840-3751 9697.710000 carefully special accounts are slyly. carefully unusual deposit|
+Supplier#000009728|1|11-408-583-6730 8712.350000 accounts around the pending accounts nag carefully |
+Supplier#000009736|1|11-524-874-6454 3276.620000 pending instructions lose slyly carefully even excuses. slyly regular ins|
+Supplier#000009737|1|11-322-896-9181 2214.730000 boldly pending accounts boost slyly around the slyly even packages. unusual id|
+Supplier#000009759|1|11-822-433-3967 -269.730000 furiously ironic notornis are furiously aft|
+Supplier#000009767|1|11-892-524-8624 2895.510000 furiously even ideas use even packages. carefully dogged acco|
+Supplier#000009778|1|11-503-621-2157 8553.940000 unusual deposits wake blithely among the even, final packages. foxes about the blithel|
+Supplier#000009810|1|11-888-435-7298 5112.900000 blithely silent ideas around the accounts boost slowly unusual, even senti|
+Supplier#000009841|1|11-889-942-9631 6106.010000 carefully bold accounts shall |
+Supplier#000009845|1|11-847-103-9663 2368.920000 ironic requests after the slyly ironic requests haggle|
+Supplier#000009875|1|11-948-749-5177 6669.440000 carefully ironic deposits use slyly fluffily permane|
+Supplier#000009876|1|11-126-845-5361 1377.530000 furiously regular requests after the packages are after the regular requests.|
+Supplier#000009904|1|11-504-889-1729 9537.430000 dogged accounts boost regular, express excuses. packages wake blithely fluffi|
+Supplier#000009914|1|11-822-973-1163 8915.940000 furiously express dependencies hang slyly. carefully regular deposits sleep.|
+Supplier#000009917|1|11-538-748-5875 -106.210000 carefully permanent instructions sleep dependenc|
+Supplier#000009944|1|11-170-574-6579 -221.200000 instructions above the carefully |
+Supplier#000009948|1|11-573-223-6885 8113.370000 slyly even packages detect|
+Supplier#000009964|1|11-130-318-6328 4741.380000 ironic requests boost packages. quickly quick requests sleep furiously. foxes haggl|
+Supplier#000009998|1|11-122-533-7674 2801.350000 silently final foxes haggle slyly silent requests.|
+running aggregate
+Now we count the records.
+The output should be 413:
+413|
+
+First result should be:
+Supplier#000009428|1|11-896-966-5146 5429.370000 furiously regular pinto beans caj|
+
+Supplier#000009428|1|11-896-966-5146 5429.370000 furiously regular pinto beans caj|
+Supplier#000009431|1|11-731-702-3171 4537.200000 carefully final pinto beans nag furiously above th|
+Supplier#000009448|1|11-945-401-8077 1681.000000 quickly regular requests breach quickly. s|
+Supplier#000009469|1|11-934-586-5383 5140.630000 express, regular frays wake|
+Supplier#000009507|1|11-332-398-3201 -471.220000 packages boost quickly. blithely silent pearl|
+Supplier#000009570|1|11-524-770-2559 82.600000 slyly bold accounts sleep |
+Supplier#000009623|1|11-796-392-8340 7067.640000 deposits are furiously! bold forges haggle carefully.|
+Supplier#000009627|1|11-459-329-1759 7425.470000 dugouts affix. instructions sleep slyly daring deposits. slyly ironic requests wake carefully|
+Supplier#000009644|1|11-481-644-1220 2435.780000 deposits hang idly slyly idle pinto beans. fluffily silent theodolites ar|
+Supplier#000009692|1|11-597-962-7139 9309.380000 special packages across the expr|
+Supplier#000009700|1|11-622-840-3751 9697.710000 carefully special accounts are slyly. carefully unusual deposit|
+Supplier#000009728|1|11-408-583-6730 8712.350000 accounts around the pending accounts nag carefully |
+Supplier#000009736|1|11-524-874-6454 3276.620000 pending instructions lose slyly carefully even excuses. slyly regular ins|
+Supplier#000009737|1|11-322-896-9181 2214.730000 boldly pending accounts boost slyly around the slyly even packages. unusual id|
+Supplier#000009759|1|11-822-433-3967 -269.730000 furiously ironic notornis are furiously aft|
+Supplier#000009767|1|11-892-524-8624 2895.510000 furiously even ideas use even packages. carefully dogged acco|
+Supplier#000009778|1|11-503-621-2157 8553.940000 unusual deposits wake blithely among the even, final packages. foxes about the blithel|
+Supplier#000009810|1|11-888-435-7298 5112.900000 blithely silent ideas around the accounts boost slowly unusual, even senti|
+Supplier#000009841|1|11-889-942-9631 6106.010000 carefully bold accounts shall |
+Supplier#000009845|1|11-847-103-9663 2368.920000 ironic requests after the slyly ironic requests haggle|
+Supplier#000009875|1|11-948-749-5177 6669.440000 carefully ironic deposits use slyly fluffily permane|
+Supplier#000009876|1|11-126-845-5361 1377.530000 furiously regular requests after the packages are after the regular requests.|
+Supplier#000009904|1|11-504-889-1729 9537.430000 dogged accounts boost regular, express excuses. packages wake blithely fluffi|
+Supplier#000009914|1|11-822-973-1163 8915.940000 furiously express dependencies hang slyly. carefully regular deposits sleep.|
+Supplier#000009917|1|11-538-748-5875 -106.210000 carefully permanent instructions sleep dependenc|
+Supplier#000009944|1|11-170-574-6579 -221.200000 instructions above the carefully |
+Supplier#000009948|1|11-573-223-6885 8113.370000 slyly even packages detect|
+Supplier#000009964|1|11-130-318-6328 4741.380000 ironic requests boost packages. quickly quick requests sleep furiously. foxes haggl|
+Supplier#000009998|1|11-122-533-7674 2801.350000 silently final foxes haggle slyly silent requests.|
+running aggregate
+Now we count the records.
+The output should be 29:
+29|
+Do you want to run a:
+	1. Sort merge join.
+	2. Scan join.
+Enter 1 or 2:
+
+running join
+running aggregate
+
+The output should be, in some order:
+Supplier#000002245|32|
+Supplier#000002264|32|
+Supplier#000002265|32|
+Supplier#000002272|32|
+Supplier#000002282|32|
+
+Here goes:
+Supplier#000002245|32|
+Supplier#000002264|32|
+Supplier#000002265|32|
+Supplier#000002272|32|
+Supplier#000002282|32|
+loading right into B+-Tree indexed on r_address.
+running selection
+This should return 32 copies of 'Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular...'
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+Supplier#000009436|aaY,0sdTlrtKjse|I love comments! unusual, regular accounts about the pending deposits are slyly special instructions-- ironic theodo|
+running agg
+
+There should be nine groups, each with 32 records.
+One of them should be '5|Supplier#000000005|5.000000|-283.840000|32|'.
+1|Supplier#000000001|1.000000|5755.940000|32|
+4|Supplier#000000004|4.000000|4641.080000|32|
+8|Supplier#000000008|8.000000|7627.850000|32|
+3|Supplier#000000003|3.000000|4192.400000|32|
+5|Supplier#000000005|5.000000|-283.840000|32|
+7|Supplier#000000007|7.000000|6820.350000|32|
+6|Supplier#000000006|6.000000|1365.790000|32|
+9|Supplier#000000009|9.000000|5302.370000|32|
+2|Supplier#000000002|2.000000|4032.680000|32|
+running agg
+
+There should be 101 groups, each with 3200 records, except for the first and last,
+These should be '0|50.000000|4017.558586|3168|' and
+'100|10000.000000|8968.420000|32|' respectively.
+16|1649.500000|4506.093400|3200|
+23|2349.500000|5119.097100|3200|
+58|5849.500000|4733.111200|3200|
+12|1249.500000|4164.106400|3200|
+14|1449.500000|3894.195700|3200|
+84|8449.500000|4658.591900|3200|
+68|6849.500000|4196.588400|3200|
+8|849.500000|4708.304500|3200|
+47|4749.500000|5122.708700|3200|
+18|1849.500000|4305.682200|3200|
+59|5949.500000|4557.300000|3200|
+13|1349.500000|4299.914400|3200|
+63|6349.500000|4825.617100|3200|
+25|2549.500000|4637.922600|3200|
+55|5549.500000|3591.209200|3200|
+54|5449.500000|5026.674900|3200|
+67|6749.500000|4457.768800|3200|
+43|4349.500000|4187.853500|3200|
+62|6249.500000|4538.948900|3200|
+86|8649.500000|4204.907100|3200|
+3|349.500000|4460.625300|3200|
+87|8749.500000|4294.964800|3200|
+94|9449.500000|4635.854100|3200|
+90|9049.500000|3852.644400|3200|
+5|549.500000|4187.041600|3200|
+53|5349.500000|5059.308500|3200|
+19|1949.500000|3988.179300|3200|
+71|7149.500000|4623.174400|3200|
+99|9949.500000|4874.087900|3200|
+65|6549.500000|4229.006200|3200|
+37|3749.500000|4612.574900|3200|
+82|8249.500000|4797.956600|3200|
+2|249.500000|4479.904600|3200|
+77|7749.500000|4871.653900|3200|
+50|5049.500000|4421.683900|3200|
+44|4449.500000|4584.009600|3200|
+79|7949.500000|4479.900400|3200|
+70|7049.500000|4395.444000|3200|
+34|3449.500000|4531.957800|3200|
+76|7649.500000|4684.874200|3200|
+49|4949.500000|4829.565600|3200|
+80|8049.500000|4689.088500|3200|
+1|149.500000|4549.651600|3200|
+60|6049.500000|4865.069700|3200|
+48|4849.500000|4777.705900|3200|
+6|649.500000|4628.046000|3200|
+61|6149.500000|4648.934400|3200|
+96|9649.500000|3835.300400|3200|
+28|2849.500000|5138.618300|3200|
+75|7549.500000|3786.526800|3200|
+29|2949.500000|4244.261000|3200|
+81|8149.500000|4983.555300|3200|
+52|5249.500000|4084.550100|3200|
+91|9149.500000|4409.783600|3200|
+7|749.500000|4751.982000|3200|
+78|7849.500000|4455.029800|3200|
+36|3649.500000|4421.724300|3200|
+24|2449.500000|4154.249100|3200|
+56|5649.500000|4432.363700|3200|
+10|1049.500000|4289.796300|3200|
+72|7249.500000|4502.568800|3200|
+26|2649.500000|4243.705000|3200|
+69|6949.500000|4517.449400|3200|
+98|9849.500000|4517.981100|3200|
+38|3849.500000|3943.838800|3200|
+30|3049.500000|4732.249000|3200|
+41|4149.500000|4593.182600|3200|
+93|9349.500000|4546.416100|3200|
+89|8949.500000|4957.004500|3200|
+4|449.500000|4439.640000|3200|
+42|4249.500000|4797.600700|3200|
+57|5749.500000|4425.727100|3200|
+40|4049.500000|4002.958900|3200|
+9|949.500000|4477.390300|3200|
+27|2749.500000|4679.627800|3200|
+92|9249.500000|4376.010200|3200|
+97|9749.500000|4848.051400|3200|
+88|8849.500000|4846.134400|3200|
+64|6449.500000|4574.221600|3200|
+17|1749.500000|4588.977200|3200|
+31|3149.500000|4839.502200|3200|
+15|1549.500000|4235.875200|3200|
+95|9549.500000|4566.327500|3200|
+45|4549.500000|5006.372000|3200|
+11|1149.500000|3927.359500|3200|
+35|3549.500000|4622.560200|3200|
+0|50.000000|4017.558586|3168|
+46|4649.500000|5197.660800|3200|
+21|2149.500000|3987.326200|3200|
+74|7449.500000|4372.499200|3200|
+73|7349.500000|5378.605900|3200|
+39|3949.500000|4654.947300|3200|
+51|5149.500000|4214.589900|3200|
+32|3249.500000|4875.653600|3200|
+33|3349.500000|4693.917900|3200|
+83|8349.500000|4761.620500|3200|
+22|2249.500000|4452.890200|3200|
+20|2049.500000|4288.259600|3200|
+85|8549.500000|4361.981900|3200|
+66|6649.500000|4142.490000|3200|
+100|10000.000000|8968.420000|32|
+
+There should be one result: 320000.
+320000|
+Do you want to run a:
+	1. Sort merge join.
+	2. Scan join.
+Enter 1 or 2:
+1
+running join
+Done with the join, now I am counting the result size.
+running aggregate
+
+The output should be
+	0|64|
+	1|96|
+	2|64|
+	3|96|
+	4|192|
+	5|256|
+	6|192|
+	7|96|
+	8|64|
+	9|128|
+	11|288|
+	14|96|
+	15|128|
+	16|128|
+	17|32|
+	19|64|
+	20|384|
+	24|64|
+
+0|64|
+1|96|
+2|64|
+3|96|
+4|192|
+5|256|
+6|192|
+7|96|
+8|64|
+9|128|
+11|288|
+14|96|
+15|128|
+16|128|
+17|32|
+19|64|
+20|384|
+24|64|
+Do you want to run a:
+	1. Sort merge join.
+	2. Scan join.
+Enter 1 or 2:
+1
+running join (may take some time)
+Done with the join, now I am counting the result size.
+running aggregate (may take some time)
+
+The output should be 11103008:
+11103008|
+Testing OK (0 tests, 0 ok, 0 failed)
+Program ended with exit code: 0
