@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/RelOps/source/Aggregate.cc"
-            timestampString = "513291262.648721"
+            timestampString = "513726489.738888"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
+            startingLineNumber = "156"
+            endingLineNumber = "156"
             landmarkName = "Aggregate::run ()"
             landmarkType = "7">
          </BreakpointContent>
@@ -148,7 +148,7 @@
                   moduleName = "relOpUnitTest"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/ScanJoin.cc"
-                  timestampString = "513381334.860668"
+                  timestampString = "513727028.597862"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "138"
@@ -163,7 +163,7 @@
                   moduleName = "relOpUnitTest"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/xiajunru/Code/DataBase-530-2/A6_2/Main/RelOps/source/ScanJoin.cc"
-                  timestampString = "513381334.868675"
+                  timestampString = "513727028.600926"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "138"
@@ -284,6 +284,22 @@
             startingLineNumber = "215"
             endingLineNumber = "215"
             landmarkName = "SortMergeJoin:: run ()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Main/RelOps/source/Aggregate.cc"
+            timestampString = "513726489.738888"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
+            landmarkName = "Aggregate::run ()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

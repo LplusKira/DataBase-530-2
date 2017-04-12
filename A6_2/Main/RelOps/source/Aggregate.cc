@@ -34,7 +34,7 @@ void Aggregate::run () {
     // of all of the records' join keys, and the value is a list of pointers were all
     // of the records with that hsah value are located
     unordered_map <size_t, void *> myHash;
-    unordered_map <size_t, double> sumMap;
+    unordered_map <size_t, vector<double>> sumMap;
     unordered_map <size_t, int> countMap;
     
     MyDB_RecordPtr inputRec = input->getEmptyRecord ();
@@ -107,23 +107,30 @@ void Aggregate::run () {
             int i = 0;
             for (auto f : groupingFunc) {
                 groupedRec->getAtt (i++)->set (f());
+                sumMap[hashVal].push_back(0);
             }
             for (auto p : aggFunc) {
                 if (p.first == cnt) {
                     MyDB_IntAttValPtr att = make_shared<MyDB_IntAttVal>();
                     att->set(countMap[hashVal]);
+                    sumMap[hashVal].push_back(0);
                     groupedRec->getAtt (i)->set (att);
                     i++;
                 }
                 if(p.first==sum){
                     groupedRec->getAtt (i)->set (p.second());
 //                    cout << "bad access: " << groupedRec << "\n";
-                    sumMap[hashVal]=groupedRec->getAtt(i)->toDouble();
+                    sumMap[hashVal].push_back(groupedRec->getAtt(i)->toDouble());
+//                    cout << "sumMap" << sumMap[hashVal].at(i) << "\n";
                     i++;
                 }
                 if(p.first==avg){
+//                    cout << "bad access: " << groupedRec << "i" << i << "\n";
                     groupedRec->getAtt (i)->set (p.second());
-                    sumMap[hashVal]=(groupedRec->getAtt(i)->toDouble())*countMap[hashVal];
+                    sumMap[hashVal].push_back(groupedRec->getAtt(i)->toDouble());
+//                    cout << "sumMap" << sumMap[hashVal].at(i) << "\n";
+//                    cout << "avg" << groupedRec<<"\n";
+//                    sumMap[hashVal]=(groupedRec->getAtt(i)->toDouble())*countMap[hashVal];
                     i=i+1;
                 }
                 
@@ -170,18 +177,27 @@ void Aggregate::run () {
                     groupedRec->getAtt(i)->set(p.second());
 //                    cout << "sum groupedRec" <<groupedRec->getAtt(i)->toDouble()<<"\n";
 //                    sum += groupedRec->getAtt(i)->toDouble();
-                    sumMap[hashVal] += groupedRec->getAtt(i)->toDouble();
+                    sumMap[hashVal].at(i) += groupedRec->getAtt(i)->toDouble();
 //                    cout << "sum hash" <<sumMap[hashVal] <<"\n";
                     MyDB_IntAttValPtr att = make_shared<MyDB_IntAttVal>();
-                    att->set(sumMap[hashVal]);
+                    att->set(sumMap[hashVal].at(i));
                     //                    cout << "pre the val: " << groupedRec->getAtt(i)->toInt() << "\n";
                     groupedRec->getAtt (i)->set (att);
                     i++;
                   
                 } else if (p.first == avg) {
 //                    cout << "AVG\n";
+//                    cout << "groupedRec" <<groupedRec-> getAtt(i)->toDouble()<<"\n";
                     groupedRec->getAtt(i)->set(p.second());
-                    sumMap[hashVal]=(groupedRec->getAtt(i)->toDouble())*countMap[hashVal];
+//                    cout << "sumMap previous" << sumMap[hashVal].at(i) << "\n";
+                    sumMap[hashVal].at(i) += groupedRec->getAtt(i)->toDouble();
+//                    cout << "sumMap after" << sumMap[hashVal].at(i) << "\n";
+                    MyDB_DoubleAttValPtr att = make_shared<MyDB_DoubleAttVal>();
+                    att->set(sumMap[hashVal].at(i)/countMap[hashVal]);
+                    groupedRec->getAtt (i)->set (att);
+//                    cout << "current record" << groupedRec << "\n";
+//                    cout << "after " << groupedRec -> getAtt(i)->toDouble() << "\n";
+//                    sumMap[hashVal]=(groupedRec->getAtt(i)->toDouble())*countMap[hashVal];
                     i++;
                 } else if (p.first == cnt) {
 //                    cout << "COUNT\n";
