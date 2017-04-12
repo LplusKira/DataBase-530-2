@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "354"
             endingLineNumber = "354"
-            landmarkName = "SortMergeJoin:: run ()"
+            landmarkName = "SortMergeJoin ::checkSingleAcceptance(func pred, MyDB_RecordIteratorAltPtr iter, MyDB_RecordPtr rec)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
