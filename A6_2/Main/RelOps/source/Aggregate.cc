@@ -62,7 +62,7 @@ void Aggregate::run () {
         aggFunc.push_back (pair);
     }
     // get all data
-    cout << "PAGES NUMBER "<< input->getNumPages() << "\n";
+//    cout << "PAGES NUMBER "<< input->getNumPages() << "\n";
     vector <MyDB_PageReaderWriter> allData;
 //    for (int i = 0; i < input->getNumPages (); i++) {
 //        MyDB_PageReaderWriter temp = input->getPinned (i);
@@ -70,7 +70,7 @@ void Aggregate::run () {
 //            allData.push_back (temp);
 //        }
 //    }
-    cout << "finished all data\n";
+//    cout << "finished all data\n";
     func pred = inputRec->compileComputation (selectionPredicate);
     
     
@@ -79,7 +79,7 @@ void Aggregate::run () {
     
     int currPagecount = 0;
     int recNum = 0;
-    cout << "start iter\n";
+//    cout << "start iter\n";
 
     while (myIter->advance ()) {
         
@@ -117,7 +117,7 @@ void Aggregate::run () {
                 }
                 if(p.first==sum){
                     groupedRec->getAtt (i)->set (p.second());
-                    cout << "bad access: " << groupedRec << "\n";
+//                    cout << "bad access: " << groupedRec << "\n";
                     sumMap[hashVal]=groupedRec->getAtt(i)->toDouble();
                     i++;
                 }
@@ -166,12 +166,12 @@ void Aggregate::run () {
 //            cout << "agg att starts index " << i << "\n";
             for (auto p : aggFunc) {
                 if (p.first == sum) {
-                    cout << "SUM\n";
+//                    cout << "SUM\n";
                     groupedRec->getAtt(i)->set(p.second());
-                    cout << "sum groupedRec" <<groupedRec->getAtt(i)->toDouble()<<"\n";
+//                    cout << "sum groupedRec" <<groupedRec->getAtt(i)->toDouble()<<"\n";
 //                    sum += groupedRec->getAtt(i)->toDouble();
                     sumMap[hashVal] += groupedRec->getAtt(i)->toDouble();
-                    cout << "sum hash" <<sumMap[hashVal] <<"\n";
+//                    cout << "sum hash" <<sumMap[hashVal] <<"\n";
                     MyDB_IntAttValPtr att = make_shared<MyDB_IntAttVal>();
                     att->set(sumMap[hashVal]);
                     //                    cout << "pre the val: " << groupedRec->getAtt(i)->toInt() << "\n";
