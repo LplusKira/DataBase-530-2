@@ -64,9 +64,9 @@ int main () {
     
     // load up from a text file
     cout << "loading left table.\n";
-    supplierTableL->loadFromTextFile ("/Users/xiajunru/Code/DataBase-530-2/A6_2/Build/supplier.tbl");
+    supplierTableL->loadFromTextFile ("supplier.tbl");
     cout << "loading right table.\n";
-    supplierTableRNoBPlus->loadFromTextFile ("/Users/xiajunru/Code/DataBase-530-2/A6_2/Build/supplierBig.tbl");
+    supplierTableRNoBPlus->loadFromTextFile ("supplierBig.tbl");
     
     {
         // get the output schema and table
@@ -269,7 +269,7 @@ int main () {
     MyDB_TablePtr myTableRightNoBPlus = make_shared <MyDB_Table> ("supplierRightNoBPlus", "supplierRightNoBPlus.bin", mySchemaR);
     
     cout << "loading right into B+-Tree indexed on r_address.\n";
-    supplierTableR->loadFromTextFile ("/Users/xiajunru/Code/DataBase-530-2/A6_2/Build/supplierBig.tbl");
+    supplierTableR->loadFromTextFile ("supplierBig.tbl");
     
     {
         
