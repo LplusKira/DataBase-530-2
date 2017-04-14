@@ -32,3 +32,19 @@ A6_2/Build/bin/supplierOut.bin
 A6_2/Build/bin/supplierRight.bin
 
 A6_2/Build/bin/supplierOut.bin
+
+A7_data/customer.tbl
+
+A7_data/lineitem.tbl
+
+A7_data/nation.tbl
+
+A7_data/orders.tbl
+
+A7_data/part.tbl
+
+A7_data/partsupp.tbl
+
+A7_data/region.tbl
+
+A7_data/supplier.tbl
