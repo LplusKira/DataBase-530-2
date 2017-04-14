@@ -237,7 +237,7 @@ public:
 	}
 	
 	~SFWQuery () {}
-    void getRA(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr) {
+    void getRA(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
         cout << "All tables in current catalog:\n";
         map <string, MyDB_TablePtr> allTables = MyDB_Table::getAllTables(myCatalog);
         for (std::map<string, MyDB_TablePtr>::iterator it=allTables.begin(); it!=allTables.end(); ++it)
@@ -248,12 +248,21 @@ public:
             string tableName = a.second;
             cout << "\t" << a.first << " AS " << a.second << "\n";
             cout << "\t create TableReaderWriter...\n" << flush;
-            MyDB_TableReaderWriterPtr supplierTable = make_shared<MyDB_TableReaderWriter>(allTables[a.first], myMgr);
             
+            MyDB_TableReaderWriterPtr supplierTable = allTableReaderWriters[a.first];
+            cout << "check table: " << allTableReaderWriters[a.first] << "\n";
+            
+//            MyDB_RecordPtr temp = supplierTable->getEmptyRecord ();
+//            MyDB_RecordIteratorAltPtr myIter = supplierTable->getIteratorAlt ();
+//            cout << "print tablein: \n";
+//            while (myIter->advance ()) {
+//                myIter->getCurrent (temp);
+//                cout << temp << "\n";
+//            }
             //create output schema
             MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
             vector <string> projections;
-            string selectionPredicate = "&& (";
+            string selectionPredicate = "";
             cout << "Selecting the following:\n";
             for (auto a : valuesToSelect) {
                 cout << "\t" << a->toString () << "\n";
@@ -262,18 +271,26 @@ public:
                 for (pair<string, string> att: atts) {
                     cout << "atts:" << att.first << " in " << att.second << "\n";
                     if (att.second == tableName) {
-                        cout << "schema append: " << "att.first, type :" << supplierTable->getTable()->getSchema()->getAttByName(att.first).second << "\n";
+                        cout << "schema append: " << att.first << ", type :" << supplierTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
                         mySchemaOut->appendAtt(make_pair (att.first, supplierTable->getTable()->getSchema()->getAttByName(att.first).second));
                     }
                 }
                 
             }
             cout << "Where the following are true:\n";
-            for (auto a : allDisjunctions) {
-                cout << "\t" << a->toString () << "\n";
-                selectionPredicate += a->toString() + ",";
+            string firstPredicate;
+            string secondPredicate;
+            if (allDisjunctions.size() > 0) {
+                firstPredicate = allDisjunctions[0]->toString();
             }
-            selectionPredicate = selectionPredicate.substr(0, selectionPredicate.size()-1) + ")";
+            
+            for (int i = 1; i < allDisjunctions.size(); i++ ) {
+                secondPredicate = allDisjunctions[i]->toString();
+                selectionPredicate = "&& ( " + firstPredicate + "," + secondPredicate + ")";
+                cout << "check pred: " << selectionPredicate << "\n";
+                firstPredicate = selectionPredicate;
+            }
+            
             cout << "selectionPredicate: " << selectionPredicate << "\n";
             MyDB_TablePtr myTableOut = make_shared <MyDB_Table> (a.first + "Out", a.first + "Out.bin", mySchemaOut);
             MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
@@ -283,11 +300,13 @@ public:
             
             MyDB_RecordPtr temp = supplierTableOut->getEmptyRecord ();
             MyDB_RecordIteratorAltPtr myIter = supplierTableOut->getIteratorAlt ();
-            
+            int count  = 0;
             while (myIter->advance ()) {
                 myIter->getCurrent (temp);
                 cout << temp << "\n";
+                count++;
             }
+            cout << "count : " << count << "\n";
             
         }
 
@@ -354,8 +373,8 @@ public:
 		return myTableToCreate.addToCatalog (storageDir, addToMe);
 	}		
 	
-	void printSFWQuery (MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr) {
-        myQuery.getRA(myCatalog, myMgr);
+	void printSFWQuery (MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
+        myQuery.getRA(myCatalog, myMgr, allTableReaderWriters);
 		//myQuery.print ();
 	}
 

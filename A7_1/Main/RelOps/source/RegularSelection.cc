@@ -21,6 +21,7 @@ void RegularSelection :: run () {
 	// compile all of the coputations that we need here
 	vector <func> finalComputations;
 	for (string s : projections) {
+        //cout << "projections: " << s << "\n";
 		finalComputations.push_back (inputRec->compileComputation (s));
 	}
 	func pred = inputRec->compileComputation (selectionPredicate);
@@ -30,7 +31,7 @@ void RegularSelection :: run () {
 	while (myIter->advance ()) {
 
 		myIter->getCurrent (inputRec);
-
+        //cout << "records: " << inputRec << "\n";
 		// see if it is accepted by the predicate
 		if (!pred()->toBool ()) {
 			continue;
@@ -44,6 +45,7 @@ void RegularSelection :: run () {
 
 		outputRec->recordContentHasChanged ();
 		output->append (outputRec);
+        //cout << "new rec: " << outputRec << "\n";
 	}
 }
 

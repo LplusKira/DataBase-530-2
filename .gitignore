@@ -54,3 +54,5 @@ A7_data/supplier.tbl
 A7_1/Build/bin/catFile
 
 A7_1.zip
+
+*.o
