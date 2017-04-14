@@ -18,15 +18,16 @@ string toLower (string data) {
 }
 
 int main (int numArgs, char **args) {
-
-	// make sure we have the correct arguments
-	if (numArgs != 3) {
-		cout << "args: catalog_file directory_for_tables\n";
-		return 0;
-	}
+    
+//	// make sure we have the correct arguments
+//	if (numArgs != 3) {
+//		cout << "args: catalog_file directory_for_tables\n";
+//		return 0;
+//	}
 
 	// open up the catalog file
-	MyDB_CatalogPtr myCatalog = make_shared <MyDB_Catalog> (args [1]);
+	//MyDB_CatalogPtr myCatalog = make_shared <MyDB_Catalog> (args [1]);
+    MyDB_CatalogPtr myCatalog = make_shared <MyDB_Catalog> ("catFile");
 
 	// start up the buffer manager
 	MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (131072, 4028, "tempFile");

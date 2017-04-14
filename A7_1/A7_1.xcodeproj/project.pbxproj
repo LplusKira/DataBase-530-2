@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		C033FA6E1EA079E800A7B19E /* main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cc; sourceTree = "<group>"; };
+		C033FA6F1EA07C3C00A7B19E /* allUnitTest */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = allUnitTest; sourceTree = "<group>"; };
 		C0E3C0CA1EA0645E00F374D5 /* SConstruct */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SConstruct; sourceTree = "<group>"; };
 		C0E3C0CB1EA0645E00F374D5 /* supplier.tbl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = supplier.tbl; sourceTree = "<group>"; };
 		C0E3C0CC1EA0645E00F374D5 /* supplierBig.tbl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = supplierBig.tbl; sourceTree = "<group>"; };
@@ -87,6 +89,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		C033FA6D1EA079CF00A7B19E /* All */ = {
+			isa = PBXGroup;
+			children = (
+				C033FA6E1EA079E800A7B19E /* main.cc */,
+			);
+			path = All;
+			sourceTree = "<group>";
+		};
 		C0E3C0BD1EA0641F00F374D5 = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +121,7 @@
 		C0E3C0C91EA0645E00F374D5 /* bin */ = {
 			isa = PBXGroup;
 			children = (
+				C033FA6F1EA07C3C00A7B19E /* allUnitTest */,
 			);
 			path = bin;
 			sourceTree = "<group>";
@@ -118,6 +129,7 @@
 		C0E3C0CF1EA0645E00F374D5 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				C033FA6D1EA079CF00A7B19E /* All */,
 				C0E3C0D01EA0645E00F374D5 /* BPlusTest */,
 				C0E3C0D31EA0645E00F374D5 /* BufferMgr */,
 				C0E3C0DE1EA0645E00F374D5 /* BufferTest */,
@@ -460,7 +472,7 @@
 			buildPhases = (
 			);
 			buildToolPath = /Users/kejunliu/.pyenv/versions/2.7/bin/scons;
-			buildWorkingDirectory = "/Users/kejunliu/Documents/DataBase-530-2/A7/A7_1/Build";
+			buildWorkingDirectory = "/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build";
 			dependencies = (
 			);
 			name = A7_1;
@@ -622,6 +634,7 @@
 				C0E3C0C71EA0641F00F374D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
