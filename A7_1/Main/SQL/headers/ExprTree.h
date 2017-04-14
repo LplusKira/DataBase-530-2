@@ -5,6 +5,7 @@
 #include "MyDB_AttType.h"
 #include <string>
 #include <vector>
+#include <set>
 
 // create a smart pointer for database tables
 using namespace std;
@@ -18,6 +19,8 @@ class ExprTree {
 
 public:
 	virtual string toString () = 0;
+    virtual set<string> getTables () = 0;
+    virtual vector<pair<string, string>> getAttsTables() = 0;
 	virtual ~ExprTree () {}
 };
 
@@ -37,7 +40,15 @@ public:
 		} else {
 			return "bool[false]";
 		}
-	}	
+	}
+    set<string> getTables () {
+        set<string> ret;
+        return ret;
+    }
+    vector<pair<string, string>> getAttsTables () {
+        vector<pair<string, string>> ret;
+        return ret;
+    }
 };
 
 class DoubleLiteral : public ExprTree {
@@ -53,7 +64,14 @@ public:
 	string toString () {
 		return "double[" + to_string (myVal) + "]";
 	}	
-
+    set<string> getTables () {
+        set<string> ret;
+        return ret;
+    }
+    vector<pair<string, string>> getAttsTables () {
+        vector<pair<string, string>> ret;
+        return ret;
+    }
 	~DoubleLiteral () {}
 };
 
@@ -71,7 +89,14 @@ public:
 	string toString () {
 		return "int[" + to_string (myVal) + "]";
 	}
-
+    set<string> getTables () {
+        set<string> ret;
+        return ret;
+    }
+    vector<pair<string, string>> getAttsTables () {
+        vector<pair<string, string>> ret;
+        return ret;
+    }
 	~IntLiteral () {}
 };
 
@@ -89,7 +114,14 @@ public:
 	string toString () {
 		return "string[" + myVal + "]";
 	}
-
+    set<string> getTables () {
+        set<string> ret;
+        return ret;
+    }
+    vector<pair<string, string>> getAttsTables () {
+        vector<pair<string, string>> ret;
+        return ret;
+    }
 	~StringLiteral () {}
 };
 
@@ -104,11 +136,21 @@ public:
 		tableName = string (tableNameIn);
 		attName = string (attNameIn);
 	}
-
+    
 	string toString () {
-		return "[" + tableName + "_" + attName + "]";
-	}	
-
+		return "[" + attName + "]";
+	}
+    
+    set<string> getTables () {
+        set<string> ret;
+        ret.insert(tableName);
+        return ret;
+    }
+    vector<pair<string, string>> getAttsTables () {
+        vector<pair<string, string>> ret;
+        ret.push_back(make_pair(attName, tableName));
+        return ret;
+    }
 	~Identifier () {}
 };
 
@@ -129,7 +171,30 @@ public:
 	string toString () {
 		return "- (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    set<string> getTables () {
+        set<string> ret;
+        set<string> lt = lhs->getTables();
+        std::set<string>::iterator it;
+        for (it=lt.begin(); it!=lt.end(); ++it)
+            ret.insert(*it);
+        
+        set<string> rt = rhs->getTables();
+        std::set<string>::iterator it2;
+        for (it2=rt.begin(); it2!=rt.end(); ++it2)
+            ret.insert(*it2);
+        
+        return ret;
+    }
+    vector<pair<string, string>> getAttsTables () {
+        vector<pair<string, string>> ret;
+        for (pair<string, string> p: lhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        for (pair<string, string> p: rhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        return ret;
+    }
 	~MinusOp () {}
 };
 
@@ -150,7 +215,30 @@ public:
 	string toString () {
 		return "+ (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    set<string> getTables () {
+        set<string> ret;
+        set<string> lt = lhs->getTables();
+        std::set<string>::iterator it;
+        for (it=lt.begin(); it!=lt.end(); ++it)
+            ret.insert(*it);
+        
+        set<string> rt = rhs->getTables();
+        std::set<string>::iterator it2;
+        for (it2=rt.begin(); it2!=rt.end(); ++it2)
+            ret.insert(*it2);
+        
+        return ret;
+    }
+    vector<pair<string, string>> getAttsTables () {
+        vector<pair<string, string>> ret;
+        for (pair<string, string> p: lhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        for (pair<string, string> p: rhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        return ret;
+    }
 	~PlusOp () {}
 };
 
@@ -171,7 +259,30 @@ public:
 	string toString () {
 		return "* (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    set<string> getTables () {
+        set<string> ret;
+        set<string> lt = lhs->getTables();
+        std::set<string>::iterator it;
+        for (it=lt.begin(); it!=lt.end(); ++it)
+            ret.insert(*it);
+        
+        set<string> rt = rhs->getTables();
+        std::set<string>::iterator it2;
+        for (it2=rt.begin(); it2!=rt.end(); ++it2)
+            ret.insert(*it2);
+        
+        return ret;
+    }
+    vector<pair<string, string>> getAttsTables () {
+        vector<pair<string, string>> ret;
+        for (pair<string, string> p: lhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        for (pair<string, string> p: rhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        return ret;
+    }
 	~TimesOp () {}
 };
 
@@ -192,7 +303,30 @@ public:
 	string toString () {
 		return "/ (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    set<string> getTables () {
+        set<string> ret;
+        set<string> lt = lhs->getTables();
+        std::set<string>::iterator it;
+        for (it=lt.begin(); it!=lt.end(); ++it)
+            ret.insert(*it);
+        
+        set<string> rt = rhs->getTables();
+        std::set<string>::iterator it2;
+        for (it2=rt.begin(); it2!=rt.end(); ++it2)
+            ret.insert(*it2);
+        
+        return ret;
+    }
+    vector<pair<string, string>> getAttsTables () {
+        vector<pair<string, string>> ret;
+        for (pair<string, string> p: lhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        for (pair<string, string> p: rhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        return ret;
+    }
 	~DivideOp () {}
 };
 
@@ -213,7 +347,30 @@ public:
 	string toString () {
 		return "> (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    set<string> getTables () {
+        set<string> ret;
+        set<string> lt = lhs->getTables();
+        std::set<string>::iterator it;
+        for (it=lt.begin(); it!=lt.end(); ++it)
+            ret.insert(*it);
+        
+        set<string> rt = rhs->getTables();
+        std::set<string>::iterator it2;
+        for (it2=rt.begin(); it2!=rt.end(); ++it2)
+            ret.insert(*it2);
+        
+        return ret;
+    }
+    vector<pair<string, string>> getAttsTables () {
+        vector<pair<string, string>> ret;
+        for (pair<string, string> p: lhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        for (pair<string, string> p: rhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        return ret;
+    }
 	~GtOp () {}
 };
 
@@ -234,7 +391,30 @@ public:
 	string toString () {
 		return "< (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    set<string> getTables () {
+        set<string> ret;
+        set<string> lt = lhs->getTables();
+        std::set<string>::iterator it;
+        for (it=lt.begin(); it!=lt.end(); ++it)
+            ret.insert(*it);
+        
+        set<string> rt = rhs->getTables();
+        std::set<string>::iterator it2;
+        for (it2=rt.begin(); it2!=rt.end(); ++it2)
+            ret.insert(*it2);
+        
+        return ret;
+    }
+    vector<pair<string, string>> getAttsTables () {
+        vector<pair<string, string>> ret;
+        for (pair<string, string> p: lhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        for (pair<string, string> p: rhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        return ret;
+    }
 	~LtOp () {}
 };
 
@@ -251,7 +431,30 @@ public:
 		lhs = lhsIn;
 		rhs = rhsIn;
 	}
-
+    set<string> getTables () {
+        set<string> ret;
+        set<string> lt = lhs->getTables();
+        std::set<string>::iterator it;
+        for (it=lt.begin(); it!=lt.end(); ++it)
+            ret.insert(*it);
+        
+        set<string> rt = rhs->getTables();
+        std::set<string>::iterator it2;
+        for (it2=rt.begin(); it2!=rt.end(); ++it2)
+            ret.insert(*it2);
+        
+        return ret;
+    }
+    vector<pair<string, string>> getAttsTables () {
+        vector<pair<string, string>> ret;
+        for (pair<string, string> p: lhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        for (pair<string, string> p: rhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        return ret;
+    }
 	string toString () {
 		return "!= (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
@@ -276,7 +479,30 @@ public:
 	string toString () {
 		return "|| (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    set<string> getTables () {
+        set<string> ret;
+        set<string> lt = lhs->getTables();
+        std::set<string>::iterator it;
+        for (it=lt.begin(); it!=lt.end(); ++it)
+            ret.insert(*it);
+        
+        set<string> rt = rhs->getTables();
+        std::set<string>::iterator it2;
+        for (it2=rt.begin(); it2!=rt.end(); ++it2)
+            ret.insert(*it2);
+        
+        return ret;
+    }
+    vector<pair<string, string>> getAttsTables () {
+        vector<pair<string, string>> ret;
+        for (pair<string, string> p: lhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        for (pair<string, string> p: rhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        return ret;
+    }
 	~OrOp () {}
 };
 
@@ -297,7 +523,30 @@ public:
 	string toString () {
 		return "== (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
+    set<string> getTables () {
+        set<string> ret;
+        set<string> lt = lhs->getTables();
+        std::set<string>::iterator it;
+        for (it=lt.begin(); it!=lt.end(); ++it)
+            ret.insert(*it);
+        
+        set<string> rt = rhs->getTables();
+        std::set<string>::iterator it2;
+        for (it2=rt.begin(); it2!=rt.end(); ++it2)
+            ret.insert(*it2);
+        
+        return ret;
+    }
+    vector<pair<string, string>> getAttsTables () {
+        vector<pair<string, string>> ret;
+        for (pair<string, string> p: lhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        for (pair<string, string> p: rhs->getAttsTables()) {
+            ret.push_back(p);
+        }
+        return ret;
+    }
 	~EqOp () {}
 };
 
@@ -316,7 +565,14 @@ public:
 	string toString () {
 		return "!(" + child->toString () + ")";
 	}	
-
+    set<string> getTables () {
+        
+        return child->getTables();
+    }
+    vector<pair<string, string>> getAttsTables () {
+        
+        return child->getAttsTables();
+    }
 	~NotOp () {}
 };
 
@@ -335,7 +591,14 @@ public:
 	string toString () {
 		return "sum(" + child->toString () + ")";
 	}	
-
+    set<string> getTables () {
+        
+        return child->getTables();
+    }
+    vector<pair<string, string>> getAttsTables () {
+        
+        return child->getAttsTables();
+    }
 	~SumOp () {}
 };
 
@@ -354,7 +617,14 @@ public:
 	string toString () {
 		return "avg(" + child->toString () + ")";
 	}	
-
+    set<string> getTables () {
+        
+        return child->getTables();
+    }
+    vector<pair<string, string>> getAttsTables () {
+        
+        return child->getAttsTables();
+    }
 	~AvgOp () {}
 };
 

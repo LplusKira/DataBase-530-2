@@ -10,6 +10,9 @@
 #include "MyDB_Table.h"
 #include <string>
 #include <utility>
+#include "MyDB_BufferManager.h"
+#include "MyDB_TableReaderWriter.h"
+#include "RegularSelection.h"
 
 using namespace std;
 
@@ -234,7 +237,63 @@ public:
 	}
 	
 	~SFWQuery () {}
+    void getRA(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr) {
+        cout << "All tables in current catalog:\n";
+        map <string, MyDB_TablePtr> allTables = MyDB_Table::getAllTables(myCatalog);
+        for (std::map<string, MyDB_TablePtr>::iterator it=allTables.begin(); it!=allTables.end(); ++it)
+            std::cout << it->first << " => " << *it->second << "\n";
+        
+        cout << "From the following table:\n";
+        for (auto a : tablesToProcess) {
+            string tableName = a.second;
+            cout << "\t" << a.first << " AS " << a.second << "\n";
+            cout << "\t create TableReaderWriter...\n" << flush;
+            MyDB_TableReaderWriterPtr supplierTable = make_shared<MyDB_TableReaderWriter>(allTables[a.first], myMgr);
+            
+            //create output schema
+            MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
+            vector <string> projections;
+            string selectionPredicate = "&& (";
+            cout << "Selecting the following:\n";
+            for (auto a : valuesToSelect) {
+                cout << "\t" << a->toString () << "\n";
+                projections.push_back(a->toString());
+                vector<pair<string, string>> atts = a->getAttsTables();
+                for (pair<string, string> att: atts) {
+                    cout << "atts:" << att.first << " in " << att.second << "\n";
+                    if (att.second == tableName) {
+                        cout << "schema append: " << "att.first, type :" << supplierTable->getTable()->getSchema()->getAttByName(att.first).second << "\n";
+                        mySchemaOut->appendAtt(make_pair (att.first, supplierTable->getTable()->getSchema()->getAttByName(att.first).second));
+                    }
+                }
+                
+            }
+            cout << "Where the following are true:\n";
+            for (auto a : allDisjunctions) {
+                cout << "\t" << a->toString () << "\n";
+                selectionPredicate += a->toString() + ",";
+            }
+            selectionPredicate = selectionPredicate.substr(0, selectionPredicate.size()-1) + ")";
+            cout << "selectionPredicate: " << selectionPredicate << "\n";
+            MyDB_TablePtr myTableOut = make_shared <MyDB_Table> (a.first + "Out", a.first + "Out.bin", mySchemaOut);
+            MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
+            
+            RegularSelection myOp (supplierTable, supplierTableOut, selectionPredicate, projections);
+            myOp.run ();
+            
+            MyDB_RecordPtr temp = supplierTableOut->getEmptyRecord ();
+            MyDB_RecordIteratorAltPtr myIter = supplierTableOut->getIteratorAlt ();
+            
+            while (myIter->advance ()) {
+                myIter->getCurrent (temp);
+                cout << temp << "\n";
+            }
+            
+        }
 
+        
+        
+    }
 	void print () {
 		cout << "Selecting the following:\n";
 		for (auto a : valuesToSelect) {
@@ -295,8 +354,9 @@ public:
 		return myTableToCreate.addToCatalog (storageDir, addToMe);
 	}		
 	
-	void printSFWQuery () {
-		myQuery.print ();
+	void printSFWQuery (MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr) {
+        myQuery.getRA(myCatalog, myMgr);
+		//myQuery.print ();
 	}
 
 	#include "FriendDecls.h"

@@ -169,7 +169,7 @@ int main (int numArgs, char **args) {
 					} else if (final->isSFWQuery ()) {
 
 						// print it out
-						final->printSFWQuery ();
+						final->printSFWQuery (myCatalog, myMgr);
 					}
 
 					// get outta here
