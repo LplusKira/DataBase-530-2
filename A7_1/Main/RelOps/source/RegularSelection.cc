@@ -43,10 +43,10 @@ void RegularSelection :: run () {
 		for (auto &f : finalComputations) {
 			outputRec->getAtt (i++)->set (f());
 		}
-        cout << "rec: " << inputRec << "\n";
+//        cout << "rec: " << inputRec << "\n";
 		outputRec->recordContentHasChanged ();
 		output->append (outputRec);
-        cout << "new rec: " << outputRec << "\n";
+//        cout << "new rec: " << outputRec << "\n";
 	}
     cout << "count :" << count << "\n";
 }

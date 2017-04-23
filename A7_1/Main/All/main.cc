@@ -98,17 +98,16 @@ int main (int numArgs, char **args) {
 						cout << "Could not find table " << tokens[1] << ".\n";
 						break;
 					} else {
-						cout << "OK, loading " << tokens[1] << " from text file.\n";
-                        MyDB_TableReaderWriterPtr supplierTable = make_shared <MyDB_TableReaderWriter> (allTables ["lineitem"], myMgr);
-
-						// load up the file
-						pair <vector <size_t>, size_t> res = allTableReaderWriters[tokens[1]]->loadFromTextFile (tokens[3]);
-
-						// and record the tuple various counts
-						allTableReaderWriters[tokens[1]]->getTable ()->setDistinctValues (res.first);
-						allTableReaderWriters[tokens[1]]->getTable ()->setTupleCount (res.second);
+                        cout << "OK, loading " << tokens[1] << " from text file.\n";
+                        
+                        // load up the file
+                        pair <vector <size_t>, size_t> res = allTableReaderWriters[tokens[1]]->loadFromTextFile (tokens[3]);
+                        
+                        // and record the tuple various counts
+                        allTableReaderWriters[tokens[1]]->getTable ()->setDistinctValues (res.first);
+                        allTableReaderWriters[tokens[1]]->getTable ()->setTupleCount (res.second);
                         break;
-					}
+                    }
                     
 				}
 
@@ -147,7 +146,7 @@ int main (int numArgs, char **args) {
 					// see if we got a create table
 					if (final->isCreateTable ()) {
 
-						string tableName = final->addToCatalog ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/", myCatalog);
+						string tableName = final->addToCatalog ("/Users/xiajunru/Code/DataBase-530-2/A7_1/Build/bin/", myCatalog);
 						if (tableName != "nothing") {
 							allTables = MyDB_Table :: getAllTables (myCatalog);
 							if (allTables [tableName]->getFileType () == "heap") {
@@ -159,7 +158,7 @@ int main (int numArgs, char **args) {
 										(allTables [tableName]->getSortAtt (), allTables [tableName], myMgr);
 								allTableReaderWriters[tableName] = allBPlusReaderWriters[tableName];
 							}
-							cout << "Added table " << final->addToCatalog ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/", myCatalog) << "\n";
+							cout << "Added table " << final->addToCatalog ("/Users/xiajunru/Code/DataBase-530-2/A7_1/Build/bin/", myCatalog) << "\n";
                             
                             map <string, MyDB_TablePtr> allTables = MyDB_Table::getAllTables(myCatalog);
                             for (std::map<string, MyDB_TablePtr>::iterator it=allTables.begin(); it!=allTables.end(); ++it)

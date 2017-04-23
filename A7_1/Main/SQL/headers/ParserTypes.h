@@ -13,6 +13,7 @@
 #include "MyDB_BufferManager.h"
 #include "MyDB_TableReaderWriter.h"
 #include "RegularSelection.h"
+#include "Aggregate.h"
 
 using namespace std;
 
@@ -254,6 +255,8 @@ public:
             //create output schema
             MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
             vector <string> projections;
+            vector <pair <MyDB_AggType, string>> aggsToCompute;
+            vector <string> groupings;
             string selectionPredicate = "";
             vector <pair <MyDB_AggType, string>> aggsToCompute;
             cout << "Selecting the following:\n";
@@ -294,13 +297,22 @@ public:
                 firstPredicate = selectionPredicate;
             }
             
+            for (auto a : groupingClauses) {
+                groupings.push_back(a->toString());
+            }
+
             cout << "selectionPredicate: " << selectionPredicate << "\n";
             MyDB_TablePtr myTableOut = make_shared <MyDB_Table> (a.first + "Out", a.first + "Out.bin", mySchemaOut);
             MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
             
-            RegularSelection myOp (supplierTable, supplierTableOut, selectionPredicate, projections);
-            myOp.run ();
-            
+            // do aggregate or regular selection
+            if (aggsToCompute.size() == 0){
+                Aggregate myOp(supplierTable, supplierTableOut, aggsToCompute, groupings, selectionPredicate);
+                myOp.run();
+            }else{
+                RegularSelection myOp (supplierTable, supplierTableOut, selectionPredicate, projections);
+                myOp.run ();
+            }
             MyDB_RecordPtr temp = supplierTableOut->getEmptyRecord ();
             MyDB_RecordIteratorAltPtr myIter = supplierTableOut->getIteratorAlt ();
             int count  = 0;
