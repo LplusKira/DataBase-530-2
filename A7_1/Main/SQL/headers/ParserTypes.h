@@ -258,7 +258,6 @@ public:
             vector <pair <MyDB_AggType, string>> aggsToCompute;
             vector <string> groupings;
             string selectionPredicate = "";
-            vector <pair <MyDB_AggType, string>> aggsToCompute;
             cout << "Selecting the following:\n";
             for (auto a : valuesToSelect) {
                 cout << "\t" << a->toString () << "\n";
