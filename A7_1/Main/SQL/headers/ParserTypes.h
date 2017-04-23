@@ -255,10 +255,21 @@ public:
             MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
             vector <string> projections;
             string selectionPredicate = "";
+            vector <pair <MyDB_AggType, string>> aggsToCompute;
             cout << "Selecting the following:\n";
             for (auto a : valuesToSelect) {
                 cout << "\t" << a->toString () << "\n";
-                projections.push_back(a->toString());
+                if (a->getType() == "regular") {
+                    projections.push_back(a->toString());
+                } else {
+                    if (a->getType() == "sum") {
+                        cout << "sum this: " <<  a->getChild()->toString() << "\n";
+                        aggsToCompute.push_back (make_pair (MyDB_AggType :: sum, a->getChild()->toString()));
+                    } else if (a->getType() == "avg") {
+                        cout << "avg this: " <<  a->getChild()->toString() << "\n";
+                        aggsToCompute.push_back (make_pair (MyDB_AggType :: avg, a->getChild()->toString()));
+                    }
+                }
                 vector<pair<string, string>> atts = a->getAttsTables();
                 for (pair<string, string> att: atts) {
                     cout << "atts:" << att.first << " in " << att.second << "\n";

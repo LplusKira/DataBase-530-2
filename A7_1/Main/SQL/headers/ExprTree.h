@@ -21,6 +21,8 @@ public:
 	virtual string toString () = 0;
     virtual set<string> getTables () = 0;
     virtual vector<pair<string, string>> getAttsTables() = 0;
+    virtual string getType () = 0;
+    virtual ExprTreePtr getChild () = 0;
 	virtual ~ExprTree () {}
 };
 
@@ -49,6 +51,13 @@ public:
         vector<pair<string, string>> ret;
         return ret;
     }
+    string getType () {
+        return "regular";
+    }
+    ExprTreePtr getChild () {
+        return nullptr;
+    }
+    ~BoolLiteral () {}
 };
 
 class DoubleLiteral : public ExprTree {
@@ -71,6 +80,12 @@ public:
     vector<pair<string, string>> getAttsTables () {
         vector<pair<string, string>> ret;
         return ret;
+    }
+    string getType () {
+        return "regular";
+    }
+    ExprTreePtr getChild () {
+        return nullptr;
     }
 	~DoubleLiteral () {}
 };
@@ -97,6 +112,12 @@ public:
         vector<pair<string, string>> ret;
         return ret;
     }
+    string getType () {
+        return "regular";
+    }
+    ExprTreePtr getChild () {
+        return nullptr;
+    }
 	~IntLiteral () {}
 };
 
@@ -121,6 +142,12 @@ public:
     vector<pair<string, string>> getAttsTables () {
         vector<pair<string, string>> ret;
         return ret;
+    }
+    string getType () {
+        return "regular";
+    }
+    ExprTreePtr getChild () {
+        return nullptr;
     }
 	~StringLiteral () {}
 };
@@ -150,6 +177,12 @@ public:
         vector<pair<string, string>> ret;
         ret.push_back(make_pair(attName, tableName));
         return ret;
+    }
+    string getType () {
+        return "regular";
+    }
+    ExprTreePtr getChild () {
+        return nullptr;
     }
 	~Identifier () {}
 };
@@ -195,6 +228,12 @@ public:
         }
         return ret;
     }
+    string getType () {
+        return "regular";
+    }
+    ExprTreePtr getChild () {
+        return nullptr;
+    }
 	~MinusOp () {}
 };
 
@@ -239,7 +278,13 @@ public:
         }
         return ret;
     }
-	~PlusOp () {}
+    string getType () {
+        return "regular";
+    }
+    ExprTreePtr getChild () {
+        return nullptr;
+    }
+    ~PlusOp () {}
 };
 
 class TimesOp : public ExprTree {
@@ -282,6 +327,12 @@ public:
             ret.push_back(p);
         }
         return ret;
+    }
+    string getType () {
+        return "regular";
+    }
+    ExprTreePtr getChild () {
+        return nullptr;
     }
 	~TimesOp () {}
 };
@@ -327,6 +378,12 @@ public:
         }
         return ret;
     }
+    string getType () {
+        return "regular";
+    }
+    ExprTreePtr getChild () {
+        return nullptr;
+    }
 	~DivideOp () {}
 };
 
@@ -370,6 +427,12 @@ public:
             ret.push_back(p);
         }
         return ret;
+    }
+    string getType () {
+        return "regular";
+    }
+    ExprTreePtr getChild () {
+        return nullptr;
     }
 	~GtOp () {}
 };
@@ -415,6 +478,12 @@ public:
         }
         return ret;
     }
+    string getType () {
+        return "regular";
+    }
+    ExprTreePtr getChild () {
+        return nullptr;
+    }
 	~LtOp () {}
 };
 
@@ -458,8 +527,13 @@ public:
 	string toString () {
 		return "!= (" + lhs->toString () + ", " + rhs->toString () + ")";
 	}	
-
-	~NeqOp () {}
+    string getType () {
+        return "regular";
+    }
+    ExprTreePtr getChild () {
+        return nullptr;
+    }
+    ~NeqOp () {}
 };
 
 class OrOp : public ExprTree {
@@ -502,6 +576,12 @@ public:
             ret.push_back(p);
         }
         return ret;
+    }
+    string getType () {
+        return "regular";
+    }
+    ExprTreePtr getChild () {
+        return nullptr;
     }
 	~OrOp () {}
 };
@@ -547,7 +627,13 @@ public:
         }
         return ret;
     }
-	~EqOp () {}
+    string getType () {
+        return "regular";
+    }
+    ExprTreePtr getChild () {
+        return nullptr;
+    }
+    ~EqOp () {}
 };
 
 class NotOp : public ExprTree {
@@ -572,6 +658,12 @@ public:
     vector<pair<string, string>> getAttsTables () {
         
         return child->getAttsTables();
+    }
+    string getType () {
+        return "regular";
+    }
+    ExprTreePtr getChild () {
+        return nullptr;
     }
 	~NotOp () {}
 };
@@ -599,6 +691,12 @@ public:
         
         return child->getAttsTables();
     }
+    string getType () {
+        return "sum";
+    }
+    ExprTreePtr getChild () {
+        return child;
+    }
 	~SumOp () {}
 };
 
@@ -624,6 +722,12 @@ public:
     vector<pair<string, string>> getAttsTables () {
         
         return child->getAttsTables();
+    }
+    string getType () {
+        return "avg";
+    }
+    ExprTreePtr getChild () {
+        return child;
     }
 	~AvgOp () {}
 };
