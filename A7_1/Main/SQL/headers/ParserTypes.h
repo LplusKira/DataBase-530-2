@@ -250,15 +250,7 @@ public:
             cout << "\t create TableReaderWriter...\n" << flush;
             
             MyDB_TableReaderWriterPtr supplierTable = allTableReaderWriters[a.first];
-            cout << "check table: " << allTableReaderWriters[a.first] << "\n";
-            
-//            MyDB_RecordPtr temp = supplierTable->getEmptyRecord ();
-//            MyDB_RecordIteratorAltPtr myIter = supplierTable->getIteratorAlt ();
-//            cout << "print tablein: \n";
-//            while (myIter->advance ()) {
-//                myIter->getCurrent (temp);
-//                cout << temp << "\n";
-//            }
+
             //create output schema
             MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
             vector <string> projections;

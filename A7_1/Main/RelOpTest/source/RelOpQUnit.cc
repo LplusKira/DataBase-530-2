@@ -93,6 +93,24 @@ int main () {
             MyDB_TableReaderWriterPtr supplierTable = make_shared <MyDB_TableReaderWriter> (myTable, myMgr);
             
             supplierTable->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/lineitem.tbl");
+            supplierTable->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/lineitem.tbl");
+            supplierTable->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/lineitem.tbl");
+            supplierTable->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/lineitem.tbl");
+            supplierTable->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/lineitem.tbl");
+            supplierTable->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/lineitem.tbl");
+            
+            
+            MyDB_RecordPtr temp = supplierTable->getEmptyRecord ();
+            MyDB_RecordIteratorAltPtr myIter = supplierTable->getIteratorAlt ();
+            
+            int count_ = 0;
+            while (myIter->advance ()) {
+                myIter->getCurrent (temp);
+                count_++;
+                //cout << temp << "\n";
+            }
+            cout << "count: " << count_ << "\n";
+            
             // get the output schema and table
             MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
             mySchemaOut->appendAtt (make_pair ("l_comment", make_shared <MyDB_StringAttType> ()));
@@ -105,16 +123,10 @@ int main () {
             projections.push_back ("[l_comment]");
             projections.push_back ("[l_orderkey]");
             //&& (,&&(,))
-            RegularSelection myOp (supplierTable, supplierTableOut, "&& (== ([l_shipdate], string[1994-05-12]),&&(== ([l_commitdate], string[1994-05-22]),== ([l_receiptdate], string[1994-06-10])))", projections);
+            RegularSelection myOp (supplierTable, supplierTableOut, "&& ( && ( == ([l_shipdate], string[1994-05-12]),== ([l_commitdate], string[1994-05-22])),== ([l_receiptdate], string[1994-06-10]))", projections);
             myOp.run ();
         
-            MyDB_RecordPtr temp = supplierTableOut->getEmptyRecord ();
-            MyDB_RecordIteratorAltPtr myIter = supplierTableOut->getIteratorAlt ();
             
-            while (myIter->advance ()) {
-                myIter->getCurrent (temp);
-                cout << temp << "\n";
-            }
     }
 
 //	{

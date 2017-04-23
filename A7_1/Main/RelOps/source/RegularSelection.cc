@@ -28,8 +28,9 @@ void RegularSelection :: run () {
 
 	// now, iterate through the B+-tree query results
 	MyDB_RecordIteratorAltPtr myIter = input->getIteratorAlt ();
+    int count = 0;
 	while (myIter->advance ()) {
-
+        count++;
 		myIter->getCurrent (inputRec);
         //cout << "records: " << inputRec << "\n";
 		// see if it is accepted by the predicate
@@ -42,11 +43,12 @@ void RegularSelection :: run () {
 		for (auto &f : finalComputations) {
 			outputRec->getAtt (i++)->set (f());
 		}
-
+        cout << "rec: " << inputRec << "\n";
 		outputRec->recordContentHasChanged ();
 		output->append (outputRec);
-        //cout << "new rec: " << outputRec << "\n";
+        cout << "new rec: " << outputRec << "\n";
 	}
+    cout << "count :" << count << "\n";
 }
 
 #endif
