@@ -171,19 +171,38 @@ void Aggregate :: run (bool groupFirst) {
 
 			// set up the record...
 			i = 0;
-			for (auto &f : groupingComps) {
-				aggRec->getAtt (i++)->set (f ());
-			}
-			for (int j = 0; j < aggComps.size (); j++) {
-				aggRec->getAtt (i++)->set (zero);
-			}
+            if (groupFirst) {
+                for (auto &f : groupingComps) {
+                    aggRec->getAtt (i++)->set (f ());
+                }
+                for (int j = 0; j < aggComps.size (); j++) {
+                    aggRec->getAtt (i++)->set (zero);
+                }
+            } else {
+                for (int j = 0; j < aggComps.size (); j++) {
+                    cout << "aggRec set according to agg: " << aggRec->getAtt(i)->toString() << "\n";
+                    aggRec->getAtt (i++)->set (zero);
+                }
+                for (auto &f : groupingComps) {
+                    cout << "aggRec set according to group: " << aggRec->getAtt(i)->toString() << "\n";
+                    aggRec->getAtt (i++)->set (f ());
+                }
+            }
+			
 		}
 
 		// update each of the aggregates
 		i = 0;
-		for (auto &f : aggComps) {
-			aggRec->getAtt (numGroups + i++)->set (f ());
-		}
+        if (groupFirst) {
+            for (auto &f : aggComps) {
+                aggRec->getAtt (numGroups + i++)->set (f ());
+            }
+        } else {
+            for (auto &f : aggComps) {
+                aggRec->getAtt (i++)->set (f ());
+            }
+        }
+		
 
 		// if we did not find a match, write to a new location...
 		aggRec->recordContentHasChanged ();
@@ -216,15 +235,29 @@ void Aggregate :: run (bool groupFirst) {
 
 		myIterAgain->getCurrent (aggRec);
 
-		// set the grouping atts
-		for (i = 0; i < numGroups; i++) {
-			outRec->getAtt (i)->set (aggRec->getAtt (i));
-		}
+        if (groupFirst) {
+            // set the grouping atts
+            for (i = 0; i < numGroups; i++) {
+                outRec->getAtt (i)->set (aggRec->getAtt (i));
+            }
+            
+            // set the aggregate atts
+            for (auto &a : finalAggComps) {
+                outRec->getAtt (i++)->set (a ());
+            }
+        } else {
+            int i = 0;
+            // set the aggregate atts
+            for (auto &a : finalAggComps) {
+                outRec->getAtt (i++)->set (a ());
+            }
+            // set the grouping atts
+            for (; i < numGroups+finalAggComps.size(); i++) {
+                outRec->getAtt (i)->set (aggRec->getAtt (i));
+            }
 
-		// set the aggregate atts
-		for (auto &a : finalAggComps) {
-			outRec->getAtt (i++)->set (a ());
-		}
+        }
+		
 		outRec->recordContentHasChanged ();
 		output->append (outRec);
 	}
