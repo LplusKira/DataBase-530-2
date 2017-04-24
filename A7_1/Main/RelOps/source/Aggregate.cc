@@ -22,7 +22,7 @@ Aggregate :: Aggregate (MyDB_TableReaderWriterPtr inputIn, MyDB_TableReaderWrite
 
 }
 
-void Aggregate :: run () {
+void Aggregate :: run (bool groupFirst) {
 
 	// make sure that the number of attributes is OK
 	if (output->getTable ()->getSchema ()->getAtts ().size () != aggsToCompute.size () + groupings.size ()) {
@@ -35,25 +35,55 @@ void Aggregate :: run () {
 	MyDB_SchemaPtr aggSchema = make_shared <MyDB_Schema> ();
 	int i = 0;
 	int numGroups = groupings.size ();
-//    if (groupFirst) {
+    if (groupFirst) {
         for (auto &a : output->getTable ()->getSchema ()->getAtts ()) {
             if (i < numGroups)
                 aggSchema->appendAtt (make_pair ("MyDB_GroupAtt" + to_string (i++), a.second));
             else
                 aggSchema->appendAtt (make_pair ("MyDB_AggAtt" + to_string (i++ - numGroups), a.second));
         }
-//    } else {
-//        int size = output->getTable ()->getSchema ()->getAtts ().size();
-//        int aggNum = size - numGroups;
-//        for (auto &a : output->getTable ()->getSchema ()->getAtts ()) {
-//            if (i < aggNum)
-//                aggSchema->appendAtt (make_pair ("MyDB_AggAtt" + to_string (i++), a.second));
-//            else
-//               aggSchema->appendAtt (make_pair ("MyDB_GroupAtt" + to_string (i++ - aggNum), a.second));
+        aggSchema->appendAtt (make_pair ("MyDB_CntAtt", make_shared <MyDB_IntAttType> ()));
+    } else {
+        for (pair <string, MyDB_AttTypePtr> p : output->getTable ()->getSchema ()->getAtts()) {
+            cout << "out schema: " << p.first << ", " << p.second->toString() << "\n";
+        }
+        int size = output->getTable ()->getSchema ()->getAtts ().size();
+        int aggNum = size - numGroups;
+        for (int j = 0; j < aggNum; j++) {
+            auto &a = output->getTable ()->getSchema ()->getAtts ().at(j);
+            aggSchema->appendAtt (make_pair ("MyDB_AggAtt" + to_string (j), a.second));
+            cout << "append agg\n";
+        }
+        aggSchema->appendAtt (make_pair ("MyDB_CntAtt", make_shared <MyDB_IntAttType> ()));
+        cout << "append cnt\n";
+        for (int j = aggNum; j < size; j++) {
+            auto &a = output->getTable ()->getSchema ()->getAtts ().at(j);
+            aggSchema->appendAtt (make_pair ("MyDB_GroupAtt" + to_string (j++ - aggNum), a.second));
+            cout << "append grouping\n";
+        }
+//        for (int j = 0; j < size; j++) {
+//            cout  << "j :" << j << "\n";
+//            auto &a = output->getTable ()->getSchema ()->getAtts ().at(j);
+//            if (j < aggNum) {
+//                aggSchema->appendAtt (make_pair ("MyDB_AggAtt" + to_string (j++), a.second));
+//                cout << "append agg\n";
+//            }
+//            else if (j == aggNum) {
+//                aggSchema->appendAtt (make_pair ("MyDB_CntAtt", make_shared <MyDB_IntAttType> ()));
+//                cout << "append cnt\n";
+//                j = aggNum;
+//            }
+//            else {
+//               aggSchema->appendAtt (make_pair ("MyDB_GroupAtt" + to_string (j++ - aggNum), a.second));
+//                cout << "append grouping\n";
+//            }
 //        }
-//    }
+        for (pair <string, MyDB_AttTypePtr> p : aggSchema->getAtts()) {
+            cout << "agg schema: " << p.first << ", " << p.second->toString() << "\n";
+        }
+    }
 	
-	aggSchema->appendAtt (make_pair ("MyDB_CntAtt", make_shared <MyDB_IntAttType> ()));
+	//aggSchema->appendAtt (make_pair ("MyDB_CntAtt", make_shared <MyDB_IntAttType> ()));
 
 	// now, create the schema for the combined records
 	MyDB_SchemaPtr combinedSchema = make_shared <MyDB_Schema> ();
@@ -171,21 +201,31 @@ void Aggregate :: run () {
 
 			// set up the record...
 			i = 0;
+            for (pair <string, MyDB_AttTypePtr> p : aggRec->getSchema()->getAtts()) {
+                cout << "agg rec schema: " << p.first << ", " << p.second->toString() << "\n";
+            }
             if (groupFirst) {
+                cout << "There are " << groupingComps.size() << "grouping and " << aggComps.size() << "aggs.\n";
                 for (auto &f : groupingComps) {
+                    
                     aggRec->getAtt (i++)->set (f ());
+                    cout << "aggRec (" << i -1<< ") set according to group: " << aggRec->getAtt(i-1)->toString() << "\n";
                 }
                 for (int j = 0; j < aggComps.size (); j++) {
                     aggRec->getAtt (i++)->set (zero);
+                    cout << "aggRec (" << i -1<< ") set according to agg: " << aggRec->getAtt(i-1)->toString() << "\n";
                 }
             } else {
+                cout << "There are " << groupingComps.size() << "grouping and " << aggComps.size() << "aggs.\n";
                 for (int j = 0; j < aggComps.size (); j++) {
-                    cout << "aggRec set according to agg: " << aggRec->getAtt(i)->toString() << "\n";
+                    
                     aggRec->getAtt (i++)->set (zero);
+                    cout << "aggRec (" << i-1 << ") set according to agg: " << aggRec->getAtt(i-1)->toString() << "\n";
                 }
                 for (auto &f : groupingComps) {
-                    cout << "aggRec set according to group: " << aggRec->getAtt(i)->toString() << "\n";
                     aggRec->getAtt (i++)->set (f ());
+                    cout << "aggRec (" << i-1 << ") set according to group: " << aggRec->getAtt(i-1)->toString() << "\n";
+
                 }
             }
 			
@@ -195,11 +235,14 @@ void Aggregate :: run () {
 		i = 0;
         if (groupFirst) {
             for (auto &f : aggComps) {
+                
                 aggRec->getAtt (numGroups + i++)->set (f ());
+//                cout << "aggRec (" << numGroups + i-1 << ") set according to agg: " << aggRec->getAtt(numGroups + i - 1)->toString() << "\n";
             }
         } else {
             for (auto &f : aggComps) {
                 aggRec->getAtt (i++)->set (f ());
+//                cout << "aggRec (" << i-1 << ") set according to agg: " << aggRec->getAtt(i - 1)->toString() << "\n";
             }
         }
 		
@@ -231,6 +274,10 @@ void Aggregate :: run () {
 
 	// loop through all of the aggregate records
 	MyDB_RecordPtr outRec = output->getEmptyRecord ();
+    for (pair <string, MyDB_AttTypePtr> p : outRec->getSchema ()->getAtts()) {
+        cout << "out schema: " << p.first << ", " << p.second->toString() << "\n";
+    }
+    
 	while (myIterAgain->advance ()) {
 
 		myIterAgain->getCurrent (aggRec);
@@ -253,7 +300,8 @@ void Aggregate :: run () {
             }
             // set the grouping atts
             for (; i < numGroups+finalAggComps.size(); i++) {
-                outRec->getAtt (i)->set (aggRec->getAtt (i));
+                cout << "set att: " << i << " to " << aggRec->getAtt(i)->toString() << "\n";
+                outRec->getAtt (i)->set (aggRec->getAtt (i+1));
             }
 
         }
