@@ -248,7 +248,6 @@ public:
         cout << "From the following table:\n";
         for (auto a : tablesToProcess) {
             string tableName = a.second;
-            cout << "table name " << tableName<< "\n";
             cout << "\t" << a.first << " AS " << a.second << "\n";
             cout << "\t create TableReaderWriter...\n" << flush;
             
@@ -261,6 +260,7 @@ public:
             vector <string> groupings;
             string selectionPredicate = "";
             cout << "Selecting the following:\n";
+            vector <ExprTreePtr> aggs;
             for (auto selected : valuesToSelect) {
                 cout << "\t" << selected->toString () << "\n";
                 if (selected->getType() == "regular") {
@@ -275,28 +275,32 @@ public:
                         }
                     }
                 } else {
-                    if (selected->getType() == "sum") {
-                        cout << "sum this: " <<  selected->getChild()->toString() << "\n";
-                        if(selected->getChild()->toString() == "int[1]"){
-                            aggsToCompute.push_back (make_pair (MyDB_AggType :: cnts, "int[0]"));
-                            int number = rand() % 100;
-                            string name = "cnt" + std::to_string(number);
-                            mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_IntAttType>()));
-                        }else{
-                            aggsToCompute.push_back (make_pair (MyDB_AggType :: sums, selected->getChild()->toString()));
-                            int number = rand() % 100;
-                            string name = "sum" + std::to_string(number);
-                            mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
-                        }
-                    } else if (selected->getType() == "avg") {
-                        cout << "avg this: " <<  selected->getChild()->toString() << "\n";
-                        aggsToCompute.push_back (make_pair (MyDB_AggType :: avgs, selected->getChild()->toString()));
-                         int number = rand() % 100;
-                        string name = "avg" + std::to_string(number);
-                        mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
-                    }
+                    aggs.push_back(selected);
                 }
                 
+            }
+            for(auto agg :aggs){
+                if (agg->getType() == "sum") {
+                    cout << "sum this: " <<  agg->getChild()->toString() << "\n";
+                    if(agg->getChild()->toString() == "int[1]"){
+                        aggsToCompute.push_back (make_pair (MyDB_AggType :: cnts, "int[0]"));
+                        int number = rand() % 100;
+                        string name = "cnt" + std::to_string(number);
+                        mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_IntAttType>()));
+                    }else{
+                        aggsToCompute.push_back (make_pair (MyDB_AggType :: sums, agg->getChild()->toString()));
+                        int number = rand() % 100;
+                        string name = "sum" + std::to_string(number);
+                        mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
+                    }
+                } else if (agg->getType() == "avg") {
+                    cout << "avg this: " <<  agg->getChild()->toString() << "\n";
+                    aggsToCompute.push_back (make_pair (MyDB_AggType :: avgs, agg->getChild()->toString()));
+                    int number = rand() % 100;
+                    string name = "avg" + std::to_string(number);
+                    mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
+                }
+
             }
             cout << "Where the following are true:\n";
             string firstPredicate;
