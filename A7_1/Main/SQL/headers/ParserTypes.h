@@ -259,7 +259,7 @@ public:
         //create output schema
         cout << "Selecting the following:\n";
         vector <ExprTreePtr> aggs;
-        if (valusToSelect.at(0)->getType() != "regular") {
+        if (valuesToSelect.at(0)->getType() != "regular") {
             groupFirst = false;
         }
         for (auto selected : valuesToSelect) {
@@ -392,7 +392,26 @@ public:
                     }
                 }
             } else {
-                aggs.push_back(selected);
+                if (selected->getType() == "sum") {
+                    cout << "sum this: " <<  selected->getChild()->toString() << "\n";
+                    if(selected->getChild()->toString() == "int[1]"){
+                        aggsToCompute.push_back (make_pair (MyDB_AggType :: cnts, "int[0]"));
+                        int number = rand() % 100;
+                        string name = "cnt" + std::to_string(number);
+                        mySchemaAggOut->appendAtt(make_pair (name, make_shared <MyDB_IntAttType>()));
+                    }else{
+                        aggsToCompute.push_back (make_pair (MyDB_AggType :: sums, selected->getChild()->toString()));
+                        int number = rand() % 100;
+                        string name = "sum" + std::to_string(number);
+                        mySchemaAggOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
+                    }
+                } else if (selected->getType() == "avg") {
+                    cout << "avg this: " <<  selected->getChild()->toString() << "\n";
+                    aggsToCompute.push_back (make_pair (MyDB_AggType :: avgs, selected->getChild()->toString()));
+                    int number = rand() % 100;
+                    string name = "avg" + std::to_string(number);
+                    mySchemaAggOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
+                }
             }
         }
         
@@ -470,9 +489,6 @@ public:
             
         }
         
-        //for (auto c : groupingClauses) {
-        //   groupings.push_back(c->toString());
-        //}
         
         int outtableNumber = rand() % 100;
         string outTableName = "Join" + std::to_string(outtableNumber) + "Out";
@@ -490,36 +506,14 @@ public:
         myOp.run ();
         
         cout << "finished sortmergejoin!!!!!\n";
-        // then aggregate
-        for(auto agg :aggs){
-            if (agg->getType() == "sum") {
-                cout << "sum this: " <<  agg->getChild()->toString() << "\n";
-                if(agg->getChild()->toString() == "int[1]"){
-                    aggsToCompute.push_back (make_pair (MyDB_AggType :: cnts, "int[0]"));
-                    int number = rand() % 100;
-                    string name = "cnt" + std::to_string(number);
-                    mySchemaAggOut->appendAtt(make_pair (name, make_shared <MyDB_IntAttType>()));
-                }else{
-                    aggsToCompute.push_back (make_pair (MyDB_AggType :: sums, agg->getChild()->toString()));
-                    int number = rand() % 100;
-                    string name = "sum" + std::to_string(number);
-                    mySchemaAggOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
-                }
-            } else if (agg->getType() == "avg") {
-                cout << "avg this: " <<  agg->getChild()->toString() << "\n";
-                aggsToCompute.push_back (make_pair (MyDB_AggType :: avgs, agg->getChild()->toString()));
-                int number = rand() % 100;
-                string name = "avg" + std::to_string(number);
-                mySchemaAggOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
-            }
-        }
+        
         int outtableAggNumber = rand() % 100;
         string outTableAggName = "res" + std::to_string(outtableAggNumber) + "Out";
         MyDB_TablePtr myTableAggOut = make_shared <MyDB_Table> (outTableAggName, outTableAggName + ".bin", mySchemaOut);
         MyDB_TableReaderWriterPtr supplierTableAggOut = make_shared <MyDB_TableReaderWriter> (myTableAggOut, myMgr);
         string selectionPredicate="";
         Aggregate myAgg(supplierTableOut, supplierTableAggOut, aggsToCompute, groupings, selectionPredicate);
-        myAgg.run();
+        myAgg.run(groupFirst);
         
         MyDB_RecordPtr temp = supplierTableAggOut->getEmptyRecord ();
         MyDB_RecordIteratorAltPtr myIter = supplierTableAggOut->getIteratorAlt ();
@@ -540,9 +534,9 @@ public:
         /////////if there is only one table
         cout << "From the following table:\n";
         if (tablesToProcess.size()==1){
-            oneTableCase(myCatalog, myMrg, allTableReaderWriters);
+            oneTableCase(myCatalog, myMgr, allTableReaderWriters);
         }else{
-            
+            twoTables(myCatalog, myMgr, allTableReaderWriters);
         }
         
     }
