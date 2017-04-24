@@ -28,7 +28,7 @@ SortMergeJoin :: SortMergeJoin (MyDB_TableReaderWriterPtr leftInputIn, MyDB_Tabl
 }
 
 void SortMergeJoin :: run () {
-
+    
 	// get two left input records
 	MyDB_RecordPtr leftInputRec = leftTable->getEmptyRecord ();
 	MyDB_RecordPtr leftInputRecOther = leftTable->getEmptyRecord ();
@@ -43,19 +43,26 @@ void SortMergeJoin :: run () {
 	function <bool ()> rightComp = buildRecordComparator (rightInputRec, rightInputRecOther, equalityCheck.second);
 
 	// now, sort the left and the right
+    cout << "run size:" << runSize << ", sort...\n";
 	MyDB_RecordIteratorAltPtr right = buildItertorOverSortedRuns (runSize, *rightTable, rightComp, rightInputRec, 
 		rightInputRecOther, rightSelectionPredicate);
 	MyDB_RecordIteratorAltPtr left = buildItertorOverSortedRuns (runSize, *leftTable, leftComp, leftInputRec, 
 		leftInputRecOther, leftSelectionPredicate);
-
+    
+    int count  = 0;
+    while (left->advance ()) {
+        left->getCurrent (leftInputRec);
+        cout << leftInputRec << "\n";
+        count++;
+    }
+    cout << "count : " << count << "\n";
 	// and get the schema that results from combining the left and right records
 	MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
 	for (auto &p : leftTable->getTable ()->getSchema ()->getAtts ())
 		mySchemaOut->appendAtt (p);
 	for (auto &p : rightTable->getTable ()->getSchema ()->getAtts ())
 		mySchemaOut->appendAtt (p);
-	
-	// get the combined record
+    // get the combined record
 	MyDB_RecordPtr combinedRec = make_shared <MyDB_Record> (mySchemaOut);
 	combinedRec->buildFrom (leftInputRec, rightInputRec);
 
@@ -88,8 +95,9 @@ void SortMergeJoin :: run () {
 	while (true) {
 	
 		bool allDone = false;
+        right->getCurrent (rightInputRec);
 		left->getCurrent (leftInputRec);
-		right->getCurrent (rightInputRec);
+		
 
 		if (leftSmaller ()->toBool ()) {
 

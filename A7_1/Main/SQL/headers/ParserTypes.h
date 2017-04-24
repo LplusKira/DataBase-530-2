@@ -16,6 +16,7 @@
 #include "Aggregate.h"
 #include "SortMergeJoin.h"
 #include "MyDB_AttType.h"
+#include "ScanJoin.h"
 
 using namespace std;
 
@@ -344,11 +345,8 @@ public:
         }
         cout << "count : " << count << "\n";
     }
-    void twoTables(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
-        //第六个先join再aggregate
-        //第六个先join再aggregate
-        MyDB_TableReaderWriterPtr leftTable;
-        MyDB_TableReaderWriterPtr rightTable;
+    MyDB_TableReaderWriterPtr twoTables(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters, MyDB_TableReaderWriterPtr leftTable, MyDB_TableReaderWriterPtr rightTable) {
+        
         string finalSelectionPredicate = "";
         pair <string, string> equalityCheck;
         string leftSelectionPredicate ="";
@@ -357,11 +355,7 @@ public:
         vector <pair <MyDB_AggType, string>> aggsToCompute;
         vector <string> groupings;
         MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
-        
-        auto a = tablesToProcess.at(0);
-        leftTable = allTableReaderWriters[a.first];
-        auto b = tablesToProcess.at(1);
-        rightTable = allTableReaderWriters[b.first];
+    
         MyDB_SchemaPtr mySchemaAggOut = make_shared <MyDB_Schema> ();
 
         //create output schema
@@ -414,7 +408,18 @@ public:
                 }
             }
         }
-        
+        for (pair <string, MyDB_AttTypePtr> p : mySchemaOut->getAtts()) {
+            cout << "out schema: " << p.first << ", " << p.second->toString() << "\n";
+        }
+        for (pair <string, MyDB_AttTypePtr> p : mySchemaAggOut->getAtts()) {
+            cout << "agg out schema: " << p.first << ", " << p.second->toString() << "\n";
+        }
+        for(pair <MyDB_AggType, string> p: aggsToCompute) {
+            cout << "aggsToCompute: " << p.first << ", " << p.second << "\n";
+        }
+        for (string p: groupings) {
+            cout << "groupings: " << p << "\n";
+        }
         cout << "Where the following are true:\n";
         
         string finalfirstPredicate = "";
@@ -502,28 +507,32 @@ public:
         cout << "rightTable" << b.first << "\n";
         cout << "pair " << equalityCheck.first << "second "<<equalityCheck.second << "\n";
         // first join
-        SortMergeJoin myOp(leftTable, rightTable, supplierTableOut,finalSelectionPredicate,projections,equalityCheck, leftSelectionPredicate,rightSelectionPredicate);
+//        SortMergeJoin myOp(leftTable, rightTable, supplierTableOut,finalSelectionPredicate,projections,equalityCheck, leftSelectionPredicate,rightSelectionPredicate);
+//        myOp.run ();
+        vector<pair<string, string>> equalityChecks;
+        equalityChecks.push_back(equalityCheck);
+        ScanJoin myOp(leftTable, rightTable, supplierTableOut,finalSelectionPredicate,projections,equalityChecks, leftSelectionPredicate,rightSelectionPredicate);
         myOp.run ();
         
         cout << "finished sortmergejoin!!!!!\n";
+        return supplierTableOut;
+//        int outtableAggNumber = rand() % 100;
+//        string outTableAggName = "res" + std::to_string(outtableAggNumber) + "Out";
+//        MyDB_TablePtr myTableAggOut = make_shared <MyDB_Table> (outTableAggName, outTableAggName + ".bin", mySchemaAggOut);
+//        MyDB_TableReaderWriterPtr supplierTableAggOut = make_shared <MyDB_TableReaderWriter> (myTableAggOut, myMgr);
+//        string selectionPredicate="bool[true]";
+//        Aggregate myAgg(supplierTableOut, supplierTableAggOut, aggsToCompute, groupings, selectionPredicate);
+//        myAgg.run(groupFirst);
+//        MyDB_RecordPtr temp = supplierTableAggOut->getEmptyRecord ();
+//        MyDB_RecordIteratorAltPtr myIter = supplierTableAggOut->getIteratorAlt ();
+//        int count  = 0;
+//        while (myIter->advance ()) {
+//            myIter->getCurrent (temp);
+//            cout << temp << "\n";
+//            count++;
+//        }
+//        cout << "Total " << count << " rows in set.\n";
         
-        int outtableAggNumber = rand() % 100;
-        string outTableAggName = "res" + std::to_string(outtableAggNumber) + "Out";
-        MyDB_TablePtr myTableAggOut = make_shared <MyDB_Table> (outTableAggName, outTableAggName + ".bin", mySchemaOut);
-        MyDB_TableReaderWriterPtr supplierTableAggOut = make_shared <MyDB_TableReaderWriter> (myTableAggOut, myMgr);
-        string selectionPredicate="";
-        Aggregate myAgg(supplierTableOut, supplierTableAggOut, aggsToCompute, groupings, selectionPredicate);
-        myAgg.run(groupFirst);
-        
-        MyDB_RecordPtr temp = supplierTableAggOut->getEmptyRecord ();
-        MyDB_RecordIteratorAltPtr myIter = supplierTableAggOut->getIteratorAlt ();
-        int count  = 0;
-        while (myIter->advance ()) {
-            myIter->getCurrent (temp);
-            cout << temp << "\n";
-            count++;
-        }
-        cout << "count : " << count << "\n";
         
 }
     void getRA(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
@@ -536,7 +545,24 @@ public:
         if (tablesToProcess.size()==1){
             oneTableCase(myCatalog, myMgr, allTableReaderWriters);
         }else{
-            twoTables(myCatalog, myMgr, allTableReaderWriters);
+            MyDB_TableReaderWriterPtr outTable;
+            // join first two tables
+            auto a = tablesToProcess.at(0);
+            MyDB_TableReaderWriterPtr leftTable = allTableReaderWriters[a.first];
+            
+            auto b = tablesToProcess.at(1);
+            MyDB_TableReaderWriterPtr rightTable = allTableReaderWriters[b.first];
+            
+            leftTable = twoTables(myCatalog, myMgr, allTableReaderWriters, leftTable, rightTable);
+            // join the rest
+            for (int i = 2; i < tablesToProcess.size(); i++ ) {
+                auto c = tablesToProcess.at(i);
+                rightTable = allTableReaderWriters[c.first];
+                leftTable = twoTables(myCatalog, myMgr, allTableReaderWriters, leftTable, rightTable);
+                
+            }
+            outTable = leftTable;
+            cout << "finish with ALL join.\n";
         }
         
     }
