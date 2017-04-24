@@ -23,6 +23,8 @@ public:
     virtual vector<pair<string, string>> getAttsTables() = 0;
     virtual string getType () = 0;
     virtual ExprTreePtr getChild () = 0;
+    virtual ExprTreePtr getLeft () = 0;
+    virtual ExprTreePtr getRight () = 0;
 	virtual ~ExprTree () {}
 };
 
@@ -57,6 +59,12 @@ public:
     ExprTreePtr getChild () {
         return nullptr;
     }
+    ExprTreePtr getLeft () {
+        return nullptr;
+    }
+    ExprTreePtr getRight () {
+        return nullptr;
+    }
     ~BoolLiteral () {}
 };
 
@@ -85,6 +93,12 @@ public:
         return "regular";
     }
     ExprTreePtr getChild () {
+        return nullptr;
+    }
+    ExprTreePtr getLeft () {
+        return nullptr;
+    }
+    ExprTreePtr getRight () {
         return nullptr;
     }
 	~DoubleLiteral () {}
@@ -118,6 +132,12 @@ public:
     ExprTreePtr getChild () {
         return nullptr;
     }
+    ExprTreePtr getLeft () {
+        return nullptr;
+    }
+    ExprTreePtr getRight () {
+        return nullptr;
+    }
 	~IntLiteral () {}
 };
 
@@ -147,6 +167,12 @@ public:
         return "regular";
     }
     ExprTreePtr getChild () {
+        return nullptr;
+    }
+    ExprTreePtr getLeft () {
+        return nullptr;
+    }
+    ExprTreePtr getRight () {
         return nullptr;
     }
 	~StringLiteral () {}
@@ -182,6 +208,12 @@ public:
         return "regular";
     }
     ExprTreePtr getChild () {
+        return nullptr;
+    }
+    ExprTreePtr getLeft () {
+        return nullptr;
+    }
+    ExprTreePtr getRight () {
         return nullptr;
     }
 	~Identifier () {}
@@ -234,6 +266,12 @@ public:
     ExprTreePtr getChild () {
         return nullptr;
     }
+    ExprTreePtr getLeft () {
+        return lhs;
+    }
+    ExprTreePtr getRight () {
+        return rhs;
+    }
 	~MinusOp () {}
 };
 
@@ -283,6 +321,12 @@ public:
     }
     ExprTreePtr getChild () {
         return nullptr;
+    }
+    ExprTreePtr getLeft () {
+        return lhs;
+    }
+    ExprTreePtr getRight () {
+        return rhs;
     }
     ~PlusOp () {}
 };
@@ -334,6 +378,12 @@ public:
     ExprTreePtr getChild () {
         return nullptr;
     }
+    ExprTreePtr getLeft () {
+        return lhs;
+    }
+    ExprTreePtr getRight () {
+        return rhs;
+    }
 	~TimesOp () {}
 };
 
@@ -383,6 +433,12 @@ public:
     }
     ExprTreePtr getChild () {
         return nullptr;
+    }
+    ExprTreePtr getLeft () {
+        return lhs;
+    }
+    ExprTreePtr getRight () {
+        return rhs;
     }
 	~DivideOp () {}
 };
@@ -434,6 +490,12 @@ public:
     ExprTreePtr getChild () {
         return nullptr;
     }
+    ExprTreePtr getLeft () {
+        return lhs;
+    }
+    ExprTreePtr getRight () {
+        return rhs;
+    }
 	~GtOp () {}
 };
 
@@ -484,6 +546,12 @@ public:
     ExprTreePtr getChild () {
         return nullptr;
     }
+    ExprTreePtr getLeft () {
+        return lhs;
+    }
+    ExprTreePtr getRight () {
+        return rhs;
+    }
 	~LtOp () {}
 };
 
@@ -532,6 +600,12 @@ public:
     }
     ExprTreePtr getChild () {
         return nullptr;
+    }
+    ExprTreePtr getLeft () {
+        return lhs;
+    }
+    ExprTreePtr getRight () {
+        return rhs;
     }
     ~NeqOp () {}
 };
@@ -583,6 +657,12 @@ public:
     ExprTreePtr getChild () {
         return nullptr;
     }
+    ExprTreePtr getLeft () {
+        return lhs;
+    }
+    ExprTreePtr getRight () {
+        return rhs;
+    }
 	~OrOp () {}
 };
 
@@ -633,6 +713,12 @@ public:
     ExprTreePtr getChild () {
         return nullptr;
     }
+    ExprTreePtr getLeft () {
+        return lhs;
+    }
+    ExprTreePtr getRight () {
+        return rhs;
+    }
     ~EqOp () {}
 };
 
@@ -663,6 +749,12 @@ public:
         return "regular";
     }
     ExprTreePtr getChild () {
+        return nullptr;
+    }
+    ExprTreePtr getLeft () {
+        return nullptr;
+    }
+    ExprTreePtr getRight () {
         return nullptr;
     }
 	~NotOp () {}
@@ -697,6 +789,13 @@ public:
     ExprTreePtr getChild () {
         return child;
     }
+    ExprTreePtr getLeft () {
+        return nullptr;
+    }
+    ExprTreePtr getRight () {
+        return nullptr;
+    }
+
 	~SumOp () {}
 };
 
@@ -729,6 +828,13 @@ public:
     ExprTreePtr getChild () {
         return child;
     }
+    ExprTreePtr getLeft () {
+        return nullptr;
+    }
+    ExprTreePtr getRight () {
+        return nullptr;
+    }
+
 	~AvgOp () {}
 };
 
