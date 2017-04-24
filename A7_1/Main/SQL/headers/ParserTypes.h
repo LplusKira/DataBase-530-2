@@ -240,391 +240,307 @@ public:
 	}
 	
 	~SFWQuery () {}
+    
+    void oneTableCase(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
+        MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
+        vector <string> projections;
+        vector <pair <MyDB_AggType, string>> aggsToCompute;
+        vector <string> groupings;
+        string selectionPredicate = "";
+        MyDB_TableReaderWriterPtr supplierTable;
+        auto a = tablesToProcess.at(0);
+        string tableName = a.second;
+        bool groupFirst = true;
+        cout << "\t" << a.first << " AS " << a.second << "\n";
+        cout << "\t create TableReaderWriter...\n" << flush;
+        
+        supplierTable = allTableReaderWriters[a.first];
+        
+        //create output schema
+        cout << "Selecting the following:\n";
+        vector <ExprTreePtr> aggs;
+        if (valusToSelect.at(0)->getType() != "regular") {
+            groupFirst = false;
+        }
+        for (auto selected : valuesToSelect) {
+            cout << "\t" << selected->toString () << "\n";
+            if (selected->getType() == "regular") {
+                cout << "a type is regular" << selected->toString() << "\n";
+                projections.push_back(selected->toString());
+                groupings.push_back(selected->toString());
+                vector<pair<string, string>> atts = selected->getAttsTables();
+                for (pair<string, string> att: atts) {
+                    cout << "atts:" << att.first << " in " << att.second << "\n";
+                    if (att.second == tableName) {
+                        cout << "schema append: " << att.first << ", type :" << supplierTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
+                        mySchemaOut->appendAtt(make_pair (att.first, supplierTable->getTable()->getSchema()->getAttByName(att.first).second));
+                    }
+                }
+            } else {
+                if (selected->getType() == "sum") {
+                    cout << "sum this: " <<  selected->getChild()->toString() << "\n";
+                    if(selected->getChild()->toString() == "int[1]"){
+                        aggsToCompute.push_back (make_pair (MyDB_AggType :: cnts, "int[0]"));
+                        int number = rand() % 100;
+                        string name = "cnt" + std::to_string(number);
+                        mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_IntAttType>()));
+                    }else{
+                        aggsToCompute.push_back (make_pair (MyDB_AggType :: sums, selected->getChild()->toString()));
+                        int number = rand() % 100;
+                        string name = "sum" + std::to_string(number);
+                        mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
+                    }
+                } else if (selected->getType() == "avg") {
+                    cout << "avg this: " <<  selected->getChild()->toString() << "\n";
+                    aggsToCompute.push_back (make_pair (MyDB_AggType :: avgs, selected->getChild()->toString()));
+                    int number = rand() % 100;
+                    string name = "avg" + std::to_string(number);
+                    mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
+                }
+            }
+            
+        }
+        
+        cout << "Where the following are true:\n";
+        string firstPredicate;
+        string secondPredicate;
+        if (allDisjunctions.size() > 0) {
+            firstPredicate = allDisjunctions[0]->toString();
+            
+        }
+        
+        for (int i = 1; i < allDisjunctions.size(); i++ ) {
+            secondPredicate = allDisjunctions[i]->toString();
+            selectionPredicate = "&& ( " + firstPredicate + "," + secondPredicate + ")";
+            cout << "check pred: " << selectionPredicate << "\n";
+            firstPredicate = selectionPredicate;
+        }
+        
+        if (allDisjunctions.size() == 1) {
+            selectionPredicate = firstPredicate;
+        }
+        
+        cout << "selectionPredicate: " << selectionPredicate << "\n";
+        int outtableNumber = rand() % 100;
+        string outTableName = "Join" + std::to_string(outtableNumber) + "Out";
+        MyDB_TablePtr myTableOut = make_shared <MyDB_Table> (outTableName, outTableName + ".bin", mySchemaOut);
+        MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
+        
+        // do aggregate or regular selection
+        if (aggsToCompute.size() != 0){
+            Aggregate myOp(supplierTable, supplierTableOut, aggsToCompute, groupings, selectionPredicate);
+            myOp.run(groupFirst);
+        }else{
+            RegularSelection myOp (supplierTable, supplierTableOut, selectionPredicate, projections);
+            myOp.run ();
+        }
+        MyDB_RecordPtr temp = supplierTableOut->getEmptyRecord ();
+        MyDB_RecordIteratorAltPtr myIter = supplierTableOut->getIteratorAlt ();
+        int count  = 0;
+        while (myIter->advance ()) {
+            myIter->getCurrent (temp);
+            cout << temp << "\n";
+            count++;
+        }
+        cout << "count : " << count << "\n";
+    }
+    void twoTables(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
+        //第六个先join再aggregate
+        MyDB_TableReaderWriterPtr leftTable;
+        MyDB_TableReaderWriterPtr rightTable;
+        string finalSelectionPredicate = "";
+        pair <string, string> equalityCheck;
+        string leftSelectionPredicate ="";
+        string rightSelectionPredicate ="";
+        vector <string> projections;
+        vector <pair <MyDB_AggType, string>> aggsToCompute;
+        vector <string> groupings;
+        MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
+        
+        auto a = tablesToProcess.at(0);
+        leftTable = allTableReaderWriters[a.first];
+        auto b = tablesToProcess.at(1);
+        rightTable = allTableReaderWriters[b.first];
+        
+        //create output schema
+        cout << "Selecting the following:\n";
+        vector <ExprTreePtr> aggs;
+        bool groupFirst = true;
+        if (valuesToSelect.at(0)->getType() != "regular") {
+            cout << "It seems that agg att first\n";
+            groupFirst = false;
+        }
+        for (auto selected : valuesToSelect) {
+            cout << "\t" << selected->toString () << "\n";
+            if (selected->getType() == "regular") {
+                cout << "a type is regular" << selected->toString() << "\n";
+                projections.push_back(selected->toString());
+                groupings.push_back(selected->toString());
+                vector<pair<string, string>> atts = selected->getAttsTables();
+                for (pair<string, string> att: atts) {
+                    cout << "atts:" << att.first << " in " << att.second << "\n";
+                    if (att.second == a.second) {
+                        cout << "schema append: " << att.first << ", type :" << leftTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
+                        mySchemaOut->appendAtt(make_pair (att.first, leftTable->getTable()->getSchema()->getAttByName(att.first).second));
+                    }else if(att.second == b.second){
+                        cout << "schema append: " << att.first << ", type :" << rightTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
+                        mySchemaOut->appendAtt(make_pair (att.first, rightTable->getTable()->getSchema()->getAttByName(att.first).second));
+                    }
+                }
+            } else {
+                aggs.push_back(selected);
+            }
+        }
+        
+        cout << "Where the following are true:\n";
+        
+        string finalfirstPredicate = "";
+        string finalsecondPredicate = "";
+        string LeftfirstPredicate ="";
+        string LeftsecondPredicate ="";
+        string rightfirstPredicate ="";
+        string rightsecondPredicate ="";
+        if (allDisjunctions.size() > 0) {
+            set<string> tables = allDisjunctions[0]->getTables();
+            string leftOne;
+            string rightOne;
+            if(tables.size()>1){
+                finalfirstPredicate = allDisjunctions[0]->toString();
+                if(*allDisjunctions[0]->getLeft()->getTables().begin() == a.second ){
+                    leftOne = allDisjunctions[0]->getLeft()->toString();
+                }else{
+                    rightOne = allDisjunctions[0]->getLeft()->toString();
+                }
+                if(*allDisjunctions[0]->getRight()->getTables().begin() == b.second ){
+                    rightOne = allDisjunctions[0]->getRight()->toString();
+                }else{
+                    leftOne = allDisjunctions[0]->getRight()->toString();
+                }
+                equalityCheck = make_pair(leftOne,rightOne);
+                finalSelectionPredicate = finalfirstPredicate;
+            }else if (tables.size()==1){
+                string tablename = *tables.begin();
+                if(tablename == a.second){
+                    LeftfirstPredicate = allDisjunctions[0]->toString();
+                    leftSelectionPredicate = LeftfirstPredicate;
+                }else{
+                    rightfirstPredicate = allDisjunctions[0]->toString();
+                    rightSelectionPredicate = rightfirstPredicate;
+                }
+            }
+        }
+        
+        for (int i = 1; i < allDisjunctions.size(); i++ ) {
+            set<string> tables = allDisjunctions[i]->getTables();
+            if(tables.size()>1){
+                finalsecondPredicate = allDisjunctions[i]->toString();
+                if (finalfirstPredicate == ""){
+                    finalSelectionPredicate = finalsecondPredicate;
+                }else{
+                    finalSelectionPredicate = "&& ( " + finalfirstPredicate + "," + finalsecondPredicate + ")";
+                }
+                finalfirstPredicate =finalSelectionPredicate;
+            }else if (tables.size()==1){
+                string tablename = *tables.begin();
+                cout << "tablename" << tablename<<"a.first "<< a.first << "\n";
+                if(tablename == a.second){
+                    cout << "this is left table\n";
+                    LeftsecondPredicate = allDisjunctions[i]->toString();
+                    if (LeftfirstPredicate == ""){
+                        leftSelectionPredicate = LeftsecondPredicate;
+                    }else{
+                        leftSelectionPredicate = "&& ( " + LeftfirstPredicate + "," + LeftsecondPredicate + ")";
+                    }
+                    LeftfirstPredicate = leftSelectionPredicate;
+                }else{
+                    cout << "this is right table\n";
+                    rightsecondPredicate = allDisjunctions[i]->toString();
+                    if(rightfirstPredicate == ""){
+                        rightSelectionPredicate = rightsecondPredicate;
+                    }else{
+                        rightSelectionPredicate = "&& ( " + rightfirstPredicate + "," + rightsecondPredicate + ")";
+                    }
+                    rightfirstPredicate = rightSelectionPredicate;
+                }
+            }
+            
+        }
+        
+        //for (auto c : groupingClauses) {
+        //   groupings.push_back(c->toString());
+        //}
+        
+        int outtableNumber = rand() % 100;
+        string outTableName = "Join" + std::to_string(outtableNumber) + "Out";
+        MyDB_TablePtr myTableOut = make_shared <MyDB_Table> (outTableName, outTableName + ".bin", mySchemaOut);
+        MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
+        
+        cout << "finalSelectionPredicate" << finalSelectionPredicate << "\n";
+        cout << "leftSelectionPredicate" << leftSelectionPredicate << "\n";
+        cout << "rightSelectionPredicate" << rightSelectionPredicate << "\n";
+        cout << "leftTable" << a.first << "\n";
+        cout << "rightTable" << b.first << "\n";
+        cout << "pair " << equalityCheck.first << "second "<<equalityCheck.second << "\n";
+        // first join
+        SortMergeJoin myOp(leftTable, rightTable, supplierTableOut,finalSelectionPredicate,projections,equalityCheck, leftSelectionPredicate,rightSelectionPredicate);
+        myOp.run ();
+        
+        cout << "finished sortmergejoin!!!!!\n";
+        // then aggregate
+        MyDB_SchemaPtr mySchemaAggOut = make_shared <MyDB_Schema> ();
+        for(auto agg :aggs){
+            if (agg->getType() == "sum") {
+                cout << "sum this: " <<  agg->getChild()->toString() << "\n";
+                if(agg->getChild()->toString() == "int[1]"){
+                    aggsToCompute.push_back (make_pair (MyDB_AggType :: cnts, "int[0]"));
+                    int number = rand() % 100;
+                    string name = "cnt" + std::to_string(number);
+                    mySchemaAggOut->appendAtt(make_pair (name, make_shared <MyDB_IntAttType>()));
+                }else{
+                    aggsToCompute.push_back (make_pair (MyDB_AggType :: sums, agg->getChild()->toString()));
+                    int number = rand() % 100;
+                    string name = "sum" + std::to_string(number);
+                    mySchemaAggOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
+                }
+            } else if (agg->getType() == "avg") {
+                cout << "avg this: " <<  agg->getChild()->toString() << "\n";
+                aggsToCompute.push_back (make_pair (MyDB_AggType :: avgs, agg->getChild()->toString()));
+                int number = rand() % 100;
+                string name = "avg" + std::to_string(number);
+                mySchemaAggOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
+            }
+        }
+        int outtableAggNumber = rand() % 100;
+        string outTableAggName = "res" + std::to_string(outtableAggNumber) + "Out";
+        MyDB_TablePtr myTableAggOut = make_shared <MyDB_Table> (outTableAggName, outTableAggName + ".bin", mySchemaOut);
+        MyDB_TableReaderWriterPtr supplierTableAggOut = make_shared <MyDB_TableReaderWriter> (myTableAggOut, myMgr);
+        string selectionPredicate="";
+        Aggregate myAgg(supplierTableOut, supplierTableAggOut, aggsToCompute, groupings, selectionPredicate);
+        myAgg.run(groupFirst);
+        
+        MyDB_RecordPtr temp = supplierTableAggOut->getEmptyRecord ();
+        MyDB_RecordIteratorAltPtr myIter = supplierTableAggOut->getIteratorAlt ();
+        int count  = 0;
+        while (myIter->advance ()) {
+            myIter->getCurrent (temp);
+            cout << temp << "\n";
+            count++;
+        }
+        cout << "count : " << count << "\n";
+        
+    }
     void getRA(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
         cout << "All tables in current catalog:\n";
         map <string, MyDB_TablePtr> allTables = MyDB_Table::getAllTables(myCatalog);
         for (std::map<string, MyDB_TablePtr>::iterator it=allTables.begin(); it!=allTables.end(); ++it)
             std::cout << it->first << " => " << *it->second << "\n";
+        /////////if there is only one table
         cout << "From the following table:\n";
         if (tablesToProcess.size()==1){
-            MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
-            vector <string> projections;
-            vector <pair <MyDB_AggType, string>> aggsToCompute;
-            vector <string> groupings;
-            string selectionPredicate = "";
-            MyDB_TableReaderWriterPtr supplierTable;
-            auto a = tablesToProcess.at(0);
-                string tableName = a.second;
-                cout << "\t" << a.first << " AS " << a.second << "\n";
-                cout << "\t create TableReaderWriter...\n" << flush;
-                
-                supplierTable = allTableReaderWriters[a.first];
-                
-                //create output schema
-                cout << "Selecting the following:\n";
-                vector <ExprTreePtr> aggs;
-                for (auto selected : valuesToSelect) {
-                    cout << "\t" << selected->toString () << "\n";
-                    if (selected->getType() == "regular") {
-                        cout << "a type is regular" << selected->toString() << "\n";
-                        projections.push_back(selected->toString());
-                        groupings.push_back(selected->toString());
-                        vector<pair<string, string>> atts = selected->getAttsTables();
-                        for (pair<string, string> att: atts) {
-                            cout << "atts:" << att.first << " in " << att.second << "\n";
-                            if (att.second == tableName) {
-                                cout << "schema append: " << att.first << ", type :" << supplierTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
-                                mySchemaOut->appendAtt(make_pair (att.first, supplierTable->getTable()->getSchema()->getAttByName(att.first).second));
-                            }
-                        }
-                    } else {
-                        aggs.push_back(selected);
-                    }
-                    
-                }
-                for(auto agg :aggs){
-                    if (agg->getType() == "sum") {
-                        cout << "sum this: " <<  agg->getChild()->toString() << "\n";
-                        if(agg->getChild()->toString() == "int[1]"){
-                            aggsToCompute.push_back (make_pair (MyDB_AggType :: cnts, "int[0]"));
-                            int number = rand() % 100;
-                            string name = "cnt" + std::to_string(number);
-                            mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_IntAttType>()));
-                        }else{
-                            aggsToCompute.push_back (make_pair (MyDB_AggType :: sums, agg->getChild()->toString()));
-                            int number = rand() % 100;
-                            string name = "sum" + std::to_string(number);
-                            mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
-                        }
-                    } else if (agg->getType() == "avg") {
-                        cout << "avg this: " <<  agg->getChild()->toString() << "\n";
-                        aggsToCompute.push_back (make_pair (MyDB_AggType :: avgs, agg->getChild()->toString()));
-                        int number = rand() % 100;
-                        string name = "avg" + std::to_string(number);
-                        mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
-                    }
-                    
-                }
-                cout << "Where the following are true:\n";
-                string firstPredicate;
-                string secondPredicate;
-                if (allDisjunctions.size() > 0) {
-                    firstPredicate = allDisjunctions[0]->toString();
-                    
-                }
-                
-                for (int i = 1; i < allDisjunctions.size(); i++ ) {
-                    secondPredicate = allDisjunctions[i]->toString();
-                    selectionPredicate = "&& ( " + firstPredicate + "," + secondPredicate + ")";
-                    cout << "check pred: " << selectionPredicate << "\n";
-                    firstPredicate = selectionPredicate;
-                }
-                
-                //for (auto c : groupingClauses) {
-                //   groupings.push_back(c->toString());
-                //}
-                if (allDisjunctions.size() == 1) {
-                    selectionPredicate = firstPredicate;
-                }
-            
-            cout << "selectionPredicate: " << selectionPredicate << "\n";
-            int outtableNumber = rand() % 100;
-            string outTableName = "Join" + std::to_string(outtableNumber) + "Out";
-            MyDB_TablePtr myTableOut = make_shared <MyDB_Table> (outTableName, outTableName + ".bin", mySchemaOut);
-            MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
-            
-            // do aggregate or regular selection
-            if (aggsToCompute.size() != 0){
-                Aggregate myOp(supplierTable, supplierTableOut, aggsToCompute, groupings, selectionPredicate);
-                myOp.run();
-            }else{
-                RegularSelection myOp (supplierTable, supplierTableOut, selectionPredicate, projections);
-                myOp.run ();
-            }
-            MyDB_RecordPtr temp = supplierTableOut->getEmptyRecord ();
-            MyDB_RecordIteratorAltPtr myIter = supplierTableOut->getIteratorAlt ();
-            int count  = 0;
-            while (myIter->advance ()) {
-                myIter->getCurrent (temp);
-                cout << temp << "\n";
-                count++;
-            }
-            cout << "count : " << count << "\n";
+            oneTableCase(myCatalog, myMrg, allTableReaderWriters);
         }else{
-            //第六个先join再aggregate
-            MyDB_TableReaderWriterPtr leftTable;
-            MyDB_TableReaderWriterPtr rightTable;
-            string finalSelectionPredicate = "";
-            pair <string, string> equalityCheck;
-            string leftSelectionPredicate ="";
-            string rightSelectionPredicate ="";
-            vector <string> projections;
-            vector <pair <MyDB_AggType, string>> aggsToCompute;
-            vector <string> groupings;
-            MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
-
-            auto a = tablesToProcess.at(0);
-            leftTable = allTableReaderWriters[a.first];
-            auto b = tablesToProcess.at(1);
-            rightTable = allTableReaderWriters[b.first];
             
-            //create output schema
-            cout << "Selecting the following:\n";
-            vector <ExprTreePtr> aggs;
-            bool groupFirst = true;
-            if (valuesToSelect.at(0)->getType() != "regular") {
-                cout << "It seems that agg att first\n";
-                groupFirst = false;
-            }
-            for (auto selected : valuesToSelect) {
-                cout << "\t" << selected->toString () << "\n";
-                if (selected->getType() == "regular") {
-                    cout << "a type is regular" << selected->toString() << "\n";
-                    projections.push_back(selected->toString());
-                    groupings.push_back(selected->toString());
-                    vector<pair<string, string>> atts = selected->getAttsTables();
-                    for (pair<string, string> att: atts) {
-                        cout << "atts:" << att.first << " in " << att.second << "\n";
-                        if (att.second == a.second) {
-                            cout << "schema append: " << att.first << ", type :" << leftTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
-                            mySchemaOut->appendAtt(make_pair (att.first, leftTable->getTable()->getSchema()->getAttByName(att.first).second));
-                        }else if(att.second == b.second){
-                            cout << "schema append: " << att.first << ", type :" << rightTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
-                            mySchemaOut->appendAtt(make_pair (att.first, rightTable->getTable()->getSchema()->getAttByName(att.first).second));
-                        }
-                    }
-                } else {
-<<<<<<< Updated upstream
-//                    aggs.push_back(selected);
-                    if (selected->getType() == "sum") {
-                        cout << "sum this: " <<  selected->getChild()->toString() << "\n";
-                        if(selected->getChild()->toString() == "int[1]"){
-                            aggsToCompute.push_back (make_pair (MyDB_AggType :: cnts, "int[0]"));
-                            int number = rand() % 100;
-                            string name = "cnt" + std::to_string(number);
-                            mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_IntAttType>()));
-                        }else{
-                            aggsToCompute.push_back (make_pair (MyDB_AggType :: sums, selected->getChild()->toString()));
-                            int number = rand() % 100;
-                            string name = "sum" + std::to_string(number);
-                            mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
-                        }
-                    } else if (selected->getType() == "avg") {
-                        cout << "avg this: " <<  selected->getChild()->toString() << "\n";
-                        aggsToCompute.push_back (make_pair (MyDB_AggType :: avgs, selected->getChild()->toString()));
-                        int number = rand() % 100;
-                        string name = "avg" + std::to_string(number);
-                        mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
-                    }
-                    
-                }
-                
-            }
-//            for(auto agg :aggs){
-//                if (agg->getType() == "sum") {
-//                    cout << "sum this: " <<  agg->getChild()->toString() << "\n";
-//                    if(agg->getChild()->toString() == "int[1]"){
-//                        aggsToCompute.push_back (make_pair (MyDB_AggType :: cnts, "int[0]"));
-//                        int number = rand() % 100;
-//                        string name = "cnt" + std::to_string(number);
-//                        mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_IntAttType>()));
-//                    }else{
-//                        aggsToCompute.push_back (make_pair (MyDB_AggType :: sums, agg->getChild()->toString()));
-//                        int number = rand() % 100;
-//                        string name = "sum" + std::to_string(number);
-//                        mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
-//                    }
-//                } else if (agg->getType() == "avg") {
-//                    cout << "avg this: " <<  agg->getChild()->toString() << "\n";
-//                    aggsToCompute.push_back (make_pair (MyDB_AggType :: avgs, agg->getChild()->toString()));
-//                    int number = rand() % 100;
-//                    string name = "avg" + std::to_string(number);
-//                    mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
-//                }
-//            }
-            for (pair <string, MyDB_AttTypePtr> p : mySchemaOut->getAtts()) {
-                cout << "out schema: " << p.first << ", " << p.second->toString() << "\n";
-            }
-            cout << "Where the following are true:\n";
-            string firstPredicate;
-            string secondPredicate;
-            if (allDisjunctions.size() > 0) {
-                firstPredicate = allDisjunctions[0]->toString();
-            }
-            
-            for (int i = 1; i < allDisjunctions.size(); i++ ) {
-                secondPredicate = allDisjunctions[i]->toString();
-                selectionPredicate = "&& ( " + firstPredicate + "," + secondPredicate + ")";
-                cout << "check pred: " << selectionPredicate << "\n";
-                firstPredicate = selectionPredicate;
-            }
-            
-            //for (auto c : groupingClauses) {
-             //   groupings.push_back(c->toString());
-            //}
-            if (allDisjunctions.size() == 1) {
-                selectionPredicate = firstPredicate;
-=======
-                    aggs.push_back(selected);
-                }
-            }
-            
-            cout << "Where the following are true:\n";
-            
-            string finalfirstPredicate = "";
-            string finalsecondPredicate = "";
-            string LeftfirstPredicate ="";
-            string LeftsecondPredicate ="";
-            string rightfirstPredicate ="";
-            string rightsecondPredicate ="";
-            if (allDisjunctions.size() > 0) {
-                set<string> tables = allDisjunctions[0]->getTables();
-                string leftOne;
-                string rightOne;
-                if(tables.size()>1){
-                    finalfirstPredicate = allDisjunctions[0]->toString();
-                    if(*allDisjunctions[0]->getLeft()->getTables().begin() == a.second ){
-                        leftOne = allDisjunctions[0]->getLeft()->toString();
-                    }else{
-                        rightOne = allDisjunctions[0]->getLeft()->toString();
-                    }
-                    if(*allDisjunctions[0]->getRight()->getTables().begin() == b.second ){
-                        rightOne = allDisjunctions[0]->getRight()->toString();
-                    }else{
-                        leftOne = allDisjunctions[0]->getRight()->toString();
-                    }
-                    equalityCheck = make_pair(leftOne,rightOne);
-                    finalSelectionPredicate = finalfirstPredicate;
-                }else if (tables.size()==1){
-                    string tablename = *tables.begin();
-                    if(tablename == a.second){
-                        LeftfirstPredicate = allDisjunctions[0]->toString();
-                        leftSelectionPredicate = LeftfirstPredicate;
-                    }else{
-                        rightfirstPredicate = allDisjunctions[0]->toString();
-                        rightSelectionPredicate = rightfirstPredicate;
-                    }
-                }
-            }
-            
-            for (int i = 1; i < allDisjunctions.size(); i++ ) {
-                set<string> tables = allDisjunctions[i]->getTables();
-                if(tables.size()>1){
-                    finalsecondPredicate = allDisjunctions[i]->toString();
-                    if (finalfirstPredicate == ""){
-                        finalSelectionPredicate = finalsecondPredicate;
-                    }else{
-                        finalSelectionPredicate = "&& ( " + finalfirstPredicate + "," + finalsecondPredicate + ")";
-                    }
-                    finalfirstPredicate =finalSelectionPredicate;
-                }else if (tables.size()==1){
-                    string tablename = *tables.begin();
-                    cout << "tablename" << tablename<<"a.first "<< a.first << "\n";
-                    if(tablename == a.second){
-                        cout << "this is left table\n";
-                        LeftsecondPredicate = allDisjunctions[i]->toString();
-                        if (LeftfirstPredicate == ""){
-                            leftSelectionPredicate = LeftsecondPredicate;
-                        }else{
-                            leftSelectionPredicate = "&& ( " + LeftfirstPredicate + "," + LeftsecondPredicate + ")";
-                        }
-                        LeftfirstPredicate = leftSelectionPredicate;
-                    }else{
-                        cout << "this is right table\n";
-                        rightsecondPredicate = allDisjunctions[i]->toString();
-                        if(rightfirstPredicate == ""){
-                            rightSelectionPredicate = rightsecondPredicate;
-                        }else{
-                            rightSelectionPredicate = "&& ( " + rightfirstPredicate + "," + rightsecondPredicate + ")";
-                        }
-                        rightfirstPredicate = rightSelectionPredicate;
-                    }
-                }
-
-            }
-            
-            //for (auto c : groupingClauses) {
-            //   groupings.push_back(c->toString());
-            //}
-            
-            int outtableNumber = rand() % 100;
-            string outTableName = "Join" + std::to_string(outtableNumber) + "Out";
-            MyDB_TablePtr myTableOut = make_shared <MyDB_Table> (outTableName, outTableName + ".bin", mySchemaOut);
-            MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
-            
-            cout << "finalSelectionPredicate" << finalSelectionPredicate << "\n";
-            cout << "leftSelectionPredicate" << leftSelectionPredicate << "\n";
-            cout << "rightSelectionPredicate" << rightSelectionPredicate << "\n";
-            cout << "leftTable" << a.first << "\n";
-            cout << "rightTable" << b.first << "\n";
-            cout << "pair " << equalityCheck.first << "second "<<equalityCheck.second << "\n";
-            // first join
-            SortMergeJoin myOp(leftTable, rightTable, supplierTableOut,finalSelectionPredicate,projections,equalityCheck, leftSelectionPredicate,rightSelectionPredicate);
-            myOp.run ();
-            
-            cout << "finished sortmergejoin!!!!!\n";
-            // then aggregate
-            MyDB_SchemaPtr mySchemaAggOut = make_shared <MyDB_Schema> ();
-            for(auto agg :aggs){
-                if (agg->getType() == "sum") {
-                    cout << "sum this: " <<  agg->getChild()->toString() << "\n";
-                    if(agg->getChild()->toString() == "int[1]"){
-                        aggsToCompute.push_back (make_pair (MyDB_AggType :: cnts, "int[0]"));
-                        int number = rand() % 100;
-                        string name = "cnt" + std::to_string(number);
-                        mySchemaAggOut->appendAtt(make_pair (name, make_shared <MyDB_IntAttType>()));
-                    }else{
-                        aggsToCompute.push_back (make_pair (MyDB_AggType :: sums, agg->getChild()->toString()));
-                        int number = rand() % 100;
-                        string name = "sum" + std::to_string(number);
-                        mySchemaAggOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
-                    }
-                } else if (agg->getType() == "avg") {
-                    cout << "avg this: " <<  agg->getChild()->toString() << "\n";
-                    aggsToCompute.push_back (make_pair (MyDB_AggType :: avgs, agg->getChild()->toString()));
-                    int number = rand() % 100;
-                    string name = "avg" + std::to_string(number);
-                    mySchemaAggOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
-                }
-                
->>>>>>> Stashed changes
-            }
-            int outtableAggNumber = rand() % 100;
-            string outTableAggName = "res" + std::to_string(outtableAggNumber) + "Out";
-            MyDB_TablePtr myTableAggOut = make_shared <MyDB_Table> (outTableAggName, outTableAggName + ".bin", mySchemaOut);
-            MyDB_TableReaderWriterPtr supplierTableAggOut = make_shared <MyDB_TableReaderWriter> (myTableAggOut, myMgr);
-            string selectionPredicate="";
-            Aggregate myAgg(supplierTableOut, supplierTableAggOut, aggsToCompute, groupings, selectionPredicate);
-            myAgg.run();
-            
-<<<<<<< Updated upstream
-            // do aggregate or regular selection
-            if (aggsToCompute.size() != 0){
-                Aggregate myOp(supplierTable, supplierTableOut, aggsToCompute, groupings, selectionPredicate);
-                myOp.run(groupFirst);
-            }else{
-                RegularSelection myOp (supplierTable, supplierTableOut, selectionPredicate, projections);
-                myOp.run ();
-            }
-            MyDB_RecordPtr temp = supplierTableOut->getEmptyRecord ();
-            MyDB_RecordIteratorAltPtr myIter = supplierTableOut->getIteratorAlt ();
-=======
-            MyDB_RecordPtr temp = supplierTableAggOut->getEmptyRecord ();
-            MyDB_RecordIteratorAltPtr myIter = supplierTableAggOut->getIteratorAlt ();
->>>>>>> Stashed changes
-            int count  = 0;
-            while (myIter->advance ()) {
-                myIter->getCurrent (temp);
-                cout << temp << "\n";
-                count++;
-            }
-            cout << "count : " << count << "\n";
-
-
         }
-        
-    
-        
         
     }
 	void print () {
