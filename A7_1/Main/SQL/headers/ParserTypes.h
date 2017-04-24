@@ -275,33 +275,34 @@ public:
                         }
                     }
                 } else {
-                    aggs.push_back(selected);
+                    //aggs.push_back(selected);
+                    if (selected->getType() == "sum") {
+                        cout << "sum this: " <<  selected->getChild()->toString() << "\n";
+                        if(selected->getChild()->toString() == "int[1]"){
+                            aggsToCompute.push_back (make_pair (MyDB_AggType :: cnts, "int[0]"));
+                            int number = rand() % 100;
+                            string name = "cnt" + std::to_string(number);
+                            mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_IntAttType>()));
+                        }else{
+                            aggsToCompute.push_back (make_pair (MyDB_AggType :: sums, selected->getChild()->toString()));
+                            int number = rand() % 100;
+                            string name = "sum" + std::to_string(number);
+                            mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
+                        }
+                    } else if (selected->getType() == "avg") {
+                        cout << "avg this: " <<  selected->getChild()->toString() << "\n";
+                        aggsToCompute.push_back (make_pair (MyDB_AggType :: avgs, selected->getChild()->toString()));
+                        int number = rand() % 100;
+                        string name = "avg" + std::to_string(number);
+                        mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
+                    }
                 }
                 
             }
-            for(auto agg :aggs){
-                if (agg->getType() == "sum") {
-                    cout << "sum this: " <<  agg->getChild()->toString() << "\n";
-                    if(agg->getChild()->toString() == "int[1]"){
-                        aggsToCompute.push_back (make_pair (MyDB_AggType :: cnts, "int[0]"));
-                        int number = rand() % 100;
-                        string name = "cnt" + std::to_string(number);
-                        mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_IntAttType>()));
-                    }else{
-                        aggsToCompute.push_back (make_pair (MyDB_AggType :: sums, agg->getChild()->toString()));
-                        int number = rand() % 100;
-                        string name = "sum" + std::to_string(number);
-                        mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
-                    }
-                } else if (agg->getType() == "avg") {
-                    cout << "avg this: " <<  agg->getChild()->toString() << "\n";
-                    aggsToCompute.push_back (make_pair (MyDB_AggType :: avgs, agg->getChild()->toString()));
-                    int number = rand() % 100;
-                    string name = "avg" + std::to_string(number);
-                    mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
-                }
-
-            }
+//            for(auto agg :aggs){
+//                
+//
+//            }
             cout << "Where the following are true:\n";
             string firstPredicate;
             string secondPredicate;
@@ -319,7 +320,9 @@ public:
             for (auto c : groupingClauses) {
                 groupings.push_back(c->toString());
             }
-
+            if (allDisjunctions.size() == 1) {
+                selectionPredicate = firstPredicate;
+            }
             cout << "selectionPredicate: " << selectionPredicate << "\n";
             MyDB_TablePtr myTableOut = make_shared <MyDB_Table> (a.first + "Out", a.first + "Out.bin", mySchemaOut);
             MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
@@ -327,7 +330,7 @@ public:
             // do aggregate or regular selection
             if (aggsToCompute.size() != 0){
                 Aggregate myOp(supplierTable, supplierTableOut, aggsToCompute, groupings, selectionPredicate);
-                myOp.run();
+                myOp.run(false);
             }else{
                 RegularSelection myOp (supplierTable, supplierTableOut, selectionPredicate, projections);
                 myOp.run ();

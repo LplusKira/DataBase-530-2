@@ -22,7 +22,7 @@ Aggregate :: Aggregate (MyDB_TableReaderWriterPtr inputIn, MyDB_TableReaderWrite
 
 }
 
-void Aggregate :: run () {
+void Aggregate :: run (bool groupFirst) {
 
 	// make sure that the number of attributes is OK
 	if (output->getTable ()->getSchema ()->getAtts ().size () != aggsToCompute.size () + groupings.size ()) {
@@ -35,12 +35,24 @@ void Aggregate :: run () {
 	MyDB_SchemaPtr aggSchema = make_shared <MyDB_Schema> ();
 	int i = 0;
 	int numGroups = groupings.size ();
-	for (auto &a : output->getTable ()->getSchema ()->getAtts ()) {
-		if (i < numGroups) 
-			aggSchema->appendAtt (make_pair ("MyDB_GroupAtt" + to_string (i++), a.second));
-		else
-			aggSchema->appendAtt (make_pair ("MyDB_AggAtt" + to_string (i++ - numGroups), a.second));
-	}
+    if (groupFirst) {
+        for (auto &a : output->getTable ()->getSchema ()->getAtts ()) {
+            if (i < numGroups)
+                aggSchema->appendAtt (make_pair ("MyDB_GroupAtt" + to_string (i++), a.second));
+            else
+                aggSchema->appendAtt (make_pair ("MyDB_AggAtt" + to_string (i++ - numGroups), a.second));
+        }
+    } else {
+        int size = output->getTable ()->getSchema ()->getAtts ().size();
+        int aggNum = size - numGroups;
+        for (auto &a : output->getTable ()->getSchema ()->getAtts ()) {
+            if (i < aggNum)
+                aggSchema->appendAtt (make_pair ("MyDB_AggAtt" + to_string (i++), a.second));
+            else
+               aggSchema->appendAtt (make_pair ("MyDB_GroupAtt" + to_string (i++ - aggNum), a.second));
+        }
+    }
+	
 	aggSchema->appendAtt (make_pair ("MyDB_CntAtt", make_shared <MyDB_IntAttType> ()));
 
 	// now, create the schema for the combined records
