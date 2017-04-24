@@ -99,15 +99,15 @@ void Aggregate :: run () {
 
 	i = 0;
 	for (auto &s : aggsToCompute) {
-		if (s.first == MyDB_AggType :: sum || s.first == MyDB_AggType :: avg) {
+		if (s.first == MyDB_AggType :: sums || s.first == MyDB_AggType :: avgs) {
 			aggComps.push_back (combinedRec->compileComputation ("+ (" + s.second + 
 				", [MyDB_AggAtt" + to_string (i) + "])"));
-		} else if (s.first == MyDB_AggType :: cnt) {
+		} else if (s.first == MyDB_AggType :: cnts) {
 			aggComps.push_back (combinedRec->compileComputation ("+ ( int[1], [MyDB_AggAtt"
 				+ to_string (i) + "])"));
 		}
 
-		if (s.first == MyDB_AggType :: avg) {
+		if (s.first == MyDB_AggType :: avgs) {
 			finalAggComps.push_back (combinedRec->compileComputation ("/ ([MyDB_AggAtt" + to_string (i++) + "], [MyDB_CntAtt])"));
 		} else {
 			finalAggComps.push_back (combinedRec->compileComputation ("[MyDB_AggAtt" + to_string (i++) + "]"));

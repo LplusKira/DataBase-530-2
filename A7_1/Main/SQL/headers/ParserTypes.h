@@ -14,6 +14,7 @@
 #include "MyDB_TableReaderWriter.h"
 #include "RegularSelection.h"
 #include "Aggregate.h"
+#include "MyDB_AttType.h"
 
 using namespace std;
 
@@ -263,21 +264,34 @@ public:
                 cout << "\t" << a->toString () << "\n";
                 if (a->getType() == "regular") {
                     projections.push_back(a->toString());
+                    vector<pair<string, string>> atts = a->getAttsTables();
+                    for (pair<string, string> att: atts) {
+                        cout << "atts:" << att.first << " in " << att.second << "\n";
+                        if (att.second == tableName) {
+                            cout << "schema append: " << att.first << ", type :" << supplierTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
+                            mySchemaOut->appendAtt(make_pair (att.first, supplierTable->getTable()->getSchema()->getAttByName(att.first).second));
+                        }
+                    }
                 } else {
                     if (a->getType() == "sum") {
                         cout << "sum this: " <<  a->getChild()->toString() << "\n";
-                        aggsToCompute.push_back (make_pair (MyDB_AggType :: sum, a->getChild()->toString()));
+                        if(a->getChild()->toString() == "int[1]"){
+                            aggsToCompute.push_back (make_pair (MyDB_AggType :: cnts, "int[0]"));
+                            int number = rand() % 100;
+                            string name = "cnt" + std::to_string(number);
+                            mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_IntAttType>()));
+                        }else{
+                            aggsToCompute.push_back (make_pair (MyDB_AggType :: sums, a->getChild()->toString()));
+                            int number = rand() % 100;
+                            string name = "sum" + std::to_string(number);
+                            mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
+                        }
                     } else if (a->getType() == "avg") {
                         cout << "avg this: " <<  a->getChild()->toString() << "\n";
-                        aggsToCompute.push_back (make_pair (MyDB_AggType :: avg, a->getChild()->toString()));
-                    }
-                }
-                vector<pair<string, string>> atts = a->getAttsTables();
-                for (pair<string, string> att: atts) {
-                    cout << "atts:" << att.first << " in " << att.second << "\n";
-                    if (att.second == tableName) {
-                        cout << "schema append: " << att.first << ", type :" << supplierTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
-                        mySchemaOut->appendAtt(make_pair (att.first, supplierTable->getTable()->getSchema()->getAttByName(att.first).second));
+                        aggsToCompute.push_back (make_pair (MyDB_AggType :: avgs, a->getChild()->toString()));
+                         int number = rand() % 100;
+                        string name = "avg" + std::to_string(number);
+                        mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
                     }
                 }
                 
@@ -305,7 +319,7 @@ public:
             MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
             
             // do aggregate or regular selection
-            if (aggsToCompute.size() == 0){
+            if (aggsToCompute.size() != 0){
                 Aggregate myOp(supplierTable, supplierTableOut, aggsToCompute, groupings, selectionPredicate);
                 myOp.run();
             }else{
