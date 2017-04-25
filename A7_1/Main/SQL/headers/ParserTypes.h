@@ -574,9 +574,9 @@ public:
         string LeftsecondPredicate ="";
         string rightfirstPredicate ="";
         string rightsecondPredicate ="";
-        string ltableName = leftTable->getTables()->getName();
+        string ltableName = leftTable->getTable()->getName();
         cout << "leftTableName" <<ltableName << "\n";
-        string rtableName = rightTable->getTables()->getName();
+        string rtableName = rightTable->getTable()->getName();
         cout << "rightTableName" <<rtableName << "\n";
         string leftShort;
         string rightShort;
