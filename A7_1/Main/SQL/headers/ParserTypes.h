@@ -680,11 +680,20 @@ public:
         cout << "finalSelectionPredicate" << finalSelectionPredicate << "\n";
         cout << "leftSelectionPredicate" << leftSelectionPredicate << "\n";
         cout << "rightSelectionPredicate" << rightSelectionPredicate << "\n";
+        if (leftSelectionPredicate == ""){
+            leftSelectionPredicate = "bool[true]";
+        }
+        if (rightSelectionPredicate == ""){
+            rightSelectionPredicate = "bool[true]";
+        }
         cout << "leftTable" << a.first << "\n";
         cout << "rightTable" << b.first << "\n";
         cout << "pair " << equalityCheck.first << "second "<<equalityCheck.second << "\n";
-
-        
+        vector<pair<string, string>> equalityChecks;
+        equalityChecks.push_back(equalityCheck);
+        ScanJoin myOp(leftTable, rightTable, supplierTableOut,finalSelectionPredicate,projections,equalityChecks, leftSelectionPredicate,rightSelectionPredicate);
+        myOp.run ();
+        return supplierTableOut;
     }
     
    
