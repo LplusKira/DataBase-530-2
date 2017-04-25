@@ -345,7 +345,7 @@ public:
         }
         cout << "count : " << count << "\n";
     }
-    MyDB_TableReaderWriterPtr twoTables(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters, MyDB_TableReaderWriterPtr leftTable, MyDB_TableReaderWriterPtr rightTable) {
+    MyDB_TableReaderWriterPtr twoTables(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
         
         string finalSelectionPredicate = "";
         pair <string, string> equalityCheck;
@@ -354,6 +354,11 @@ public:
         vector <string> projections;
         vector <pair <MyDB_AggType, string>> aggsToCompute;
         vector <string> groupings;
+        auto a = tablesToProcess.at(0);
+        MyDB_TableReaderWriterPtr leftTable = allTableReaderWriters[a.first];
+        
+        auto b = tablesToProcess.at(1);
+        MyDB_TableReaderWriterPtr rightTable = allTableReaderWriters[b.first];
         MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
     
         MyDB_SchemaPtr mySchemaAggOut = make_shared <MyDB_Schema> ();
@@ -594,6 +599,7 @@ public:
             string rightOne ="";
             if(tables.size()>1){
                 finalfirstPredicate = allDisjunctions[0]->toString();
+                
                 if(*allDisjunctions[0]->getLeft()->getTables().begin() == leftShort ){
                     leftOne = allDisjunctions[0]->getLeft()->toString();
                 }else if (*allDisjunctions[0]->getLeft()->getTables().begin() == rightShort){
