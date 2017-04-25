@@ -345,7 +345,9 @@ public:
         }
         cout << "count : " << count << "\n";
     }
-    MyDB_TableReaderWriterPtr twoTables(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
+    void twoTables(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
+    
+        
         
         string finalSelectionPredicate = "";
         pair <string, string> equalityCheck;
@@ -360,9 +362,9 @@ public:
         auto b = tablesToProcess.at(1);
         MyDB_TableReaderWriterPtr rightTable = allTableReaderWriters[b.first];
         MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
-    
+        
         MyDB_SchemaPtr mySchemaAggOut = make_shared <MyDB_Schema> ();
-
+        
         //create output schema
         cout << "Selecting the following:\n";
         vector <ExprTreePtr> aggs;
@@ -499,7 +501,7 @@ public:
             
         }
         
-       
+        
         int outtableNumber = rand() % 100;
         string outTableName = "Join" + std::to_string(outtableNumber) + "Out";
         MyDB_TablePtr myTableOut = make_shared <MyDB_Table> (outTableName, outTableName + ".bin", mySchemaOut);
@@ -512,34 +514,34 @@ public:
         cout << "rightTable" << b.first << "\n";
         cout << "pair " << equalityCheck.first << "second "<<equalityCheck.second << "\n";
         // first join
-//        SortMergeJoin myOp(leftTable, rightTable, supplierTableOut,finalSelectionPredicate,projections,equalityCheck, leftSelectionPredicate,rightSelectionPredicate);
-//        myOp.run ();
+        //        SortMergeJoin myOp(leftTable, rightTable, supplierTableOut,finalSelectionPredicate,projections,equalityCheck, leftSelectionPredicate,rightSelectionPredicate);
+        //        myOp.run ();
         vector<pair<string, string>> equalityChecks;
         equalityChecks.push_back(equalityCheck);
         ScanJoin myOp(leftTable, rightTable, supplierTableOut,finalSelectionPredicate,projections,equalityChecks, leftSelectionPredicate,rightSelectionPredicate);
         myOp.run ();
         
         cout << "finished sortmergejoin!!!!!\n";
-        return supplierTableOut;
-//        int outtableAggNumber = rand() % 100;
-//        string outTableAggName = "res" + std::to_string(outtableAggNumber) + "Out";
-//        MyDB_TablePtr myTableAggOut = make_shared <MyDB_Table> (outTableAggName, outTableAggName + ".bin", mySchemaAggOut);
-//        MyDB_TableReaderWriterPtr supplierTableAggOut = make_shared <MyDB_TableReaderWriter> (myTableAggOut, myMgr);
-//        string selectionPredicate="bool[true]";
-//        Aggregate myAgg(supplierTableOut, supplierTableAggOut, aggsToCompute, groupings, selectionPredicate);
-//        myAgg.run(groupFirst);
-//        MyDB_RecordPtr temp = supplierTableAggOut->getEmptyRecord ();
-//        MyDB_RecordIteratorAltPtr myIter = supplierTableAggOut->getIteratorAlt ();
-//        int count  = 0;
-//        while (myIter->advance ()) {
-//            myIter->getCurrent (temp);
-//            cout << temp << "\n";
-//            count++;
-//        }
-//        cout << "Total " << count << " rows in set.\n";
+        //        return supplierTableOut;
+        int outtableAggNumber = rand() % 100;
+        string outTableAggName = "res" + std::to_string(outtableAggNumber) + "Out";
+        MyDB_TablePtr myTableAggOut = make_shared <MyDB_Table> (outTableAggName, outTableAggName + ".bin", mySchemaAggOut);
+        MyDB_TableReaderWriterPtr supplierTableAggOut = make_shared <MyDB_TableReaderWriter> (myTableAggOut, myMgr);
+        string selectionPredicate="bool[true]";
+        Aggregate myAgg(supplierTableOut, supplierTableAggOut, aggsToCompute, groupings, selectionPredicate);
+        myAgg.run(groupFirst);
+        MyDB_RecordPtr temp = supplierTableAggOut->getEmptyRecord ();
+        MyDB_RecordIteratorAltPtr myIter = supplierTableAggOut->getIteratorAlt ();
+        int count  = 0;
+        while (myIter->advance ()) {
+            myIter->getCurrent (temp);
+            cout << temp << "\n";
+            count++;
+        }
+        cout << "Total " << count << " rows in set.\n";
         
         
-}
+    }
     
     
     
@@ -653,7 +655,7 @@ public:
                 
             }else if (tables.size()==1){
                 string tablename = *tables.begin();
-                cout << "tablename" << tablename<<"a.first "<< a.first << "\n";
+                //cout << "tablename" << tablename<<"a.first "<< a.first << "\n";
                 if(tablename == leftShort){
                     cout << "this is left table\n";
                     LeftsecondPredicate = allDisjunctions[i]->toString();
@@ -692,8 +694,8 @@ public:
         if (rightSelectionPredicate == ""){
             rightSelectionPredicate = "bool[true]";
         }
-        cout << "leftTable" << a.first << "\n";
-        cout << "rightTable" << b.first << "\n";
+//        cout << "leftTable" << a.first << "\n";
+//        cout << "rightTable" << b.first << "\n";
         cout << "pair " << equalityCheck.first << "second "<<equalityCheck.second << "\n";
         vector<pair<string, string>> equalityChecks;
         equalityChecks.push_back(equalityCheck);
@@ -716,25 +718,33 @@ public:
         cout << "From the following table:\n";
         if (tablesToProcess.size()==1){
             oneTableCase(myCatalog, myMgr, allTableReaderWriters);
-        }else{
-            MyDB_TableReaderWriterPtr outTable;
-            // join first two tables
+        }else if (tablesToProcess.size() == 2){
+            twoTables(myCatalog, myMgr, allTableReaderWriters);
+//            MyDB_TableReaderWriterPtr outTable;
+//            // join first two tables
+//            auto a = tablesToProcess.at(0);
+//            MyDB_TableReaderWriterPtr leftTable = allTableReaderWriters[a.first];
+//            
+//            auto b = tablesToProcess.at(1);
+//            MyDB_TableReaderWriterPtr rightTable = allTableReaderWriters[b.first];
+//            
+//            leftTable = twoTables(myCatalog, myMgr, allTableReaderWriters, leftTable, rightTable);
+//            // join the rest
+//            for (int i = 2; i < tablesToProcess.size(); i++ ) {
+//                auto c = tablesToProcess.at(i);
+//                rightTable = allTableReaderWriters[c.first];
+//                leftTable = twoTables(myCatalog, myMgr, allTableReaderWriters, leftTable, rightTable);
+//                
+//            }
+//            outTable = leftTable;
+//            cout << "finish with ALL join.\n";
+        } else {
             auto a = tablesToProcess.at(0);
             MyDB_TableReaderWriterPtr leftTable = allTableReaderWriters[a.first];
             
             auto b = tablesToProcess.at(1);
             MyDB_TableReaderWriterPtr rightTable = allTableReaderWriters[b.first];
-            
-            leftTable = twoTables(myCatalog, myMgr, allTableReaderWriters, leftTable, rightTable);
-            // join the rest
-            for (int i = 2; i < tablesToProcess.size(); i++ ) {
-                auto c = tablesToProcess.at(i);
-                rightTable = allTableReaderWriters[c.first];
-                leftTable = twoTables(myCatalog, myMgr, allTableReaderWriters, leftTable, rightTable);
-                
-            }
-            outTable = leftTable;
-            cout << "finish with ALL join.\n";
+            twoTableJoin(myCatalog, myMgr, allTableReaderWriters, leftTable, rightTable);
         }
         
     }
