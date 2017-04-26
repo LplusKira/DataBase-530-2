@@ -627,11 +627,11 @@ public:
     void joinTables (MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
         map <string, MyDB_TableReaderWriterPtr> TRWafterFilter;
         map<ExprTreePtr, bool> joinDisjunctions;
-        stack<ExprTreePtr> allDisjunctionstack;
+        queue<ExprTreePtr> allDisjunctionQ;
         // get all join tables and tbRW after filter, move tbRW to a vector
         TRWafterFilter = initiateTRWafterFilter(allTableReaderWriters);
         for (ExprTreePtr disjunction: allDisjunctions) {
-            allDisjunctionstack.push(disjunction);
+            allDisjunctionQ.push(disjunction);
             cout << "Current disjunction: " << disjunction->toString() << "\n";
             set<string> tables = disjunction->getTables();
             // if there are more than 1 tables in the disjunction, it is a join statement
@@ -646,12 +646,12 @@ public:
         vector<string> leftShorts;
         string rightShort;
         MyDB_TableReaderWriterPtr leftTable;
-        while(!allDisjunctionstack.empty()) {
-            ExprTreePtr disjunction = allDisjunctionstack.top();
+        while(!allDisjunctionQ.empty()) {
+            ExprTreePtr disjunction = allDisjunctionQ.front();
             cout << "current disjunction: " << disjunction->toString() << "\n";
             if (joinDisjunctions[disjunction] == false) {
                 cout << "already deal with it or not a join\n";
-                allDisjunctionstack.pop();
+                allDisjunctionQ.pop();
                 continue;
             }
             string leftOne = *disjunction->getLeft()->getTables().begin();
@@ -697,6 +697,8 @@ public:
                     leftShorts.push_back(leftOne);
                 } else {
                     cout << "hop and deal with it later...\n";
+                    allDisjunctionQ.pop();
+                    allDisjunctionQ.push(disjunction);
                     continue;
                 }
             }
@@ -856,6 +858,8 @@ public:
                 if (equalityChecks.size() > size) {
                     finalsecondPredicate = allDisjunctions[i]->toString();
                     joinDisjunctions[allDisjunctions[i]] = false;
+                } else {
+                    finalsecondPredicate = "";
                 }
                 cout << "finalfirstPredicate: " << finalfirstPredicate <<"\n";
                 cout << "finalsecondPredicate: " << finalsecondPredicate << "\n";
