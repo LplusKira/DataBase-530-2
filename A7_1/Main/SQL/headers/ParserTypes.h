@@ -17,6 +17,8 @@
 #include "SortMergeJoin.h"
 #include "MyDB_AttType.h"
 #include "ScanJoin.h"
+#include <unordered_map>
+#include <stack>
 
 using namespace std;
 
@@ -542,13 +544,169 @@ public:
         
         
     }
+    map <string, MyDB_TableReaderWriterPtr> initiateTRWafterFilter(map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
+        //initiate TRWafterFilter(shortName, tableReaderWriter) with all table's initial TRWs
+        map <string, MyDB_TableReaderWriterPtr> TRWafterFilter;
+        for (auto t : tablesToProcess){
+            string shortName = t.second;
+            string longName = t.first;
+            MyDB_TableReaderWriterPtr initialTRW = allTableReaderWriters[longName];
+            TRWafterFilter [shortName] = initialTRW;
+        }
+        return TRWafterFilter;
+    }
     
+    map <string, MyDB_TableReaderWriterPtr> updateTRWafterFilter(map <string, MyDB_TableReaderWriterPtr> TRWafterFilter,ExprTreePtr disjunction, MyDB_BufferManagerPtr myMgr) {
+        cout << "REGULAR....\n";
+        // if it is a regular selection statement, do a regular selection and update TRWafterFilter
+        string selectionPredicate = disjunction->toString();
+        vector<string> projections;
+        string tbShort = *disjunction->getTables().begin();
+        MyDB_TableReaderWriterPtr tbRW = TRWafterFilter [tbShort];
+        string tbLong = tbRW->getTable()->getName();
+        
+        MyDB_SchemaPtr mySchemaOut = make_shared<MyDB_Schema>();
+        for (auto &p: tbRW->getTable()->getSchema()->getAtts()){
+            mySchemaOut->appendAtt(p);
+            projections.push_back("["+p.first+"]");
+        }
+        
+        int outtableNumber = rand() % 100;
+        string outTableName = tbLong + std::to_string(outtableNumber) + "out";
+        MyDB_TablePtr myTableOut = make_shared <MyDB_Table> (outTableName, outTableName + ".bin", mySchemaOut);
+        MyDB_TableReaderWriterPtr tbRWOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
+        RegularSelection myOp (tbRW, tbRWOut, selectionPredicate, projections);
+        myOp.run ();
+        MyDB_RecordPtr temp = tbRWOut->getEmptyRecord ();
+        MyDB_RecordIteratorAltPtr myIter = tbRWOut->getIteratorAlt ();
+        int count  = 0;
+        while (myIter->advance ()) {
+            myIter->getCurrent (temp);
+            //cout << temp << "\n";
+            count++;
+        }
+        cout << "Total " << count << " rows in " << tbRWOut->getTable()->getName()<< ".\n";
+        TRWafterFilter [tbShort] = tbRWOut;
+        return TRWafterFilter;
+    }
     
-    
-    MyDB_TableReaderWriterPtr twoTableJoin(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters, MyDB_TableReaderWriterPtr leftTable, MyDB_TableReaderWriterPtr rightTable) {
+    vector<pair<string, string>> dealWithJoinPredicate(int i, vector<pair<string, string>> equalityChecks, vector<string> leftShorts, string rightShort) {
+        cout << "\n\nSHOULD JOIN\n";
+        string leftOne = "";
+        string rightOne = "";
+        for (string s: leftShorts) {
+            if(*allDisjunctions[i]->getLeft()->getTables().begin() == s ){
+                leftOne = allDisjunctions[i]->getLeft()->toString();
+                cout  << "leftOne: " << leftOne << "\n";
+            }
+        }
+        if (*allDisjunctions[i]->getLeft()->getTables().begin() == rightShort){
+            rightOne = allDisjunctions[i]->getLeft()->toString();
+            cout << "rightOne: " << rightOne << "\n";
+        }
+        for (string s: leftShorts) {
+            if(*allDisjunctions[i]->getRight()->getTables().begin() == s ){
+                leftOne = allDisjunctions[i]->getRight()->toString();
+                cout  << "leftOne: " << leftOne << "\n";
+            }
+        }
+        if (*allDisjunctions[i]->getRight()->getTables().begin() == rightShort){
+            rightOne = allDisjunctions[i]->getRight()->toString();
+            cout << "rightOne: " << rightOne << "\n";
+        }
+        if (rightOne !="" && leftOne !=""){
+            cout << "JOIN STATEMENT\n";
+            cout  << "equalityCheck <" << leftOne << ", " << rightOne << ">\n";
+            equalityChecks.push_back(make_pair(leftOne,rightOne));
+            
+        }else{
+            cout << "REGULAR STATEMENT\n";
+        }
+        return equalityChecks;
+    }
+    void joinTables (MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
+        map <string, MyDB_TableReaderWriterPtr> TRWafterFilter;
+        map<ExprTreePtr, bool> joinDisjunctions;
+        stack<ExprTreePtr> allDisjunctionstack;
+        // get all join tables and tbRW after filter, move tbRW to a vector
+        TRWafterFilter = initiateTRWafterFilter(allTableReaderWriters);
+        for (ExprTreePtr disjunction: allDisjunctions) {
+            allDisjunctionstack.push(disjunction);
+            cout << "Current disjunction: " << disjunction->toString() << "\n";
+            set<string> tables = disjunction->getTables();
+            // if there are more than 1 tables in the disjunction, it is a join statement
+            //      add these tables to joinTableSet
+            if (tables.size() > 1) {
+                joinDisjunctions[disjunction] = true;
+            } else {
+                TRWafterFilter = updateTRWafterFilter(TRWafterFilter, disjunction, myMgr);
+                joinDisjunctions[disjunction] = false;
+            }
+        }
+        vector<string> leftShorts;
+        string rightShort;
+        MyDB_TableReaderWriterPtr leftTable;
+        while(!allDisjunctionstack.empty()) {
+            ExprTreePtr disjunction = allDisjunctionstack.top();
+            cout << "current disjunction: " << disjunction->toString() << "\n";
+            if (joinDisjunctions[disjunction] == false) {
+                cout << "already deal with it or not a join\n";
+                allDisjunctionstack.pop();
+                continue;
+            }
+            string leftOne = *disjunction->getLeft()->getTables().begin();
+            string rightOne = *disjunction->getRight()->getTables().begin();
+            if (leftShorts.size() == 0) {
+                // first two join, join directly
+                cout << "now join: " << leftOne << " with " << rightOne << "\n";
+                leftTable = TRWafterFilter[leftOne];
+                MyDB_TableReaderWriterPtr rightTable = TRWafterFilter[rightOne];
+                leftShorts.push_back(leftOne);
+                rightShort = rightOne;
+                pair<map<ExprTreePtr, bool>, MyDB_TableReaderWriterPtr> result = twoTableJoin(myCatalog, myMgr, TRWafterFilter, leftTable, rightTable, leftShorts, rightShort, joinDisjunctions);
+                joinDisjunctions = result.first;
+                leftTable = result.second;
+                leftShorts.push_back(rightOne);
+            } else {
+                bool lin = false;
+                bool rin = false;
+                for (string s: leftShorts) {
+                    if (leftOne == s) {
+                        lin = true;
+                    } else if (rightOne == s) {
+                        rin = true;
+                    }
+                }
+                if (lin && rin) {
+                    cout << "shouldn't happen\n";
+                } else if (lin && !rin) {
+                    cout << "join big table with " << rightOne << "\n";
+                    MyDB_TableReaderWriterPtr rightTable = TRWafterFilter[rightOne];
+                    rightShort = rightOne;
+                    pair<map<ExprTreePtr, bool>, MyDB_TableReaderWriterPtr> result = twoTableJoin(myCatalog, myMgr, TRWafterFilter, leftTable, rightTable, leftShorts, rightShort, joinDisjunctions);
+                    joinDisjunctions = result.first;
+                    leftTable = result.second;
+                    leftShorts.push_back(rightOne);
+                } else if (!lin && rin) {
+                    cout << "join big table with " << leftOne << "\n";
+                    MyDB_TableReaderWriterPtr rightTable = TRWafterFilter[leftOne];
+                    rightShort = leftOne;
+                    pair<map<ExprTreePtr, bool>, MyDB_TableReaderWriterPtr> result = twoTableJoin(myCatalog, myMgr, TRWafterFilter, leftTable, rightTable, leftShorts, rightShort, joinDisjunctions);
+                    joinDisjunctions = result.first;
+                    leftTable = result.second;
+                    leftShorts.push_back(leftOne);
+                } else {
+                    cout << "hop and deal with it later...\n";
+                    continue;
+                }
+            }
+        }
+        
+    }
+    pair<map<ExprTreePtr, bool>, MyDB_TableReaderWriterPtr> twoTableJoin(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters, MyDB_TableReaderWriterPtr leftTable, MyDB_TableReaderWriterPtr rightTable, vector<string> leftShorts, string rightShort, map<ExprTreePtr, bool> joinDisjunctions) {
         
         string finalSelectionPredicate = "";
-        pair <string, string> equalityCheck;
+        vector<pair <string, string>> equalityChecks;
         string leftSelectionPredicate ="";
         string rightSelectionPredicate ="";
         vector <string> projections;
@@ -557,12 +715,12 @@ public:
         // schema contains all attributes from left table and righ table
         for (auto &p : leftTable->getTable ()->getSchema ()->getAtts ()){
             mySchemaOut->appendAtt (p);
-            projections.push_back(p.first);
+            projections.push_back("["+p.first+"]");
         }
         
         for (auto &p : rightTable->getTable ()->getSchema ()->getAtts ()){
             mySchemaOut->appendAtt (p);
-            projections.push_back(p.first);
+            projections.push_back("["+p.first+"]");
         }
         
         // output schema and projections
@@ -574,7 +732,7 @@ public:
         }
         
         // finalselectionpredicate and equalitycheck
-       
+        
         string finalfirstPredicate = "";
         string finalsecondPredicate = "";
         string LeftfirstPredicate ="";
@@ -582,61 +740,52 @@ public:
         string rightfirstPredicate ="";
         string rightsecondPredicate ="";
         string ltableName = leftTable->getTable()->getName();
-        cout << "leftTableName" <<ltableName << "\n";
         string rtableName = rightTable->getTable()->getName();
+        
+        
+        ///////////////////////
+        cout << "leftTableName" <<ltableName << "\n";
         cout << "rightTableName" <<rtableName << "\n";
-        string leftShort;
-        string rightShort;
-        for (auto t : tablesToProcess){
-            if (t.first == ltableName){
-                leftShort = t.second;
-            }else if (t.first == rtableName){
-                rightShort = t.second;
-            }
+        cout << "leftShort: ";
+        for (string s : leftShorts){
+            cout << s << "  ";
         }
+        cout << "\n";
+        cout << "rightShort " << rightShort << "\n";
+        ////////////////////
+        
+        
         
         if (allDisjunctions.size() > 0) {
             set<string> tables = allDisjunctions[0]->getTables();
-            string leftOne = "";
-            string rightOne ="";
+            
             if(tables.size()>1){
-                finalfirstPredicate = allDisjunctions[0]->toString();
-                
-                if(*allDisjunctions[0]->getLeft()->getTables().begin() == leftShort ){
-                    leftOne = allDisjunctions[0]->getLeft()->toString();
-                }else if (*allDisjunctions[0]->getLeft()->getTables().begin() == rightShort){
-                    rightOne = allDisjunctions[0]->getLeft()->toString();
+                int size = equalityChecks.size();
+                equalityChecks =  dealWithJoinPredicate(0, equalityChecks, leftShorts, rightShort);
+                if (equalityChecks.size() > size) {
+                    finalfirstPredicate = allDisjunctions[0]->toString();
+                    joinDisjunctions[allDisjunctions[0]] = false;
                 }
-                if(*allDisjunctions[0]->getRight()->getTables().begin() == rightShort ){
-                    rightOne = allDisjunctions[0]->getRight()->toString();
-                }else if (*allDisjunctions[0]->getRight()->getTables().begin() == leftShort){
-                    leftOne = allDisjunctions[0]->getRight()->toString();
-                }
-                if (rightOne !="" && leftOne !=""){
-                    equalityCheck = make_pair(leftOne,rightOne);
-                    finalSelectionPredicate = finalfirstPredicate;
-                }else{
-                    finalfirstPredicate = "";
-                }
-                
+                finalSelectionPredicate = finalfirstPredicate;
+                cout << "finalSelectionPredicate: " << finalSelectionPredicate << "\n";
             }else if (tables.size()==1){
-                string tablename = *tables.begin();
-                if(tablename == leftShort){
-                    LeftfirstPredicate = allDisjunctions[0]->toString();
-                    leftSelectionPredicate = LeftfirstPredicate;
-                }else if (tablename == rightShort){
-                    rightfirstPredicate = allDisjunctions[0]->toString();
-                    rightSelectionPredicate = rightfirstPredicate;
-                }
+                cout << "REGULAR STATEMENT...hop it\n";
             }
         }
         
         for (int i = 1; i < allDisjunctions.size(); i++ ) {
             set<string> tables = allDisjunctions[i]->getTables();
             if(tables.size()>1){
-                if ((*allDisjunctions[0]->getLeft()->getTables().begin() == leftShort||*allDisjunctions[0]->getLeft()->getTables().begin() == rightShort)&&(*allDisjunctions[0]->getLeft()->getTables().end() == leftShort||*allDisjunctions[0]->getLeft()->getTables().end() == rightShort) ){
+                cout << "left one: " << *allDisjunctions[i]->getLeft()->getTables().begin() << "\n";
+                cout << "right one: " << *allDisjunctions[i]->getRight()->getTables().begin() << "\n";
+                int size = equalityChecks.size();
+                equalityChecks = dealWithJoinPredicate(i, equalityChecks, leftShorts, rightShort);
+                if (equalityChecks.size() > size) {
                     finalsecondPredicate = allDisjunctions[i]->toString();
+                    joinDisjunctions[allDisjunctions[i]] = false;
                 }
+                cout << "finalfirstPredicate: " << finalfirstPredicate <<"\n";
+                cout << "finalsecondPredicate: " << finalsecondPredicate << "\n";
                 if (finalsecondPredicate !=""){
                     if (finalfirstPredicate == ""){
                         finalSelectionPredicate = finalsecondPredicate;
@@ -652,29 +801,10 @@ public:
                     }
                     finalfirstPredicate =finalSelectionPredicate;
                 }
+                cout << "finalSelectionPredicate: " << finalSelectionPredicate << "\n";
                 
             }else if (tables.size()==1){
-                string tablename = *tables.begin();
-                //cout << "tablename" << tablename<<"a.first "<< a.first << "\n";
-                if(tablename == leftShort){
-                    cout << "this is left table\n";
-                    LeftsecondPredicate = allDisjunctions[i]->toString();
-                    if (LeftfirstPredicate == ""){
-                        leftSelectionPredicate = LeftsecondPredicate;
-                    }else{
-                        leftSelectionPredicate = "&& ( " + LeftfirstPredicate + "," + LeftsecondPredicate + ")";
-                    }
-                    LeftfirstPredicate = leftSelectionPredicate;
-                }else if (tablename == rightShort){
-                    cout << "this is right table\n";
-                    rightsecondPredicate = allDisjunctions[i]->toString();
-                    if(rightfirstPredicate == ""){
-                        rightSelectionPredicate = rightsecondPredicate;
-                    }else{
-                        rightSelectionPredicate = "&& ( " + rightfirstPredicate + "," + rightsecondPredicate + ")";
-                    }
-                    rightfirstPredicate = rightSelectionPredicate;
-                }
+                cout << "REGULAR SELECTION...hop it\n";
             }
             
         }
@@ -683,26 +813,227 @@ public:
         int outtableNumber = rand() % 100;
         string outTableName = "Join" + std::to_string(outtableNumber) + "Out";
         MyDB_TablePtr myTableOut = make_shared <MyDB_Table> (outTableName, outTableName + ".bin", mySchemaOut);
-        MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
+        MyDB_TableReaderWriterPtr tableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
         
-        cout << "finalSelectionPredicate" << finalSelectionPredicate << "\n";
-        cout << "leftSelectionPredicate" << leftSelectionPredicate << "\n";
-        cout << "rightSelectionPredicate" << rightSelectionPredicate << "\n";
+        
         if (leftSelectionPredicate == ""){
             leftSelectionPredicate = "bool[true]";
         }
         if (rightSelectionPredicate == ""){
             rightSelectionPredicate = "bool[true]";
         }
-//        cout << "leftTable" << a.first << "\n";
-//        cout << "rightTable" << b.first << "\n";
-        cout << "pair " << equalityCheck.first << "second "<<equalityCheck.second << "\n";
-        vector<pair<string, string>> equalityChecks;
-        equalityChecks.push_back(equalityCheck);
-        ScanJoin myOp(leftTable, rightTable, supplierTableOut,finalSelectionPredicate,projections,equalityChecks, leftSelectionPredicate,rightSelectionPredicate);
+        for (pair<string ,string> p: equalityChecks) {
+            cout << "pair " << p.first << "second "<< p.second << "\n";
+        }
+        cout << "finalSelectionPredicate" << finalSelectionPredicate << "\n";
+        cout << "leftSelectionPredicate" << leftSelectionPredicate << "\n";
+        cout << "rightSelectionPredicate" << rightSelectionPredicate << "\n";
+        cout << "ScanJoining...\n";
+        ScanJoin myOp(leftTable, rightTable, tableOut,finalSelectionPredicate,projections,equalityChecks, leftSelectionPredicate,rightSelectionPredicate);
         myOp.run ();
-        return supplierTableOut;
+        cout << "Finish ScanJoin...\n";
+        
+        MyDB_RecordPtr temp = tableOut->getEmptyRecord ();
+        MyDB_RecordIteratorAltPtr myIter = tableOut->getIteratorAlt ();
+        int count  = 0;
+        while (myIter->advance ()) {
+            myIter->getCurrent (temp);
+            cout << temp << "\n";
+            count++;
+        }
+        cout << "Total " << count << " rows in set.\n";
+        return make_pair(joinDisjunctions, tableOut) ;
     }
+//    MyDB_TableReaderWriterPtr twoTableJoin(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters, MyDB_TableReaderWriterPtr leftTable, MyDB_TableReaderWriterPtr rightTable) {
+//        
+//        string finalSelectionPredicate = "";
+//        pair <string, string> equalityCheck;
+//        string leftSelectionPredicate ="";
+//        string rightSelectionPredicate ="";
+//        vector <string> projections;
+//        MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
+//        
+//        // schema contains all attributes from left table and righ table
+//        for (auto &p : leftTable->getTable ()->getSchema ()->getAtts ()){
+//            mySchemaOut->appendAtt (p);
+//            projections.push_back("["+p.first+"]");
+//        }
+//        
+//        for (auto &p : rightTable->getTable ()->getSchema ()->getAtts ()){
+//            mySchemaOut->appendAtt (p);
+//            projections.push_back("["+p.first+"]");
+//        }
+//        
+//        // output schema and projections
+//        for (pair <string, MyDB_AttTypePtr> p : mySchemaOut->getAtts()) {
+//            cout << "out schema: " << p.first << ", " << p.second->toString() << "\n";
+//        }
+//        for (string p : projections){
+//            cout << "projections: " << p << "\n";
+//        }
+//        
+//        // finalselectionpredicate and equalitycheck
+//       
+//        string finalfirstPredicate = "";
+//        string finalsecondPredicate = "";
+//        string LeftfirstPredicate ="";
+//        string LeftsecondPredicate ="";
+//        string rightfirstPredicate ="";
+//        string rightsecondPredicate ="";
+//        string ltableName = leftTable->getTable()->getName();
+//        cout << "leftTableName" <<ltableName << "\n";
+//        string rtableName = rightTable->getTable()->getName();
+//        cout << "rightTableName" <<rtableName << "\n";
+//        string leftShort;
+//        string rightShort;
+//        for (auto t : tablesToProcess){
+//            if (t.first == ltableName){
+//                leftShort = t.second;
+//            }else if (t.first == rtableName){
+//                rightShort = t.second;
+//            }
+//        }
+//        cout << "leftShort " << leftShort << "\n";
+//        cout << "rightShort " << rightShort << "\n";
+//        if (allDisjunctions.size() > 0) {
+//            set<string> tables = allDisjunctions[0]->getTables();
+//            string leftOne = "";
+//            string rightOne ="";
+//            if(tables.size()>1){
+//                cout << "\n\nSHOULD JOIN\n";
+//                finalfirstPredicate = allDisjunctions[0]->toString();
+//                cout << "finalfirstPredicate: " << finalfirstPredicate << "\n";
+//                if(*allDisjunctions[0]->getLeft()->getTables().begin() == leftShort ){
+//                    leftOne = allDisjunctions[0]->getLeft()->toString();
+//                    cout  << "leftOne: " << leftOne << "\n";
+//                }else if (*allDisjunctions[0]->getLeft()->getTables().begin() == rightShort){
+//                    rightOne = allDisjunctions[0]->getLeft()->toString();
+//                    cout << "rightOne: " << rightOne << "\n";
+//                }
+//                if(*allDisjunctions[0]->getRight()->getTables().begin() == rightShort ){
+//                    rightOne = allDisjunctions[0]->getRight()->toString();
+//                    cout << "rightOne: " << rightOne << "\n";
+//                }else if (*allDisjunctions[0]->getRight()->getTables().begin() == leftShort){
+//                    leftOne = allDisjunctions[0]->getRight()->toString();
+//                    cout  << "leftOne: " << leftOne << "\n";
+//                }
+//                if (rightOne !="" && leftOne !=""){
+//                    cout << "JOIN STATEMENT\n";
+//                    cout  << "equalityCheck <" << leftOne << ", " << rightOne << ">\n";
+//                    equalityCheck = make_pair(leftOne,rightOne);
+//                    finalSelectionPredicate = finalfirstPredicate;
+//                    cout << "finalSelectionPredicate: " << finalSelectionPredicate << "\n";
+//                }else{
+//                    cout << "REGULAR STATEMENT\n";
+//                    finalfirstPredicate = "";
+//                }
+//                
+//            }else if (tables.size()==1){
+//                cout << "REGULAR STATEMENT\n";
+//                string tablename = *tables.begin();
+//                cout << "table: " << tablename << "\n";
+//                if(tablename == leftShort){
+//                    cout << "belongs to left\n";
+//                    LeftfirstPredicate = allDisjunctions[0]->toString();
+//                    leftSelectionPredicate = LeftfirstPredicate;
+//                }else if (tablename == rightShort){
+//                    cout << "belongs to right\n";
+//                    rightfirstPredicate = allDisjunctions[0]->toString();
+//                    rightSelectionPredicate = rightfirstPredicate;
+//                }
+//            }
+//        }
+//        
+//        for (int i = 1; i < allDisjunctions.size(); i++ ) {
+//            set<string> tables = allDisjunctions[i]->getTables();
+//            if(tables.size()>1){
+//                cout << "left one: " << *allDisjunctions[0]->getLeft()->getTables().begin() << "\n";
+//                cout << "right one: " << *allDisjunctions[0]->getRight()->getTables().begin() << "\n";
+//                if ((*allDisjunctions[0]->getLeft()->getTables().begin() == leftShort||*allDisjunctions[0]->getLeft()->getTables().begin() == rightShort)&&(*allDisjunctions[0]->getLeft()->getTables().end() == leftShort||*allDisjunctions[0]->getLeft()->getTables().end() == rightShort) ){
+//                    cout << "JOIN STATEMENT\n";
+//                    finalsecondPredicate = allDisjunctions[i]->toString();
+//                    
+//                }
+//                if (finalsecondPredicate !=""){
+//                    if (finalfirstPredicate == ""){
+//                        finalSelectionPredicate = finalsecondPredicate;
+//                    }else{
+//                        finalSelectionPredicate = "&& ( " + finalfirstPredicate + "," + finalsecondPredicate + ")";
+//                    }
+//                    finalfirstPredicate =finalSelectionPredicate;
+//                }else{
+//                    if (finalfirstPredicate == ""){
+//                        finalSelectionPredicate = "";
+//                    }else{
+//                        finalSelectionPredicate = finalfirstPredicate;
+//                    }
+//                    finalfirstPredicate =finalSelectionPredicate;
+//                }
+//                cout << "finalfirstPredicate: " << finalfirstPredicate <<"\n";
+//                cout << "finalsecondPredicate: " << finalsecondPredicate << "\n";
+//                cout << "finalSelectionPredicate: " << finalSelectionPredicate << "\n";
+//                
+//            }else if (tables.size()==1){
+//                string tablename = *tables.begin();
+//                //cout << "tablename" << tablename<<"a.first "<< a.first << "\n";
+//                if(tablename == leftShort){
+//                    cout << "this is left table\n";
+//                    LeftsecondPredicate = allDisjunctions[i]->toString();
+//                    if (LeftfirstPredicate == ""){
+//                        leftSelectionPredicate = LeftsecondPredicate;
+//                    }else{
+//                        leftSelectionPredicate = "&& ( " + LeftfirstPredicate + "," + LeftsecondPredicate + ")";
+//                    }
+//                    LeftfirstPredicate = leftSelectionPredicate;
+//                }else if (tablename == rightShort){
+//                    cout << "this is right table\n";
+//                    rightsecondPredicate = allDisjunctions[i]->toString();
+//                    if(rightfirstPredicate == ""){
+//                        rightSelectionPredicate = rightsecondPredicate;
+//                    }else{
+//                        rightSelectionPredicate = "&& ( " + rightfirstPredicate + "," + rightsecondPredicate + ")";
+//                    }
+//                    rightfirstPredicate = rightSelectionPredicate;
+//                }
+//            }
+//            
+//        }
+//        
+//        
+//        int outtableNumber = rand() % 100;
+//        string outTableName = "Join" + std::to_string(outtableNumber) + "Out";
+//        MyDB_TablePtr myTableOut = make_shared <MyDB_Table> (outTableName, outTableName + ".bin", mySchemaOut);
+//        MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
+//        
+//        cout << "finalSelectionPredicate" << finalSelectionPredicate << "\n";
+//        cout << "leftSelectionPredicate" << leftSelectionPredicate << "\n";
+//        cout << "rightSelectionPredicate" << rightSelectionPredicate << "\n";
+//        if (leftSelectionPredicate == ""){
+//            leftSelectionPredicate = "bool[true]";
+//        }
+//        if (rightSelectionPredicate == ""){
+//            rightSelectionPredicate = "bool[true]";
+//        }
+////        cout << "leftTable" << a.first << "\n";
+////        cout << "rightTable" << b.first << "\n";
+//        cout << "pair " << equalityCheck.first << "second "<<equalityCheck.second << "\n";
+//        vector<pair<string, string>> equalityChecks;
+//        equalityChecks.push_back(equalityCheck);
+//        ScanJoin myOp(leftTable, rightTable, supplierTableOut,finalSelectionPredicate,projections,equalityChecks, leftSelectionPredicate,rightSelectionPredicate);
+//        myOp.run ();
+//        
+//        MyDB_RecordPtr temp = supplierTableOut->getEmptyRecord ();
+//        MyDB_RecordIteratorAltPtr myIter = supplierTableOut->getIteratorAlt ();
+//        int count  = 0;
+//        while (myIter->advance ()) {
+//            myIter->getCurrent (temp);
+//            cout << temp << "\n";
+//            count++;
+//        }
+//        cout << "Total " << count << " rows in set.\n";
+//
+//        return supplierTableOut;
+//    }
     
    
     
@@ -718,33 +1049,8 @@ public:
         cout << "From the following table:\n";
         if (tablesToProcess.size()==1){
             oneTableCase(myCatalog, myMgr, allTableReaderWriters);
-        }else if (tablesToProcess.size() == 2){
-            twoTables(myCatalog, myMgr, allTableReaderWriters);
-//            MyDB_TableReaderWriterPtr outTable;
-//            // join first two tables
-//            auto a = tablesToProcess.at(0);
-//            MyDB_TableReaderWriterPtr leftTable = allTableReaderWriters[a.first];
-//            
-//            auto b = tablesToProcess.at(1);
-//            MyDB_TableReaderWriterPtr rightTable = allTableReaderWriters[b.first];
-//            
-//            leftTable = twoTables(myCatalog, myMgr, allTableReaderWriters, leftTable, rightTable);
-//            // join the rest
-//            for (int i = 2; i < tablesToProcess.size(); i++ ) {
-//                auto c = tablesToProcess.at(i);
-//                rightTable = allTableReaderWriters[c.first];
-//                leftTable = twoTables(myCatalog, myMgr, allTableReaderWriters, leftTable, rightTable);
-//                
-//            }
-//            outTable = leftTable;
-//            cout << "finish with ALL join.\n";
         } else {
-            auto a = tablesToProcess.at(0);
-            MyDB_TableReaderWriterPtr leftTable = allTableReaderWriters[a.first];
-            
-            auto b = tablesToProcess.at(1);
-            MyDB_TableReaderWriterPtr rightTable = allTableReaderWriters[b.first];
-            twoTableJoin(myCatalog, myMgr, allTableReaderWriters, leftTable, rightTable);
+            joinTables(myCatalog, myMgr, allTableReaderWriters);
         }
         
     }

@@ -122,10 +122,8 @@ void ScanJoin :: run () {
 	MyDB_RecordPtr combinedRec = make_shared <MyDB_Record> (mySchemaOut);
 
 	// and make it a composite of the two input records
-	if (!hadToSwapThem)
-		combinedRec->buildFrom (leftInputRec, rightInputRec);
-	else
-		combinedRec->buildFrom (rightInputRec, leftInputRec);
+	combinedRec->buildFrom (leftInputRec, rightInputRec);
+	
 
 	// now, get the final predicate over it
 	func finalPredicate = combinedRec->compileComputation (finalSelectionPredicate);
