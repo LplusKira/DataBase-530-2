@@ -724,19 +724,26 @@ public:
                 projections.push_back(selected->toString());
                 groupings.push_back(selected->toString());
                 vector<pair<string, string>> atts = selected->getAttsTables();
+                int tablesSize = selected->getTables().size();
+                bool breakOrNot = false;
                 for (pair<string, string> att: atts) {
-                    cout << "atts:" << att.first << " in " << att.second << "\n";
-                    for (auto a : leftShorts){
-                        if (att.second == a) {
-                            cout << "schema append: " << att.first << ", type :" << leftTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
-                            string type = leftTable->getTable()->getSchema()->getAttByName(att.first).second->toString();
-                            if (type == "double" || type == "string"){
-                                 mySchemaAggOut->appendAtt(make_pair (att.first, leftTable->getTable()->getSchema()->getAttByName(att.first).second));
-                            }else if (type == "int"){
-                                mySchemaAggOut->appendAtt(make_pair (att.first, make_shared <MyDB_DoubleAttType> ()));
+                    if (breakOrNot == false){
+                        cout << "atts:" << att.first << " in " << att.second << "\n";
+                        for (auto a : leftShorts){
+                            if (att.second == a) {
+                                cout << "schema append: " << att.first << ", type :" << leftTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
+                                string type = leftTable->getTable()->getSchema()->getAttByName(att.first).second->toString();
+                                breakOrNot = true;
+                                if (type == "double" || type == "string"){
+                                    mySchemaAggOut->appendAtt(make_pair (att.first, leftTable->getTable()->getSchema()->getAttByName(att.first).second));
+                                }else if (type == "int"){
+                                    mySchemaAggOut->appendAtt(make_pair (att.first, make_shared <MyDB_DoubleAttType> ()));
+                                }
                             }
-                            break;
                         }
+                        
+                    }else{
+                        break;
                     }
                 }
             } else {
