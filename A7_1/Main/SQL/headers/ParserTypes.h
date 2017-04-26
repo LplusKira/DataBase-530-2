@@ -595,27 +595,55 @@ public:
         return TRWafterFilter;
     }
     
-    vector<pair<string, string>> dealWithJoinPredicate(int i, vector<pair<string, string>> equalityChecks, vector<string> leftShorts, string rightShort) {
+    pair<vector<pair<string, string>>, string> dealWithJoinPredicate(int i, vector<pair<string, string>> equalityChecks, vector<string> leftShorts, string rightShort) {
         cout << "\n\nSHOULD JOIN\n";
         string leftOne = "";
         string rightOne = "";
+        string finalPredicate = "";
+        string leftDisjunctionTB = "";
+        string rightDisjunctionTB = "";
+        if (allDisjunctions[i]->getLeft() == nullptr || allDisjunctions[i]->getRight() == nullptr) {
+            cout << "NOT a Join\n";
+            bool isThatTwo1 = false;
+            bool isThatTwo2 = false;
+            for (string tbShort: allDisjunctions[i]->getTables()) {
+                if (tbShort == rightShort) {
+                    isThatTwo1 = true;
+                }
+                for (string l: leftShorts) {
+                    if (tbShort == l) {
+                        isThatTwo2 = true;
+                        break;
+                    }
+                }
+            }
+            if (isThatTwo1 && isThatTwo2) {
+                finalPredicate = allDisjunctions[i]->toString();
+            } else {
+                finalPredicate = "";
+            }
+            return make_pair(equalityChecks, finalPredicate);
+        } else {
+            leftDisjunctionTB = *allDisjunctions[i]->getLeft()->getTables().begin();
+            rightDisjunctionTB = *allDisjunctions[i]->getRight()->getTables().begin();
+        }
         for (string s: leftShorts) {
-            if(*allDisjunctions[i]->getLeft()->getTables().begin() == s ){
+            if(leftDisjunctionTB == s ){
                 leftOne = allDisjunctions[i]->getLeft()->toString();
                 cout  << "leftOne: " << leftOne << "\n";
             }
         }
-        if (*allDisjunctions[i]->getLeft()->getTables().begin() == rightShort){
+        if (leftDisjunctionTB == rightShort){
             rightOne = allDisjunctions[i]->getLeft()->toString();
             cout << "rightOne: " << rightOne << "\n";
         }
         for (string s: leftShorts) {
-            if(*allDisjunctions[i]->getRight()->getTables().begin() == s ){
+            if(rightDisjunctionTB == s ){
                 leftOne = allDisjunctions[i]->getRight()->toString();
                 cout  << "leftOne: " << leftOne << "\n";
             }
         }
-        if (*allDisjunctions[i]->getRight()->getTables().begin() == rightShort){
+        if (rightDisjunctionTB == rightShort){
             rightOne = allDisjunctions[i]->getRight()->toString();
             cout << "rightOne: " << rightOne << "\n";
         }
@@ -623,11 +651,12 @@ public:
             cout << "JOIN STATEMENT\n";
             cout  << "equalityCheck <" << leftOne << ", " << rightOne << ">\n";
             equalityChecks.push_back(make_pair(leftOne,rightOne));
+            finalPredicate = allDisjunctions[i]->toString();
             
         }else{
             cout << "REGULAR STATEMENT\n";
         }
-        return equalityChecks;
+        return make_pair(equalityChecks, finalPredicate);
     }
     void joinTables (MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
         map <string, MyDB_TableReaderWriterPtr> TRWafterFilter;
@@ -870,10 +899,10 @@ public:
             set<string> tables = allDisjunctions[0]->getTables();
             
             if(tables.size()>1){
-                int size = equalityChecks.size();
-                equalityChecks =  dealWithJoinPredicate(0, equalityChecks, leftShorts, rightShort);
-                if (equalityChecks.size() > size) {
-                    finalfirstPredicate = allDisjunctions[0]->toString();
+                pair<vector<pair<string, string>>, string> joinPair =  dealWithJoinPredicate(0, equalityChecks, leftShorts, rightShort);
+                equalityChecks = joinPair.first;
+                finalfirstPredicate = joinPair.second;
+                if (finalfirstPredicate != "") {
                     joinDisjunctions[allDisjunctions[0]] = false;
                 }
                 finalSelectionPredicate = finalfirstPredicate;
@@ -886,15 +915,13 @@ public:
         for (int i = 1; i < allDisjunctions.size(); i++ ) {
             set<string> tables = allDisjunctions[i]->getTables();
             if(tables.size()>1){
-                cout << "left one: " << *allDisjunctions[i]->getLeft()->getTables().begin() << "\n";
-                cout << "right one: " << *allDisjunctions[i]->getRight()->getTables().begin() << "\n";
-                int size = equalityChecks.size();
-                equalityChecks = dealWithJoinPredicate(i, equalityChecks, leftShorts, rightShort);
-                if (equalityChecks.size() > size) {
-                    finalsecondPredicate = allDisjunctions[i]->toString();
+                //cout << "left one: " << *allDisjunctions[i]->getLeft()->getTables().begin() << "\n";
+                //cout << "right one: " << *allDisjunctions[i]->getRight()->getTables().begin() << "\n";
+                pair<vector<pair<string, string>>, string> joinPair = dealWithJoinPredicate(i, equalityChecks, leftShorts, rightShort);
+                equalityChecks = joinPair.first;
+                finalsecondPredicate = joinPair.second;
+                if (finalsecondPredicate != "") {
                     joinDisjunctions[allDisjunctions[i]] = false;
-                } else {
-                    finalsecondPredicate = "";
                 }
                 cout << "finalfirstPredicate: " << finalfirstPredicate <<"\n";
                 cout << "finalsecondPredicate: " << finalsecondPredicate << "\n";
