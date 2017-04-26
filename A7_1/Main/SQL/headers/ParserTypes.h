@@ -729,7 +729,13 @@ public:
                     for (auto a : leftShorts){
                         if (att.second == a) {
                             cout << "schema append: " << att.first << ", type :" << leftTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
-                            mySchemaAggOut->appendAtt(make_pair (att.first, leftTable->getTable()->getSchema()->getAttByName(att.first).second));
+                            string type = leftTable->getTable()->getSchema()->getAttByName(att.first).second->toString();
+                            if (type == "double" || type == "string"){
+                                 mySchemaAggOut->appendAtt(make_pair (att.first, leftTable->getTable()->getSchema()->getAttByName(att.first).second));
+                            }else if (type == "int"){
+                                mySchemaAggOut->appendAtt(make_pair (att.first, MyDB_DoubleAttType);
+                            }
+                            break;
                         }
                     }
                     
