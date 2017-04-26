@@ -763,9 +763,16 @@ public:
         MyDB_TablePtr myTableAggOut = make_shared <MyDB_Table> (outTableAggName, outTableAggName + ".bin", mySchemaAggOut);
         MyDB_TableReaderWriterPtr supplierTableAggOut = make_shared <MyDB_TableReaderWriter> (myTableAggOut, myMgr);
         string selectionPredicate="bool[true]";
-        Aggregate myAgg(leftTable, supplierTableAggOut, aggsToCompute, groupings, selectionPredicate);
-        myAgg.run(groupFirst);
         
+        
+        if (aggsToCompute.size() != 0){
+            Aggregate myAgg(leftTable, supplierTableAggOut, aggsToCompute, groupings, selectionPredicate);
+            myAgg.run(groupFirst);
+        }else{
+            RegularSelection myOp (leftTable, supplierTableAggOut, selectionPredicate, projections);
+            myOp.run ();
+        }
+
         MyDB_RecordPtr temp = supplierTableAggOut->getEmptyRecord ();
         MyDB_RecordIteratorAltPtr myIter = supplierTableAggOut->getIteratorAlt ();
         int count  = 0;
