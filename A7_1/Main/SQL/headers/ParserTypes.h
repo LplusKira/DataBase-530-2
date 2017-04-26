@@ -733,12 +733,11 @@ public:
                             if (type == "double" || type == "string"){
                                  mySchemaAggOut->appendAtt(make_pair (att.first, leftTable->getTable()->getSchema()->getAttByName(att.first).second));
                             }else if (type == "int"){
-                                mySchemaAggOut->appendAtt(make_pair (att.first, MyDB_DoubleAttType);
+                                mySchemaAggOut->appendAtt(make_pair (att.first, make_shared <MyDB_DoubleAttType> ()));
                             }
                             break;
                         }
                     }
-                    
                 }
             } else {
                 if (selected->getType() == "sum") {
@@ -788,7 +787,6 @@ public:
             count++;
         }
         cout << "Total " << count << " rows in set.\n";
-        
     }
     
     pair<map<ExprTreePtr, bool>, MyDB_TableReaderWriterPtr> twoTableJoin(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters, MyDB_TableReaderWriterPtr leftTable, MyDB_TableReaderWriterPtr rightTable, vector<string> leftShorts, string rightShort, map<ExprTreePtr, bool> joinDisjunctions) {
