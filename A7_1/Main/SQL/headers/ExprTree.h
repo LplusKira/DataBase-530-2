@@ -191,6 +191,9 @@ public:
 	}
     
 	string toString () {
+        string delimiter = "_";
+        string token = attName.substr(0, attName.find(delimiter));
+        attName.replace(0,token.length(),tableName);
 		return "[" + attName + "]";
 	}
     

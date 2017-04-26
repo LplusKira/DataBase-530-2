@@ -556,6 +556,17 @@ public:
             string shortName = t.second;
             string longName = t.first;
             MyDB_TableReaderWriterPtr initialTRW = allTableReaderWriters[longName];
+            for (auto &p: initialTRW->getTable()->getSchema()->getAtts()){
+                cout << "name "<<p.first << "\n";
+                string name = p.first;
+                string delimiter = "_";
+                string token = name.substr(0, name.find(delimiter));
+                name.replace(0,token.length(),shortName);
+                p.first = name;
+            }
+            for (auto &p: initialTRW->getTable()->getSchema()->getAtts()){
+                cout <<"schema change short name " << p.first << "\n";
+            }
             TRWafterFilter [shortName] = initialTRW;
         }
         return TRWafterFilter;
@@ -1193,7 +1204,7 @@ public:
             joinTables(myCatalog, myMgr, allTableReaderWriters);
             t = clock() - t;
             float runningtime = (float)t / CLOCKS_PER_SEC;
-            cout << "using " << runningtime << "seconds"
+            cout << "using " << runningtime << "seconds";
         }
         
     }
