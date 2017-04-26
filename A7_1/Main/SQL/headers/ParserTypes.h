@@ -549,13 +549,42 @@ public:
         cout << "Total " << count << " rows in set.\n using " << runningtime << "seconds";
         
     }
-    map <string, MyDB_TableReaderWriterPtr> initiateTRWafterFilter(map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
+    map <string, MyDB_TableReaderWriterPtr> initiateTRWafterFilter(map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters, MyDB_BufferManagerPtr myMgr) {
         //initiate TRWafterFilter(shortName, tableReaderWriter) with all table's initial TRWs
         map <string, MyDB_TableReaderWriterPtr> TRWafterFilter;
+        unordered_map <string, int> myHash;
+        for (auto t : tablesToProcess){
+            string longName = t.first;
+            if(myHash.count(longName) == 0){
+                myHash[longName] = 1;
+            }else{
+                myHash[longName] += 1;
+            }
+        }
         for (auto t : tablesToProcess){
             string shortName = t.second;
             string longName = t.first;
-            MyDB_TableReaderWriterPtr initialTRW = allTableReaderWriters[longName];
+            cout << "shortName" << shortName <<"\n";
+            MyDB_TableReaderWriterPtr initialTRW;
+            if (myHash[longName] == 1 ){
+                initialTRW = allTableReaderWriters[longName];
+            }else{
+                MyDB_TableReaderWriterPtr arw = allTableReaderWriters[longName];
+                 MyDB_SchemaPtr mySchemaOut = make_shared<MyDB_Schema>();
+                for (auto &p: arw->getTable()->getSchema()->getAtts()){
+                    mySchemaOut->appendAtt(p);
+                }
+                MyDB_TablePtr copyTable = make_shared<MyDB_Table>(shortName, shortName +".bin", mySchemaOut);
+                
+                initialTRW = make_shared<MyDB_TableReaderWriter>(copyTable, myMgr);
+                MyDB_RecordPtr temp = arw->getEmptyRecord ();
+                MyDB_RecordIteratorAltPtr myIter = arw->getIteratorAlt ();
+                while (myIter->advance ()) {
+                    myIter->getCurrent (temp);
+                    initialTRW->append(temp);
+                }
+            }
+            
             for (auto &p: initialTRW->getTable()->getSchema()->getAtts()){
                 cout << "name "<<p.first << "\n";
                 string name = p.first;
@@ -674,7 +703,7 @@ public:
         map<ExprTreePtr, bool> joinDisjunctions;
         queue<ExprTreePtr> allDisjunctionQ;
         // get all join tables and tbRW after filter, move tbRW to a vector
-        TRWafterFilter = initiateTRWafterFilter(allTableReaderWriters);
+        TRWafterFilter = initiateTRWafterFilter(allTableReaderWriters,myMgr);
         for (ExprTreePtr disjunction: allDisjunctions) {
             allDisjunctionQ.push(disjunction);
             cout << "Current disjunction: " << disjunction->toString() << "\n";
