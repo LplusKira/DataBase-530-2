@@ -60,3 +60,9 @@ A7_1.zip
 A7_1/A7_1.xcodeproj/project.pbxproj
 
 A7_1/Build/bin/tempFile
+
+A7_1/Main/SQL/source/Lexer.c
+
+A7_1/Main/SQL/source/Parser.c
+
+A7_1/Main/SQL/source/Parser.h
