@@ -471,8 +471,8 @@
 			buildConfigurationList = C0E3C0C51EA0641F00F374D5 /* Build configuration list for PBXLegacyTarget "A7_1" */;
 			buildPhases = (
 			);
-			buildToolPath = /usr/local/bin/scons;
-			buildWorkingDirectory = "/Users/xiajunru/Code/DataBase-530-2/A7_1/Build";
+			buildToolPath = /Users/kejunliu/.pyenv/versions/2.7/bin/scons;
+			buildWorkingDirectory = "/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build";
 			dependencies = (
 			);
 			name = A7_1;
