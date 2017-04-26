@@ -19,6 +19,7 @@
 #include "ScanJoin.h"
 #include <unordered_map>
 #include <stack>
+#include <time.h>
 
 using namespace std;
 
@@ -245,6 +246,7 @@ public:
 	~SFWQuery () {}
     
     void oneTableCase(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
+        int t = clock();
         MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
         vector <string> projections;
         vector <pair <MyDB_AggType, string>> aggsToCompute;
@@ -345,12 +347,14 @@ public:
             cout << temp << "\n";
             count++;
         }
-        cout << "count : " << count << "\n";
+        t = clock() - t;
+        float runningtime = (float)t / CLOCKS_PER_SEC;
+        cout << "Total " << count << " rows in set.\n using " << runningtime << "seconds";
     }
     void twoTables(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
     
         
-        
+        int t = clock();
         string finalSelectionPredicate = "";
         pair <string, string> equalityCheck;
         string leftSelectionPredicate ="";
@@ -540,8 +544,9 @@ public:
             cout << temp << "\n";
             count++;
         }
-        cout << "Total " << count << " rows in set.\n";
-        
+        t = clock() - t;
+        float runningtime = (float)t / CLOCKS_PER_SEC;
+        cout << "Total " << count << " rows in set.\n using " << runningtime << "seconds";
         
     }
     map <string, MyDB_TableReaderWriterPtr> initiateTRWafterFilter(map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
@@ -797,7 +802,7 @@ public:
     }
     
     pair<map<ExprTreePtr, bool>, MyDB_TableReaderWriterPtr> twoTableJoin(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters, MyDB_TableReaderWriterPtr leftTable, MyDB_TableReaderWriterPtr rightTable, vector<string> leftShorts, string rightShort, map<ExprTreePtr, bool> joinDisjunctions) {
-        
+        int t = clock();
         string finalSelectionPredicate = "";
         vector<pair <string, string>> equalityChecks;
         string leftSelectionPredicate ="";
@@ -948,7 +953,7 @@ public:
 //            cout << temp << "\n";
             count++;
         }
-        cout << "Total " << count << " rows in set.\n";
+        cout << "Total " << count << " rows in set. \n";
         return make_pair(joinDisjunctions, tableOut) ;
     }
 //    MyDB_TableReaderWriterPtr twoTableJoin(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters, MyDB_TableReaderWriterPtr leftTable, MyDB_TableReaderWriterPtr rightTable) {
@@ -1157,7 +1162,11 @@ public:
         if (tablesToProcess.size()==1){
             oneTableCase(myCatalog, myMgr, allTableReaderWriters);
         } else {
+            int t = clock();
             joinTables(myCatalog, myMgr, allTableReaderWriters);
+            t = clock() - t;
+            float runningtime = (float)t / CLOCKS_PER_SEC;
+            cout << "using " << runningtime << "seconds"
         }
         
     }
