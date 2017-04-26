@@ -202,11 +202,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/SQL/headers/ParserTypes.h"
-            timestampString = "514860371.267736"
+            timestampString = "514865617.088361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "970"
-            endingLineNumber = "970"
+            startingLineNumber = "984"
+            endingLineNumber = "984"
             landmarkName = "SFWQuery"
             landmarkType = "14">
          </BreakpointContent>
@@ -266,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/SQL/headers/ParserTypes.h"
-            timestampString = "514851548.603079"
+            timestampString = "514865109.010134"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "627"
-            endingLineNumber = "627"
+            startingLineNumber = "635"
+            endingLineNumber = "635"
             landmarkName = "SFWQuery"
             landmarkType = "14">
          </BreakpointContent>
@@ -298,11 +298,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/SQL/headers/ParserTypes.h"
-            timestampString = "514860371.267736"
+            timestampString = "514865109.010134"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "708"
-            endingLineNumber = "708"
+            startingLineNumber = "716"
+            endingLineNumber = "716"
             landmarkName = "SFWQuery"
             landmarkType = "14">
          </BreakpointContent>
@@ -314,11 +314,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/SQL/headers/ParserTypes.h"
-            timestampString = "514851548.603079"
+            timestampString = "514865109.010134"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "594"
-            endingLineNumber = "594"
+            startingLineNumber = "596"
+            endingLineNumber = "596"
             landmarkName = "SFWQuery"
             landmarkType = "14">
             <Locations>
@@ -362,11 +362,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/SQL/headers/ParserTypes.h"
-            timestampString = "514851533.25391"
+            timestampString = "514865109.010134"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "649"
-            endingLineNumber = "649"
+            startingLineNumber = "657"
+            endingLineNumber = "657"
             landmarkName = "SFWQuery"
             landmarkType = "14">
          </BreakpointContent>
@@ -378,11 +378,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/SQL/headers/ParserTypes.h"
-            timestampString = "514860371.267736"
+            timestampString = "514865617.088361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "832"
-            endingLineNumber = "832"
+            startingLineNumber = "846"
+            endingLineNumber = "846"
             landmarkName = "SFWQuery"
             landmarkType = "14">
          </BreakpointContent>
@@ -426,11 +426,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/SQL/headers/ParserTypes.h"
-            timestampString = "514860371.267736"
+            timestampString = "514865617.088361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "845"
-            endingLineNumber = "845"
+            startingLineNumber = "859"
+            endingLineNumber = "859"
             landmarkName = "SFWQuery"
             landmarkType = "14">
          </BreakpointContent>
@@ -442,11 +442,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/SQL/headers/ParserTypes.h"
-            timestampString = "514854031.938972"
+            timestampString = "514865109.010134"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "650"
-            endingLineNumber = "650"
+            startingLineNumber = "658"
+            endingLineNumber = "658"
             landmarkName = "SFWQuery"
             landmarkType = "14">
          </BreakpointContent>
@@ -458,11 +458,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/SQL/headers/ParserTypes.h"
-            timestampString = "514860501.241648"
+            timestampString = "514865109.010134"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "759"
-            endingLineNumber = "759"
+            startingLineNumber = "767"
+            endingLineNumber = "767"
             landmarkName = "SFWQuery"
             landmarkType = "14">
          </BreakpointContent>
@@ -474,11 +474,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Main/SQL/headers/ParserTypes.h"
-            timestampString = "514860634.440881"
+            timestampString = "514865617.088361"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "813"
-            endingLineNumber = "813"
+            startingLineNumber = "827"
+            endingLineNumber = "827"
+            landmarkName = "SFWQuery"
+            landmarkType = "14">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Main/SQL/headers/ParserTypes.h"
+            timestampString = "514865812.057733"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "792"
+            endingLineNumber = "792"
             landmarkName = "SFWQuery"
             landmarkType = "14">
          </BreakpointContent>
