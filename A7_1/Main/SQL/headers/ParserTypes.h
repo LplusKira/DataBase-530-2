@@ -793,17 +793,29 @@ public:
         string rightSelectionPredicate ="";
         vector <string> projections;
         MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
-        
-        // schema contains all attributes from left table and righ table
-        for (auto &p : leftTable->getTable ()->getSchema ()->getAtts ()){
-            mySchemaOut->appendAtt (p);
-            projections.push_back("["+p.first+"]");
+        if (leftTable->getNumPages () < rightTable->getNumPages ()) {
+            // schema contains all attributes from left table and righ table
+            for (auto &p : leftTable->getTable ()->getSchema ()->getAtts ()){
+                mySchemaOut->appendAtt (p);
+                projections.push_back("["+p.first+"]");
+            }
+            
+            for (auto &p : rightTable->getTable ()->getSchema ()->getAtts ()){
+                mySchemaOut->appendAtt (p);
+                projections.push_back("["+p.first+"]");
+            }
+        } else {
+            // schema contains all attributes from left table and righ table
+            for (auto &p : rightTable->getTable ()->getSchema ()->getAtts ()){
+                mySchemaOut->appendAtt (p);
+                projections.push_back("["+p.first+"]");
+            }
+            for (auto &p : leftTable->getTable ()->getSchema ()->getAtts ()){
+                mySchemaOut->appendAtt (p);
+                projections.push_back("["+p.first+"]");
+            }
         }
         
-        for (auto &p : rightTable->getTable ()->getSchema ()->getAtts ()){
-            mySchemaOut->appendAtt (p);
-            projections.push_back("["+p.first+"]");
-        }
         
         // output schema and projections
         for (pair <string, MyDB_AttTypePtr> p : mySchemaOut->getAtts()) {
