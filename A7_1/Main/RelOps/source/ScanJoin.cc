@@ -58,7 +58,19 @@ void ScanJoin :: run () {
 
 	// get all of the pages
 	vector <MyDB_PageReaderWriter> allData;
+    cout << "left table: " << leftTable->getTable()->getName() << "\n";
+    cout << "right table: " << rightTable->getTable()->getName() << "\n";
+    cout << "leftSelectionPredicate: " << leftSelectionPredicate << "\n";
+    cout << "rightSelectionPredicate: " << rightSelectionPredicate << "\n";
+    cout << "equalityChecks: ";
+    for (pair<string, string>  p: equalityChecks) {
+        cout << "  <" << p.first << ", " << p.second << ">  ";
+    }
+    cout << "left page num: " << leftTable->getNumPages () << "\n";
+    cout << "right page num: " << rightTable->getNumPages () << "\n";
+    
 	for (int i = 0; i < leftTable->getNumPages (); i++) {
+        cout << "i " << i << "\n";
 		MyDB_PageReaderWriter temp = leftTable->getPinned (i);
 		if (temp.getType () == MyDB_PageType :: RegularPage)
 			allData.push_back (leftTable->getPinned (i));
@@ -118,6 +130,8 @@ void ScanJoin :: run () {
 	for (auto &p : rightTable->getTable ()->getSchema ()->getAtts ())
 		mySchemaOut->appendAtt (p);
 
+    for (auto &p : mySchemaOut->getAtts ())
+        cout << "schema in scan join: " << p.first << ", " << p.second->toString() << "\n";;
 	// get the combined record
 	MyDB_RecordPtr combinedRec = make_shared <MyDB_Record> (mySchemaOut);
 

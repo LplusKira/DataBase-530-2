@@ -1193,7 +1193,7 @@ public:
             joinTables(myCatalog, myMgr, allTableReaderWriters);
             t = clock() - t;
             float runningtime = (float)t / CLOCKS_PER_SEC;
-            cout << "using " << runningtime << "seconds"
+            cout << "using " << runningtime << "seconds";
         }
         
     }

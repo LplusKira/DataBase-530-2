@@ -30,7 +30,7 @@ int main (int numArgs, char **args) {
     MyDB_CatalogPtr myCatalog = make_shared <MyDB_Catalog> ("catFile");
 
 	// start up the buffer manager
-	MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (131072, 4028, "tempFile");
+	MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (131072, 9000, "tempFile");
 
 	// and create tables for everything in the database
 	static map <string, MyDB_TablePtr> allTables = MyDB_Table :: getAllTables (myCatalog);

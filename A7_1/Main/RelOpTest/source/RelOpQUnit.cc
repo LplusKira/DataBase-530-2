@@ -58,7 +58,7 @@ int main () {
 //	MyDB_TablePtr myTableRight = make_shared <MyDB_Table> ("supplierRight", "supplierRight.bin", mySchemaR);
 
 	// get the tables
-	MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (131072, 128, "tempFile");
+	MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (131072, 90000, "tempFile");
 //	MyDB_TableReaderWriterPtr supplierTableL = make_shared <MyDB_TableReaderWriter> (myTableLeft, myMgr);
 //	MyDB_TableReaderWriterPtr supplierTableRNoBPlus = make_shared <MyDB_TableReaderWriter> (myTableRight, myMgr);
 //
@@ -70,38 +70,78 @@ int main () {
     
     {
         {
-            MyDB_SchemaPtr mySchema = make_shared <MyDB_Schema> ();
+            MyDB_SchemaPtr mySchema1 = make_shared <MyDB_Schema> ();
             
-            mySchema->appendAtt (make_pair ("l_orderkey", make_shared <MyDB_IntAttType> ()));
-            mySchema->appendAtt (make_pair ("l_partkey", make_shared <MyDB_IntAttType> ()));
-            mySchema->appendAtt (make_pair ("l_suppkey", make_shared <MyDB_IntAttType> ()));
-            mySchema->appendAtt (make_pair ("l_linenumber", make_shared <MyDB_IntAttType> ()));
-            mySchema->appendAtt (make_pair ("l_quantity", make_shared <MyDB_IntAttType> ()));
-            mySchema->appendAtt (make_pair ("l_extendedprice", make_shared <MyDB_DoubleAttType> ()));
-            mySchema->appendAtt (make_pair ("l_discount", make_shared <MyDB_DoubleAttType> ()));
-            mySchema->appendAtt (make_pair ("l_tax", make_shared <MyDB_DoubleAttType> ()));
-            mySchema->appendAtt (make_pair ("l_returnflag", make_shared <MyDB_StringAttType> ()));
-            mySchema->appendAtt (make_pair ("l_linestatus", make_shared <MyDB_StringAttType> ()));
-            mySchema->appendAtt (make_pair ("l_shipdate", make_shared <MyDB_StringAttType> ()));
-            mySchema->appendAtt (make_pair ("l_commitdate", make_shared <MyDB_StringAttType> ()));
-            mySchema->appendAtt (make_pair ("l_receiptdate", make_shared <MyDB_StringAttType> ()));
-            mySchema->appendAtt (make_pair ("l_shipinstruct", make_shared <MyDB_StringAttType> ()));
-            mySchema->appendAtt (make_pair ("l_shipmode", make_shared <MyDB_StringAttType> ()));
-            mySchema->appendAtt (make_pair ("l_comment", make_shared <MyDB_StringAttType> ()));
+            mySchema1->appendAtt (make_pair ("l1_orderkey", make_shared <MyDB_IntAttType> ()));
+            mySchema1->appendAtt (make_pair ("l1_partkey", make_shared <MyDB_IntAttType> ()));
+            mySchema1->appendAtt (make_pair ("l1_suppkey", make_shared <MyDB_IntAttType> ()));
+            mySchema1->appendAtt (make_pair ("l1_linenumber", make_shared <MyDB_IntAttType> ()));
+            mySchema1->appendAtt (make_pair ("l1_quantity", make_shared <MyDB_IntAttType> ()));
+            mySchema1->appendAtt (make_pair ("l1_extendedprice", make_shared <MyDB_DoubleAttType> ()));
+            mySchema1->appendAtt (make_pair ("l1_discount", make_shared <MyDB_DoubleAttType> ()));
+            mySchema1->appendAtt (make_pair ("l1_tax", make_shared <MyDB_DoubleAttType> ()));
+            mySchema1->appendAtt (make_pair ("l1_returnflag", make_shared <MyDB_StringAttType> ()));
+            mySchema1->appendAtt (make_pair ("l1_linestatus", make_shared <MyDB_StringAttType> ()));
+            mySchema1->appendAtt (make_pair ("l1_shipdate", make_shared <MyDB_StringAttType> ()));
+            mySchema1->appendAtt (make_pair ("l1_commitdate", make_shared <MyDB_StringAttType> ()));
+            mySchema1->appendAtt (make_pair ("l1_receiptdate", make_shared <MyDB_StringAttType> ()));
+            mySchema1->appendAtt (make_pair ("l1_shipinstruct", make_shared <MyDB_StringAttType> ()));
+            mySchema1->appendAtt (make_pair ("l1_shipmode", make_shared <MyDB_StringAttType> ()));
+            mySchema1->appendAtt (make_pair ("l1_comment", make_shared <MyDB_StringAttType> ()));
             
-            MyDB_TablePtr myTable = make_shared <MyDB_Table> ("supplie", "supplie.bin", mySchema);
-            MyDB_TableReaderWriterPtr supplierTable = make_shared <MyDB_TableReaderWriter> (myTable, myMgr);
+            MyDB_TablePtr myTable1 = make_shared <MyDB_Table> ("supplie", "supplie.bin", mySchema1);
+            MyDB_TableReaderWriterPtr supplierTable1 = make_shared <MyDB_TableReaderWriter> (myTable1, myMgr);
             
-            supplierTable->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/lineitem.tbl");
-            supplierTable->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/lineitem.tbl");
-            supplierTable->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/lineitem.tbl");
-            supplierTable->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/lineitem.tbl");
-            supplierTable->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/lineitem.tbl");
-            supplierTable->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/lineitem.tbl");
+            supplierTable1->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/lineitem.tbl");
+            
+            MyDB_SchemaPtr mySchema2 = make_shared <MyDB_Schema> ();
+            
+            mySchema2->appendAtt (make_pair ("l2_orderkey", make_shared <MyDB_IntAttType> ()));
+            mySchema2->appendAtt (make_pair ("l2_partkey", make_shared <MyDB_IntAttType> ()));
+            mySchema2->appendAtt (make_pair ("l2_suppkey", make_shared <MyDB_IntAttType> ()));
+            mySchema2->appendAtt (make_pair ("l2_linenumber", make_shared <MyDB_IntAttType> ()));
+            mySchema2->appendAtt (make_pair ("l2_quantity", make_shared <MyDB_IntAttType> ()));
+            mySchema2->appendAtt (make_pair ("l2_extendedprice", make_shared <MyDB_DoubleAttType> ()));
+            mySchema2->appendAtt (make_pair ("l2_discount", make_shared <MyDB_DoubleAttType> ()));
+            mySchema2->appendAtt (make_pair ("l2_tax", make_shared <MyDB_DoubleAttType> ()));
+            mySchema2->appendAtt (make_pair ("l2_returnflag", make_shared <MyDB_StringAttType> ()));
+            mySchema2->appendAtt (make_pair ("l2_linestatus", make_shared <MyDB_StringAttType> ()));
+            mySchema2->appendAtt (make_pair ("l2_shipdate", make_shared <MyDB_StringAttType> ()));
+            mySchema2->appendAtt (make_pair ("l2_commitdate", make_shared <MyDB_StringAttType> ()));
+            mySchema2->appendAtt (make_pair ("l2_receiptdate", make_shared <MyDB_StringAttType> ()));
+            mySchema2->appendAtt (make_pair ("l2_shipinstruct", make_shared <MyDB_StringAttType> ()));
+            mySchema2->appendAtt (make_pair ("l2_shipmode", make_shared <MyDB_StringAttType> ()));
+            mySchema2->appendAtt (make_pair ("l2_comment", make_shared <MyDB_StringAttType> ()));
+            
+            MyDB_TablePtr myTable2 = make_shared <MyDB_Table> ("supplie", "supplie.bin", mySchema2);
+            MyDB_TableReaderWriterPtr supplierTable2 = make_shared <MyDB_TableReaderWriter> (myTable2, myMgr);
+            
+            supplierTable2->loadFromTextFile ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/lineitem.tbl");
             
             
-            MyDB_RecordPtr temp = supplierTable->getEmptyRecord ();
-            MyDB_RecordIteratorAltPtr myIter = supplierTable->getIteratorAlt ();
+            
+            // get the output schema and table
+            MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
+            mySchemaOut->appendAtt (make_pair ("l1_suppkey", make_shared <MyDB_IntAttType> ()));
+            mySchemaOut->appendAtt (make_pair ("l1_orderkey", make_shared <MyDB_IntAttType> ()));
+            mySchemaOut->appendAtt (make_pair ("l2_suppkey", make_shared <MyDB_IntAttType> ()));
+            mySchemaOut->appendAtt (make_pair ("l2_orderkey", make_shared <MyDB_IntAttType> ()));
+            
+            MyDB_TablePtr myTableOut = make_shared <MyDB_Table> ("supplierOut", "supplierOut.bin", mySchemaOut);
+            MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
+            
+            vector <string> projections;
+            projections.push_back ("[l1_suppkey]");
+            projections.push_back ("[l1_orderkey]");
+            projections.push_back ("[l2_suppkey]");
+            projections.push_back ("[l2_orderkey]");
+            vector<pair<string, string>> equalityChecks;
+            equalityChecks.push_back(make_pair("[l1_orderkey]", "[l2_orderkey]"));
+            //&& (,&&(,))
+            ScanJoin myOp (supplierTable1, supplierTable2, supplierTableOut, "( == ([l1_orderkey], [l2_orderkey]),!(== ([l1_suppkey], [l2_suppkey])))", projections, equalityChecks, "bool[true]", "bool[true]");
+            myOp.run ();
+            MyDB_RecordPtr temp = supplierTableOut->getEmptyRecord ();
+            MyDB_RecordIteratorAltPtr myIter = supplierTableOut->getIteratorAlt ();
             
             int count_ = 0;
             while (myIter->advance ()) {
@@ -110,22 +150,6 @@ int main () {
                 //cout << temp << "\n";
             }
             cout << "count: " << count_ << "\n";
-            
-            // get the output schema and table
-            MyDB_SchemaPtr mySchemaOut = make_shared <MyDB_Schema> ();
-            mySchemaOut->appendAtt (make_pair ("l_comment", make_shared <MyDB_StringAttType> ()));
-            mySchemaOut->appendAtt (make_pair ("l_orderkey", make_shared <MyDB_StringAttType> ()));
-            
-            MyDB_TablePtr myTableOut = make_shared <MyDB_Table> ("supplierOut", "supplierOut.bin", mySchemaOut);
-            MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
-            
-            vector <string> projections;
-            projections.push_back ("[l_comment]");
-            projections.push_back ("[l_orderkey]");
-            //&& (,&&(,))
-            RegularSelection myOp (supplierTable, supplierTableOut, "&& ( && ( == ([l_shipdate], string[1994-05-12]),== ([l_commitdate], string[1994-05-22])),== ([l_receiptdate], string[1994-06-10]))", projections);
-            myOp.run ();
-        
             
     }
 
