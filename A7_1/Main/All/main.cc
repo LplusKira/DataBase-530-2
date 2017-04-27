@@ -148,7 +148,7 @@ int main (int numArgs, char **args) {
 					// see if we got a create table
 					if (final->isCreateTable ()) {
 
-						string tableName = final->addToCatalog ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin", myCatalog);
+						string tableName = final->addToCatalog ("/Users/xiajunru/Code/DataBase-530-2/A7_1/Build/bin", myCatalog);
 						if (tableName != "nothing") {
 							allTables = MyDB_Table :: getAllTables (myCatalog);
 							if (allTables [tableName]->getFileType () == "heap") {
@@ -160,7 +160,7 @@ int main (int numArgs, char **args) {
 										(allTables [tableName]->getSortAtt (), allTables [tableName], myMgr);
 								allTableReaderWriters[tableName] = allBPlusReaderWriters[tableName];
 							}
-							cout << "Added table " << final->addToCatalog ("/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin", myCatalog) << "\n";
+							cout << "Added table " << final->addToCatalog ("/Users/xiajunru/Code/DataBase-530-2/A7_1/Build/bin", myCatalog) << "\n";
                             
                             map <string, MyDB_TablePtr> allTables = MyDB_Table::getAllTables(myCatalog);
                             for (std::map<string, MyDB_TablePtr>::iterator it=allTables.begin(); it!=allTables.end(); ++it)

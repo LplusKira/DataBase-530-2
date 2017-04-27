@@ -802,6 +802,8 @@ public:
                 vector<pair<string, string>> atts = selected->getAttsTables();
                 int tablesSize = selected->getTables().size();
                 bool breakOrNot = false;
+                bool isInt = true;
+                string intName = "";
                 for (pair<string, string> att: atts) {
                     if (breakOrNot == false){
                         cout << "atts:" << att.first << " in " << att.second << "\n";
@@ -809,11 +811,13 @@ public:
                             if (att.second == a) {
                                 cout << "schema append: " << att.first << ", type :" << leftTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
                                 string type = leftTable->getTable()->getSchema()->getAttByName(att.first).second->toString();
-                                breakOrNot = true;
                                 if (type == "double" || type == "string"){
                                     mySchemaAggOut->appendAtt(make_pair (att.first, leftTable->getTable()->getSchema()->getAttByName(att.first).second));
+                                    isInt = false;
+                                    breakOrNot = true;
                                 }else if (type == "int"){
-                                    mySchemaAggOut->appendAtt(make_pair (att.first, make_shared <MyDB_DoubleAttType> ()));
+//                                    mySchemaAggOut->appendAtt(make_pair (att.first, make_shared <MyDB_DoubleAttType> ()));
+                                    intName = att.first;
                                 }
                             }
                         }
@@ -821,6 +825,11 @@ public:
                     }else{
                         break;
                     }
+                }
+                if (isInt == true){
+                    mySchemaAggOut->appendAtt(make_pair (intName, make_shared <MyDB_IntAttType> ()));
+                }else{
+                    mySchemaAggOut->appendAtt(make_pair (intName, make_shared <MyDB_DoubleAttType> ()));
                 }
             } else {
                 if (selected->getType() == "sum") {
