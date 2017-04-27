@@ -10,13 +10,22 @@
 #include <sstream>
 #include <algorithm>
 #include <iterator>
-
+#include <stdio.h>
 using namespace std;
 string toLower (string data) {
 	transform(data.begin(), data.end(), data.begin(), ::tolower);
 	return data;
 }
 
+
+//int main ()
+//{
+//    if( remove( "/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin/Join49Out.bin" ) != 0 )
+//        perror( "Error deleting file" );
+//    else
+//        puts( "File successfully deleted" );
+//    return 0;
+//}
 int main (int numArgs, char **args) {
     
 //	// make sure we have the correct arguments
@@ -173,7 +182,7 @@ int main (int numArgs, char **args) {
 					} else if (final->isSFWQuery ()) {
 
 						// print it out
-						final->printSFWQuery (myCatalog, myMgr, allTableReaderWriters);
+						final->printSFWQuery (myCatalog, myMgr, allTableReaderWriters, "/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin");
 					}
 
 					// get outta here
