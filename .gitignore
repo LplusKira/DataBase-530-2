@@ -66,3 +66,7 @@ A7_1/Main/SQL/source/Lexer.c
 A7_1/Main/SQL/source/Parser.c
 
 A7_1/Main/SQL/source/Parser.h
+
+A7_data/lineitem.xlsx
+
+A7_data/~$region.xlsx
