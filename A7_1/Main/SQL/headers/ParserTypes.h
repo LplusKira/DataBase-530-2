@@ -344,12 +344,14 @@ public:
         int count  = 0;
         while (myIter->advance ()) {
             myIter->getCurrent (temp);
-            cout << temp << "\n";
+            if (count < 30){
+                 cout << temp << "\n";
+            }
             count++;
         }
         t = clock() - t;
         float runningtime = (float)t / CLOCKS_PER_SEC;
-        cout << "Total " << count << " rows in set.\n using " << runningtime << "seconds";
+        cout << "Total " << count << " rows in set.\n" << "using " << runningtime << " seconds\n";
     }
     void twoTables(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters) {
     
@@ -546,7 +548,7 @@ public:
         }
         t = clock() - t;
         float runningtime = (float)t / CLOCKS_PER_SEC;
-        cout << "Total " << count << " rows in set.\n using " << runningtime << "seconds";
+        cout << "Total " << count << " rows in set.\n using " << runningtime << " seconds\n";
         
     }
     map <string, MyDB_TableReaderWriterPtr> initiateTRWafterFilter(map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters, MyDB_BufferManagerPtr myMgr) {
@@ -864,7 +866,9 @@ public:
         int count  = 0;
         while (myIter->advance ()) {
             myIter->getCurrent (temp);
-            cout << temp << "\n";
+            if (count < 30){
+                cout << temp << "\n";
+            }
             count++;
         }
         cout << "Total " << count << " rows in set.\n";
@@ -1011,16 +1015,16 @@ public:
         ScanJoin myOp(leftTable, rightTable, tableOut,finalSelectionPredicate,projections,equalityChecks, leftSelectionPredicate,rightSelectionPredicate);
         myOp.run ();
         cout << "Finish ScanJoin...\n";
-        
-        MyDB_RecordPtr temp = tableOut->getEmptyRecord ();
-        MyDB_RecordIteratorAltPtr myIter = tableOut->getIteratorAlt ();
-        int count  = 0;
-        while (myIter->advance ()) {
-            myIter->getCurrent (temp);
-//            cout << temp << "\n";
-            count++;
-        }
-        cout << "Total " << count << " rows in set. \n";
+//        
+//        MyDB_RecordPtr temp = tableOut->getEmptyRecord ();
+//        MyDB_RecordIteratorAltPtr myIter = tableOut->getIteratorAlt ();
+//        int count  = 0;
+//        while (myIter->advance ()) {
+//            myIter->getCurrent (temp);
+////            cout << temp << "\n";
+//            count++;
+//        }
+//        cout << "Total " << count << " rows in set. \n";
         return make_pair(joinDisjunctions, tableOut) ;
     }
 //    MyDB_TableReaderWriterPtr twoTableJoin(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters, MyDB_TableReaderWriterPtr leftTable, MyDB_TableReaderWriterPtr rightTable) {
@@ -1233,7 +1237,7 @@ public:
             joinTables(myCatalog, myMgr, allTableReaderWriters);
             t = clock() - t;
             float runningtime = (float)t / CLOCKS_PER_SEC;
-            cout << "using " << runningtime << "seconds";
+            cout << "using " << runningtime << " seconds\n";
         }
         
     }

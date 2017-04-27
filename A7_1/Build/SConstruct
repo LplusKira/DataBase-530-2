@@ -66,4 +66,4 @@ What do you want to build/clean?\n
 
 
 print("\nOK, building sql compiler.")
-common_env.Program ('bin/allUnitTest', ['../Main/RelOpTest/source/RelOpQUnit.cc', relOpSrc, tableSrc, sqlSrc, recordSrc, catalogSrc, bufferSrc])
+common_env.Program ('bin/allUnitTest', ['../Main/All/main.cc', relOpSrc, tableSrc, sqlSrc, recordSrc, catalogSrc, bufferSrc])
