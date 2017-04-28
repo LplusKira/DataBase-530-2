@@ -136,7 +136,7 @@ public:
 			
 			// make sure that we have the attribute
 			if (mySchema->getAttByName (sortAtt).first == -1) {
-				cout << "B+-Tree not created.\n";
+//				cout << "B+-Tree not created.\n";
 				return "nothing";
 			}
 			myTable =  make_shared <MyDB_Table> (tableName, 
@@ -258,34 +258,34 @@ public:
         auto a = tablesToProcess.at(0);
         string tableName = a.second;
         bool groupFirst = true;
-        cout << "\t" << a.first << " AS " << a.second << "\n";
-        cout << "\t create TableReaderWriter...\n" << flush;
+//        cout << "\t" << a.first << " AS " << a.second << "\n";
+//        cout << "\t create TableReaderWriter...\n" << flush;
         
         supplierTable = allTableReaderWriters[a.first];
         
         //create output schema
-        cout << "Selecting the following:\n";
+//        cout << "Selecting the following:\n";
         vector <ExprTreePtr> aggs;
         if (valuesToSelect.at(0)->getType() != "regular") {
             groupFirst = false;
         }
         for (auto selected : valuesToSelect) {
-            cout << "\t" << selected->toString () << "\n";
+//            cout << "\t" << selected->toString () << "\n";
             if (selected->getType() == "regular") {
-                cout << "a type is regular" << selected->toString() << "\n";
+//                cout << "a type is regular" << selected->toString() << "\n";
                 projections.push_back(selected->toString());
                 groupings.push_back(selected->toString());
                 vector<pair<string, string>> atts = selected->getAttsTables();
                 for (pair<string, string> att: atts) {
-                    cout << "atts:" << att.first << " in " << att.second << "\n";
+//                    cout << "atts:" << att.first << " in " << att.second << "\n";
                     if (att.second == tableName) {
-                        cout << "schema append: " << att.first << ", type :" << supplierTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
+//                        cout << "schema append: " << att.first << ", type :" << supplierTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
                         mySchemaOut->appendAtt(make_pair (att.first, supplierTable->getTable()->getSchema()->getAttByName(att.first).second));
                     }
                 }
             } else {
                 if (selected->getType() == "sum") {
-                    cout << "sum this: " <<  selected->getChild()->toString() << "\n";
+//                    cout << "sum this: " <<  selected->getChild()->toString() << "\n";
                     if(selected->getChild()->toString() == "int[1]"){
                         aggsToCompute.push_back (make_pair (MyDB_AggType :: cnts, "int[0]"));
                         int number = rand() % 100;
@@ -298,7 +298,7 @@ public:
                         mySchemaOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
                     }
                 } else if (selected->getType() == "avg") {
-                    cout << "avg this: " <<  selected->getChild()->toString() << "\n";
+//                    cout << "avg this: " <<  selected->getChild()->toString() << "\n";
                     aggsToCompute.push_back (make_pair (MyDB_AggType :: avgs, selected->getChild()->toString()));
                     int number = rand() % 100;
                     string name = "avg" + std::to_string(number);
@@ -308,7 +308,7 @@ public:
             
         }
         
-        cout << "Where the following are true:\n";
+//        cout << "Where the following are true:\n";
         string firstPredicate;
         string secondPredicate;
         if (allDisjunctions.size() > 0) {
@@ -319,7 +319,7 @@ public:
         for (int i = 1; i < allDisjunctions.size(); i++ ) {
             secondPredicate = allDisjunctions[i]->toString();
             selectionPredicate = "&& ( " + firstPredicate + "," + secondPredicate + ")";
-            cout << "check pred: " << selectionPredicate << "\n";
+//            cout << "check pred: " << selectionPredicate << "\n";
             firstPredicate = selectionPredicate;
         }
         
@@ -327,11 +327,11 @@ public:
             selectionPredicate = firstPredicate;
         }
         
-        cout << "selectionPredicate: " << selectionPredicate << "\n";
+//        cout << "selectionPredicate: " << selectionPredicate << "\n";
         int outtableNumber = rand() % 100;
         string outTableName = "Join" + std::to_string(outtableNumber) + "Out";
         MyDB_TablePtr myTableOut = make_shared <MyDB_Table> (outTableName, storageDir + "/" + outTableName + ".bin", mySchemaOut);
-        cout << "deleteMe push: " << myTableOut->getStorageLoc() << "\n";
+//        cout << "deleteMe push: " << myTableOut->getStorageLoc() << "\n";
         deleteMe.push_back(myTableOut->getStorageLoc());
         MyDB_TableReaderWriterPtr supplierTableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
         
@@ -374,7 +374,7 @@ public:
         for (auto t : tablesToProcess){
             string shortName = t.second;
             string longName = t.first;
-            cout << "shortName" << shortName <<"\n";
+//            cout << "shortName" << shortName <<"\n";
             MyDB_TableReaderWriterPtr initialTRW;
             if (myHash[longName] == 1 ){
                 initialTRW = allTableReaderWriters[longName];
@@ -385,7 +385,7 @@ public:
                     mySchemaOut->appendAtt(p);
                 }
                 MyDB_TablePtr copyTable = make_shared<MyDB_Table>(shortName, storageDir+"/"+shortName +".bin", mySchemaOut);
-                cout << "deleteMe push: " << copyTable->getStorageLoc() << "\n";
+//                cout << "deleteMe push: " << copyTable->getStorageLoc() << "\n";
                 deleteMe.push_back(copyTable->getStorageLoc());
                 
                 initialTRW = make_shared<MyDB_TableReaderWriter>(copyTable, myMgr);
@@ -398,23 +398,23 @@ public:
             }
             
             for (auto &p: initialTRW->getTable()->getSchema()->getAtts()){
-                cout << "name "<<p.first << "\n";
+//                cout << "name "<<p.first << "\n";
                 string name = p.first;
                 string delimiter = "_";
                 string token = name.substr(0, name.find(delimiter));
                 name.replace(0,token.length(),shortName);
                 p.first = name;
             }
-            for (auto &p: initialTRW->getTable()->getSchema()->getAtts()){
-                cout <<"schema change short name " << p.first << "\n";
-            }
+//            for (auto &p: initialTRW->getTable()->getSchema()->getAtts()){
+//                cout <<"schema change short name " << p.first << "\n";
+//            }
             TRWafterFilter [shortName] = initialTRW;
         }
         return TRWafterFilter;
     }
     
     map <string, MyDB_TableReaderWriterPtr> updateTRWafterFilter(map <string, MyDB_TableReaderWriterPtr> TRWafterFilter,ExprTreePtr disjunction, MyDB_BufferManagerPtr myMgr, string storageDir) {
-        cout << "REGULAR....\n";
+//        cout << "REGULAR....\n";
         // if it is a regular selection statement, do a regular selection and update TRWafterFilter
         string selectionPredicate = disjunction->toString();
         vector<string> projections;
@@ -431,33 +431,33 @@ public:
         int outtableNumber = rand() % 100;
         string outTableName = tbLong + std::to_string(outtableNumber) + "out";
         MyDB_TablePtr myTableOut = make_shared <MyDB_Table> (outTableName, storageDir + "/" + outTableName + ".bin", mySchemaOut);
-        cout << "deleteMe push: " << myTableOut->getStorageLoc() << "\n";
+//        cout << "deleteMe push: " << myTableOut->getStorageLoc() << "\n";
         deleteMe.push_back(myTableOut->getStorageLoc());
         MyDB_TableReaderWriterPtr tbRWOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
         RegularSelection myOp (tbRW, tbRWOut, selectionPredicate, projections);
         myOp.run ();
         MyDB_RecordPtr temp = tbRWOut->getEmptyRecord ();
         MyDB_RecordIteratorAltPtr myIter = tbRWOut->getIteratorAlt ();
-        int count  = 0;
-        while (myIter->advance ()) {
-            myIter->getCurrent (temp);
-            //cout << temp << "\n";
-            count++;
-        }
-        cout << "Total " << count << " rows in " << tbRWOut->getTable()->getName()<< ".\n";
+//        int count  = 0;
+//        while (myIter->advance ()) {
+//            myIter->getCurrent (temp);
+//            //cout << temp << "\n";
+//            count++;
+//        }
+//        cout << "Total " << count << " rows in " << tbRWOut->getTable()->getName()<< ".\n";
         TRWafterFilter [tbShort] = tbRWOut;
         return TRWafterFilter;
     }
     
     pair<vector<pair<string, string>>, string> dealWithJoinPredicate(int i, vector<pair<string, string>> equalityChecks, vector<string> leftShorts, string rightShort) {
-        cout << "\n\nSHOULD JOIN\n";
+//        cout << "\n\nSHOULD JOIN\n";
         string leftOne = "";
         string rightOne = "";
         string finalPredicate = "";
         string leftDisjunctionTB = "";
         string rightDisjunctionTB = "";
         if (allDisjunctions[i]->getLeft() == nullptr || allDisjunctions[i]->getRight() == nullptr) {
-            cout << "NOT a Join\n";
+//            cout << "NOT a Join\n";
             bool isThatTwo1 = false;
             bool isThatTwo2 = false;
             for (string tbShort: allDisjunctions[i]->getTables()) {
@@ -484,31 +484,31 @@ public:
         for (string s: leftShorts) {
             if(leftDisjunctionTB == s ){
                 leftOne = allDisjunctions[i]->getLeft()->toString();
-                cout  << "leftOne: " << leftOne << "\n";
+//                cout  << "leftOne: " << leftOne << "\n";
             }
         }
         if (leftDisjunctionTB == rightShort){
             rightOne = allDisjunctions[i]->getLeft()->toString();
-            cout << "rightOne: " << rightOne << "\n";
+//            cout << "rightOne: " << rightOne << "\n";
         }
         for (string s: leftShorts) {
             if(rightDisjunctionTB == s ){
                 leftOne = allDisjunctions[i]->getRight()->toString();
-                cout  << "leftOne: " << leftOne << "\n";
+//                cout  << "leftOne: " << leftOne << "\n";
             }
         }
         if (rightDisjunctionTB == rightShort){
             rightOne = allDisjunctions[i]->getRight()->toString();
-            cout << "rightOne: " << rightOne << "\n";
+//            cout << "rightOne: " << rightOne << "\n";
         }
         if (rightOne !="" && leftOne !=""){
-            cout << "JOIN STATEMENT\n";
-            cout  << "equalityCheck <" << leftOne << ", " << rightOne << ">\n";
+//            cout << "JOIN STATEMENT\n";
+//            cout  << "equalityCheck <" << leftOne << ", " << rightOne << ">\n";
             equalityChecks.push_back(make_pair(leftOne,rightOne));
             finalPredicate = allDisjunctions[i]->toString();
             
         }else{
-            cout << "REGULAR STATEMENT\n";
+//            cout << "REGULAR STATEMENT\n";
         }
         return make_pair(equalityChecks, finalPredicate);
     }
@@ -520,7 +520,7 @@ public:
         TRWafterFilter = initiateTRWafterFilter(allTableReaderWriters,myMgr, storageDir);
         for (ExprTreePtr disjunction: allDisjunctions) {
             allDisjunctionQ.push(disjunction);
-            cout << "Current disjunction: " << disjunction->toString() << "\n";
+//            cout << "Current disjunction: " << disjunction->toString() << "\n";
             set<string> tables = disjunction->getTables();
             // if there are more than 1 tables in the disjunction, it is a join statement
             //      add these tables to joinTableSet
@@ -536,9 +536,9 @@ public:
         MyDB_TableReaderWriterPtr leftTable;
         while(!allDisjunctionQ.empty()) {
             ExprTreePtr disjunction = allDisjunctionQ.front();
-            cout << "current disjunction: " << disjunction->toString() << "\n";
+//            cout << "current disjunction: " << disjunction->toString() << "\n";
             if (joinDisjunctions[disjunction] == false) {
-                cout << "already deal with it or not a join\n";
+//                cout << "already deal with it or not a join\n";
                 allDisjunctionQ.pop();
                 continue;
             }
@@ -546,7 +546,7 @@ public:
             string rightOne = *disjunction->getRight()->getTables().begin();
             if (leftShorts.size() == 0) {
                 // first two join, join directly
-                cout << "now join: " << leftOne << " with " << rightOne << "\n";
+//                cout << "now join: " << leftOne << " with " << rightOne << "\n";
                 leftTable = TRWafterFilter[leftOne];
                 MyDB_TableReaderWriterPtr rightTable = TRWafterFilter[rightOne];
                 leftShorts.push_back(leftOne);
@@ -568,7 +568,7 @@ public:
                 if (lin && rin) {
                     cout << "shouldn't happen\n";
                 } else if (lin && !rin) {
-                    cout << "join big table with " << rightOne << "\n";
+//                    cout << "join big table with " << rightOne << "\n";
                     MyDB_TableReaderWriterPtr rightTable = TRWafterFilter[rightOne];
                     rightShort = rightOne;
                     pair<map<ExprTreePtr, bool>, MyDB_TableReaderWriterPtr> result = twoTableJoin(myCatalog, myMgr, TRWafterFilter, leftTable, rightTable, leftShorts, rightShort, joinDisjunctions, storageDir);
@@ -576,7 +576,7 @@ public:
                     leftTable = result.second;
                     leftShorts.push_back(rightOne);
                 } else if (!lin && rin) {
-                    cout << "join big table with " << leftOne << "\n";
+//                    cout << "join big table with " << leftOne << "\n";
                     MyDB_TableReaderWriterPtr rightTable = TRWafterFilter[leftOne];
                     rightShort = leftOne;
                     pair<map<ExprTreePtr, bool>, MyDB_TableReaderWriterPtr> result = twoTableJoin(myCatalog, myMgr, TRWafterFilter, leftTable, rightTable, leftShorts, rightShort, joinDisjunctions, storageDir);
@@ -584,7 +584,7 @@ public:
                     leftTable = result.second;
                     leftShorts.push_back(leftOne);
                 } else {
-                    cout << "hop and deal with it later...\n";
+//                    cout << "hop and deal with it later...\n";
                     allDisjunctionQ.pop();
                     allDisjunctionQ.push(disjunction);
                     continue;
@@ -594,7 +594,7 @@ public:
         
         
         //////
-        cout << "Selecting the following:\n";
+//        cout << "Selecting the following:\n";
         vector <ExprTreePtr> aggs;
         vector <string> projections;
         vector <string> groupings;
@@ -602,17 +602,19 @@ public:
         MyDB_SchemaPtr mySchemaAggOut = make_shared <MyDB_Schema> ();
         bool groupFirst = true;
         if (valuesToSelect.at(0)->getType() != "regular") {
-            cout << "It seems that agg att first\n";
+//            cout << "It seems that agg att first\n";
             groupFirst = false;
         }
         for (auto selected : valuesToSelect) {
             cout << "\t" << selected->toString () << "\n";
             if (selected->getType() == "regular") {
-                cout << "a type is regular" << selected->toString() << "\n";
+//                cout << "a type is regular" << selected->toString() << "\n";
                 projections.push_back(selected->toString());
                 groupings.push_back(selected->toString());
                 vector<pair<string, string>> atts = selected->getAttsTables();
                 int tablesSize = selected->getTables().size();
+                int countSize = 0;
+                int attsSize = atts.size();
                 bool breakOrNot = false;
                 bool isInt = true;
                 string intName = "";
@@ -621,7 +623,7 @@ public:
                         cout << "atts:" << att.first << " in " << att.second << "\n";
                         for (auto a : leftShorts){
                             if (att.second == a) {
-                                cout << "schema append: " << att.first << ", type :" << leftTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
+//                                cout << "schema append: " << att.first << ", type :" << leftTable->getTable()->getSchema()->getAttByName(att.first).second->toString() << "\n";
                                 string type = leftTable->getTable()->getSchema()->getAttByName(att.first).second->toString();
                                 if (type == "double" || type == "string"){
                                     mySchemaAggOut->appendAtt(make_pair (att.first, leftTable->getTable()->getSchema()->getAttByName(att.first).second));
@@ -630,6 +632,7 @@ public:
                                 }else if (type == "int"){
 //                                    mySchemaAggOut->appendAtt(make_pair (att.first, make_shared <MyDB_DoubleAttType> ()));
                                     intName = att.first;
+                                    countSize+=1;
                                 }
                             }
                         }
@@ -638,14 +641,15 @@ public:
                         break;
                     }
                 }
-                if (isInt == true){
-                    mySchemaAggOut->appendAtt(make_pair (intName, make_shared <MyDB_IntAttType> ()));
-                }else{
-                    mySchemaAggOut->appendAtt(make_pair (intName, make_shared <MyDB_DoubleAttType> ()));
-                }
+                cout << "count Size " << countSize << "attSize "<<atts.size() <<"\n";
+                if (countSize == atts.size()){
+                        mySchemaAggOut->appendAtt(make_pair (intName, make_shared <MyDB_IntAttType> ()));
+                    }else if (countSize != 0){
+                        mySchemaAggOut->appendAtt(make_pair (intName, make_shared <MyDB_DoubleAttType> ()));
+                    }
             } else {
                 if (selected->getType() == "sum") {
-                    cout << "sum this: " <<  selected->getChild()->toString() << "\n";
+//                    cout << "sum this: " <<  selected->getChild()->toString() << "\n";
                     if(selected->getChild()->toString() == "int[1]"){
                         aggsToCompute.push_back (make_pair (MyDB_AggType :: cnts, "int[0]"));
                         int number = rand() % 100;
@@ -658,7 +662,7 @@ public:
                         mySchemaAggOut->appendAtt(make_pair (name, make_shared <MyDB_DoubleAttType>()));
                     }
                 } else if (selected->getType() == "avg") {
-                    cout << "avg this: " <<  selected->getChild()->toString() << "\n";
+//                    cout << "avg this: " <<  selected->getChild()->toString() << "\n";
                     aggsToCompute.push_back (make_pair (MyDB_AggType :: avgs, selected->getChild()->toString()));
                     int number = rand() % 100;
                     string name = "avg" + std::to_string(number);
@@ -666,11 +670,12 @@ public:
                 }
             }
         }
-
+        for (auto &p : mySchemaAggOut->getAtts ())
+                cout << "schema in scan join: " << p.first << ", " << p.second->toString() << "\n";
         int outtableAggNumber = rand() % 100;
         string outTableAggName = "res" + std::to_string(outtableAggNumber) + "Out";
         MyDB_TablePtr myTableAggOut = make_shared <MyDB_Table> (outTableAggName, storageDir + "/" + outTableAggName + ".bin", mySchemaAggOut);
-        cout << "deleteMe push: " << myTableAggOut->getStorageLoc() << "\n";
+//        cout << "deleteMe push: " << myTableAggOut->getStorageLoc() << "\n";
         deleteMe.push_back(myTableAggOut->getStorageLoc());
         MyDB_TableReaderWriterPtr supplierTableAggOut = make_shared <MyDB_TableReaderWriter> (myTableAggOut, myMgr);
         string selectionPredicate="bool[true]";
@@ -730,13 +735,13 @@ public:
         
         
         // output schema and projections
-        for (pair <string, MyDB_AttTypePtr> p : mySchemaOut->getAtts()) {
-            cout << "out schema: " << p.first << ", " << p.second->toString() << "\n";
-        }
-        for (string p : projections){
-            cout << "projections: " << p << "\n";
-        }
-        
+//        for (pair <string, MyDB_AttTypePtr> p : mySchemaOut->getAtts()) {
+//            cout << "out schema: " << p.first << ", " << p.second->toString() << "\n";
+//        }
+//        for (string p : projections){
+//            cout << "projections: " << p << "\n";
+//        }
+//        
         // finalselectionpredicate and equalitycheck
         
         string finalfirstPredicate = "";
@@ -750,15 +755,15 @@ public:
         
         
         ///////////////////////
-        cout << "leftTableName" <<ltableName << "\n";
-        cout << "rightTableName" <<rtableName << "\n";
-        cout << "leftShort: ";
-        for (string s : leftShorts){
-            cout << s << "  ";
-        }
-        cout << "\n";
-        cout << "rightShort " << rightShort << "\n";
-        ////////////////////
+//        cout << "leftTableName" <<ltableName << "\n";
+//        cout << "rightTableName" <<rtableName << "\n";
+//        cout << "leftShort: ";
+//        for (string s : leftShorts){
+//            cout << s << "  ";
+//        }
+//        cout << "\n";
+//        cout << "rightShort " << rightShort << "\n";
+//        ////////////////////
         
         
         
@@ -773,7 +778,7 @@ public:
                     joinDisjunctions[allDisjunctions[0]] = false;
                 }
                 finalSelectionPredicate = finalfirstPredicate;
-                cout << "finalSelectionPredicate: " << finalSelectionPredicate << "\n";
+//                cout << "finalSelectionPredicate: " << finalSelectionPredicate << "\n";
             }else if (tables.size()==1){
                 cout << "REGULAR STATEMENT...hop it\n";
             }
@@ -790,8 +795,8 @@ public:
                 if (finalsecondPredicate != "") {
                     joinDisjunctions[allDisjunctions[i]] = false;
                 }
-                cout << "finalfirstPredicate: " << finalfirstPredicate <<"\n";
-                cout << "finalsecondPredicate: " << finalsecondPredicate << "\n";
+//                cout << "finalfirstPredicate: " << finalfirstPredicate <<"\n";
+//                cout << "finalsecondPredicate: " << finalsecondPredicate << "\n";
                 if (finalsecondPredicate !=""){
                     if (finalfirstPredicate == ""){
                         finalSelectionPredicate = finalsecondPredicate;
@@ -807,7 +812,7 @@ public:
                     }
                     finalfirstPredicate =finalSelectionPredicate;
                 }
-                cout << "finalSelectionPredicate: " << finalSelectionPredicate << "\n";
+//                cout << "finalSelectionPredicate: " << finalSelectionPredicate << "\n";
                 
             }else if (tables.size()==1){
                 cout << "REGULAR SELECTION...hop it\n";
@@ -819,7 +824,7 @@ public:
         int outtableNumber = rand() % 100;
         string outTableName = "Join" + std::to_string(outtableNumber) + "Out";
         MyDB_TablePtr myTableOut = make_shared <MyDB_Table> (outTableName, storageDir + "/" + outTableName + ".bin", mySchemaOut);
-        cout << "deleteMe push: " << myTableOut->getStorageLoc() << "\n";
+//        cout << "deleteMe push: " << myTableOut->getStorageLoc() << "\n";
         deleteMe.push_back(myTableOut->getStorageLoc());
         MyDB_TableReaderWriterPtr tableOut = make_shared <MyDB_TableReaderWriter> (myTableOut, myMgr);
         
@@ -830,17 +835,17 @@ public:
         if (rightSelectionPredicate == ""){
             rightSelectionPredicate = "bool[true]";
         }
-        for (pair<string ,string> p: equalityChecks) {
-            cout << "pair " << p.first << "second "<< p.second << "\n";
-        }
-        cout << "finalSelectionPredicate" << finalSelectionPredicate << "\n";
-        cout << "leftSelectionPredicate" << leftSelectionPredicate << "\n";
-        cout << "rightSelectionPredicate" << rightSelectionPredicate << "\n";
-        cout << "ScanJoining...\n";
+//        for (pair<string ,string> p: equalityChecks) {
+//            cout << "pair " << p.first << "second "<< p.second << "\n";
+//        }
+//        cout << "finalSelectionPredicate" << finalSelectionPredicate << "\n";
+//        cout << "leftSelectionPredicate" << leftSelectionPredicate << "\n";
+//        cout << "rightSelectionPredicate" << rightSelectionPredicate << "\n";
+//        cout << "ScanJoining...\n";
         ScanJoin myOp(leftTable, rightTable, tableOut,finalSelectionPredicate,projections,equalityChecks, leftSelectionPredicate,rightSelectionPredicate);
         myOp.run ();
-        cout << "Finish ScanJoin...\n";
-//        
+//        cout << "Finish ScanJoin...\n";
+//
 //        MyDB_RecordPtr temp = tableOut->getEmptyRecord ();
 //        MyDB_RecordIteratorAltPtr myIter = tableOut->getIteratorAlt ();
 //        int count  = 0;
@@ -854,12 +859,12 @@ public:
     }
     
     void getRA(MyDB_CatalogPtr myCatalog, MyDB_BufferManagerPtr myMgr, map <string, MyDB_TableReaderWriterPtr> allTableReaderWriters, string storageDir) {
-        cout << "All tables in current catalog:\n";
+//        cout << "All tables in current catalog:\n";
         map <string, MyDB_TablePtr> allTables = MyDB_Table::getAllTables(myCatalog);
-        for (std::map<string, MyDB_TablePtr>::iterator it=allTables.begin(); it!=allTables.end(); ++it)
-            std::cout << it->first << " => " << *it->second << "\n";
+//        for (std::map<string, MyDB_TablePtr>::iterator it=allTables.begin(); it!=allTables.end(); ++it)
+//            std::cout << it->first << " => " << *it->second << "\n";
         /////////if there is only one table
-        cout << "From the following table:\n";
+//        cout << "From the following table:\n";
         if (tablesToProcess.size()==1){
             oneTableCase(myCatalog, myMgr, allTableReaderWriters, storageDir);
         } else {
@@ -870,7 +875,7 @@ public:
             cout << "using " << runningtime << " seconds\n";
         }
         for (string dm: deleteMe) {
-            cout << "deleteMe: " << dm << "\n";
+//            cout << "deleteMe: " << dm << "\n";
             if( remove(dm.c_str()) != 0 )
                 perror( "Error deleting file" );
             else

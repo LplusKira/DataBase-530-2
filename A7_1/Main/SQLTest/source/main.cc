@@ -10,6 +10,7 @@
 #include <sstream>
 #include <algorithm>
 #include <iterator>
+#include <cstring>
 
 using namespace std;
 string toLower (string data) {
@@ -30,7 +31,7 @@ int main (int numArgs, char **args) {
     MyDB_CatalogPtr myCatalog = make_shared <MyDB_Catalog> ("catFile");
 
 	// start up the buffer manager
-	MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (131072, 4028, "tempFile");
+	MyDB_BufferManagerPtr myMgr = make_shared <MyDB_BufferManager> (131072, 9056, "tempFile");
 
 	// and create tables for everything in the database
 	static map <string, MyDB_TablePtr> allTables = MyDB_Table :: getAllTables (myCatalog);
@@ -163,7 +164,7 @@ int main (int numArgs, char **args) {
 					} else if (final->isSFWQuery ()) {
 
 						// print it out
-						final->printSFWQuery ();
+						final->printSFWQuery (myCatalog, myMgr, allTableReaderWriters, args[2]);
 					}
 
 					// get outta here

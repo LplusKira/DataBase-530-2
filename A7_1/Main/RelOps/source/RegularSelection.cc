@@ -48,7 +48,7 @@ void RegularSelection :: run () {
 		output->append (outputRec);
 //        cout << "new rec: " << outputRec << "\n";
 	}
-    cout << "count :" << count << "\n";
+//    cout << "count :" << count << "\n";
 }
 
 #endif

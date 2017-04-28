@@ -8,7 +8,6 @@
 
 /* Begin PBXFileReference section */
 		C033FA6E1EA079E800A7B19E /* main.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cc; sourceTree = "<group>"; };
-		C033FA701EA167BF00A7B19E /* lineitem.tbl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = lineitem.tbl; path = bin/lineitem.tbl; sourceTree = "<group>"; };
 		C0E3C0CA1EA0645E00F374D5 /* SConstruct */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SConstruct; sourceTree = "<group>"; };
 		C0E3C0CB1EA0645E00F374D5 /* supplier.tbl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = supplier.tbl; sourceTree = "<group>"; };
 		C0E3C0CC1EA0645E00F374D5 /* supplierBig.tbl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = supplierBig.tbl; sourceTree = "<group>"; };
@@ -110,7 +109,6 @@
 			children = (
 				C0E3C0C91EA0645E00F374D5 /* bin */,
 				C0E3C0CA1EA0645E00F374D5 /* SConstruct */,
-				C033FA701EA167BF00A7B19E /* lineitem.tbl */,
 				C0E3C0CB1EA0645E00F374D5 /* supplier.tbl */,
 				C0E3C0CC1EA0645E00F374D5 /* supplierBig.tbl */,
 				C0E3C0CD1EA0645E00F374D5 /* supplierBigSorted.tbl */,

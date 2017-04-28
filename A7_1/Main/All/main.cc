@@ -169,12 +169,12 @@ int main (int numArgs, char **args) {
 										(allTables [tableName]->getSortAtt (), allTables [tableName], myMgr);
 								allTableReaderWriters[tableName] = allBPlusReaderWriters[tableName];
 							}
-							cout << "Added table " << final->addToCatalog ("/Users/xiajunru/Code/DataBase-530-2/A7_1/Build/bin", myCatalog) << "\n";
-                            
+//							cout << "Added table " << final->addToCatalog ("/Users/xiajunru/Code/DataBase-530-2/A7_1/Build/bin", myCatalog) << "\n";
+//                            
                             map <string, MyDB_TablePtr> allTables = MyDB_Table::getAllTables(myCatalog);
-                            for (std::map<string, MyDB_TablePtr>::iterator it=allTables.begin(); it!=allTables.end(); ++it)
-                                std::cout << it->first << " => " << *it->second << "\n";
-                            cout << "create TableReaderWriter..." << flush;
+//                            for (std::map<string, MyDB_TablePtr>::iterator it=allTables.begin(); it!=allTables.end(); ++it)
+//                                std::cout << it->first << " => " << *it->second << "\n";
+//                            cout << "create TableReaderWriter..." << flush;
                             
                             
                         }	
@@ -182,7 +182,7 @@ int main (int numArgs, char **args) {
 					} else if (final->isSFWQuery ()) {
 
 						// print it out
-						final->printSFWQuery (myCatalog, myMgr, allTableReaderWriters, "/Users/kejunliu/Documents/DataBase-530-2/A7_1/Build/bin");
+						final->printSFWQuery (myCatalog, myMgr, allTableReaderWriters, "/Users/xiajunru/Code/DataBase-530-2/A7_1/Build/bin");
 					}
 
 					// get outta here

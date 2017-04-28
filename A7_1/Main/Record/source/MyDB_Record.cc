@@ -510,16 +510,16 @@ pair <func, MyDB_AttTypePtr> MyDB_Record :: times (pair <func, MyDB_AttTypePtr> 
 }
 
 pair <func, MyDB_AttTypePtr> MyDB_Record :: divide (pair <func, MyDB_AttTypePtr> lhs, pair <func, MyDB_AttTypePtr> rhs) {
-    cout << "left promotable to int" << lhs.second->promotableToInt() << "\n";
-    cout << "right promotable to int" << rhs.second->promotableToInt() << "\n";
-    cout << "left promotable to double" << lhs.second->promotableToDouble() << "\n";
-    cout << "right promotable to double" << rhs.second->promotableToDouble() << "\n";
-    cout << "left promotable to String" << lhs.second->promotableToString() << "\n";
-    cout << "right promotable to String" << rhs.second->promotableToString() << "\n";
-    cout << "left promotable to bool" << lhs.second->isBool() << "\n";
-    cout << "right promotable to bool" << rhs.second->isBool() << "\n";
-    cout << "left to string" << lhs.second->toString() << "\n";
-    cout << "right to string" << rhs.second->toString() << "\n";
+//    cout << "left promotable to int" << lhs.second->promotableToInt() << "\n";
+//    cout << "right promotable to int" << rhs.second->promotableToInt() << "\n";
+//    cout << "left promotable to double" << lhs.second->promotableToDouble() << "\n";
+//    cout << "right promotable to double" << rhs.second->promotableToDouble() << "\n";
+//    cout << "left promotable to String" << lhs.second->promotableToString() << "\n";
+//    cout << "right promotable to String" << rhs.second->promotableToString() << "\n";
+//    cout << "left promotable to bool" << lhs.second->isBool() << "\n";
+//    cout << "right promotable to bool" << rhs.second->isBool() << "\n";
+//    cout << "left to string" << lhs.second->toString() << "\n";
+//    cout << "right to string" << rhs.second->toString() << "\n";
 
 	// if both sides can be cast upwards to be ints, then do so
 	if (lhs.second->promotableToInt () && rhs.second->promotableToInt ()) {

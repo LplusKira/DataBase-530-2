@@ -23,7 +23,7 @@ recordSrc = [abspath(join(srcDir, f)) for f in listdir(srcDir) if isfile(join(sr
 srcDir = '../Main/DatabaseTable/source'
 tableSrc = [abspath(join(srcDir, f)) for f in listdir(srcDir) if isfile(join(srcDir, f)) and f[-3:] == '.cc']
 
-# get the source files for the SQL parser 
+# get the source files for the SQL parser
 srcDir = '../Main/SQL/source'
 sqlSrc = [abspath(join(srcDir, f)) for f in listdir(srcDir) if isfile(join(srcDir, f)) and (f[-3:] == '.cc' or f[-2:] == '.y' or f[-2:] == '.l')]
 
@@ -33,16 +33,16 @@ relOpSrc = [abspath(join(srcDir, f)) for f in listdir(srcDir) if isfile(join(src
 
 # get the headers paths
 header_paths = Split("""
-	'../Main/Catalog/headers'
-	'../Main/BufferMgr/headers'
-	'../Main/Qunit/headers'
-	'../Main/Record/headers'
-	'../Main/DatabaseTable/headers'
-	'../Main/SQL/headers'
-	'../Main/RelOps/headers'
+'../Main/Catalog/headers'
+'../Main/BufferMgr/headers'
+'../Main/Qunit/headers'
+'../Main/Record/headers'
+'../Main/DatabaseTable/headers'
+'../Main/SQL/headers'
+'../Main/RelOps/headers'
 """)
 
-# adds header folders 
+# adds header folders
 common_env.Append(CPPPATH = header_paths)
 
 # Menu for selecting a specific build or all builds
@@ -64,6 +64,54 @@ What do you want to build/clean?\n
 11. Rel Op unit tests for Clear (use clang++ compiler)
 """)
 
+ans=raw_input("Select the module(s) you want to build or clean. ")
 
+if ans=="1":
+print("\nOK, building buffer unit tests.")
+common_env.Program ('bin/bufferUnitTest', ['../Main/BufferTest/source/BufferQUnit.cc', catalogSrc, recordSrc, bufferSrc])
+
+if ans=="2":
+print("\nOK, building record unit tests.")
+common_env.Program ('bin/recordUnitTest', ['../Main/RecordTest/source/RecordQUnit.cc', tableSrc, recordSrc, catalogSrc, bufferSrc])
+
+if ans=="3":
+print("\nOK, building sort unit tests.")
+common_env.Program ('bin/sortUnitTest', ['../Main/SortTest/source/SortQUnit.cc', tableSrc, recordSrc, catalogSrc, bufferSrc])
+
+if ans=="4":
+print("\nOK, building B+-Tree unit tests.")
+common_env.Program ('bin/bPlusUnitTest', ['../Main/BPlusTest/source/BPlusQUnit.cc', tableSrc, recordSrc, catalogSrc, bufferSrc])
+
+if ans=="5":
 print("\nOK, building sql compiler.")
-common_env.Program ('bin/allUnitTest', ['../Main/All/main.cc', relOpSrc, tableSrc, sqlSrc, recordSrc, catalogSrc, bufferSrc])
+common_env.Program ('bin/sqlUnitTest', ['../Main/SQLTest/source/main.cc', relOpSrc, tableSrc, sqlSrc, recordSrc, catalogSrc, bufferSrc])
+
+if ans=="6":
+print("\nOK, building rel op unit tests.")
+common_env.Program ('bin/relOpUnitTest', ['../Main/RelOpTest/source/RelOpQUnit.cc', relOpSrc, tableSrc, recordSrc, catalogSrc, bufferSrc])
+
+if ans=="7":
+print("\nOK, building buffer unit tests using clang++.")
+common_env.Replace(CXX = "clang++")
+common_env.Program ('bin/bufferUnitTest', ['../Main/BufferTest/source/BufferQUnit.cc', catalogSrc, recordSrc, bufferSrc])
+
+if ans=="8":
+print("\nOK, building record unit tests using clang++.")
+common_env.Replace(CXX = "clang++")
+common_env.Program ('bin/recordUnitTest', ['../Main/RecordTest/source/RecordQUnit.cc', tableSrc, recordSrc, catalogSrc, bufferSrc])
+
+if ans=="9":
+print("\nOK, building sort unit tests using clang++.")
+common_env.Replace(CXX = "clang++")
+common_env.Program ('bin/sortUnitTest', ['../Main/SortTest/source/SortQUnit.cc', tableSrc, recordSrc, catalogSrc, bufferSrc])
+
+if ans=="10":
+print("\nOK, building B+-Tree unit tests using clang++.")
+common_env.Replace(CXX = "clang++")
+common_env.Program ('bin/bPlusUnitTest', ['../Main/BPlusTest/source/BPlusQUnit.cc', tableSrc, recordSrc, catalogSrc, bufferSrc])
+
+if ans=="11":
+print("\nOK, building rel op unit tests using clang++.")
+common_env.Replace(CXX = "clang++")
+common_env.Program ('bin/relOpUnitTest', ['../Main/RelOpTest/source/RelOpQUnit.cc', relOpSrc, tableSrc, recordSrc, catalogSrc, bufferSrc])
+

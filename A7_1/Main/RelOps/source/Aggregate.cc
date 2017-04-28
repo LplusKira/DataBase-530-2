@@ -201,30 +201,30 @@ void Aggregate :: run (bool groupFirst) {
 
 			// set up the record...
 			i = 0;
-            for (pair <string, MyDB_AttTypePtr> p : aggRec->getSchema()->getAtts()) {
-                cout << "agg rec schema: " << p.first << ", " << p.second->toString() << "\n";
-            }
+//            for (pair <string, MyDB_AttTypePtr> p : aggRec->getSchema()->getAtts()) {
+//                cout << "agg rec schema: " << p.first << ", " << p.second->toString() << "\n";
+//            }
             if (groupFirst) {
-                cout << "There are " << groupingComps.size() << "grouping and " << aggComps.size() << "aggs.\n";
+//                cout << "There are " << groupingComps.size() << "grouping and " << aggComps.size() << "aggs.\n";
                 for (auto &f : groupingComps) {
                     
                     aggRec->getAtt (i++)->set (f ());
-                    cout << "aggRec (" << i -1<< ") set according to group: " << aggRec->getAtt(i-1)->toString() << "\n";
+//                    cout << "aggRec (" << i -1<< ") set according to group: " << aggRec->getAtt(i-1)->toString() << "\n";
                 }
                 for (int j = 0; j < aggComps.size (); j++) {
                     aggRec->getAtt (i++)->set (zero);
-                    cout << "aggRec (" << i -1<< ") set according to agg: " << aggRec->getAtt(i-1)->toString() << "\n";
+//                    cout << "aggRec (" << i -1<< ") set according to agg: " << aggRec->getAtt(i-1)->toString() << "\n";
                 }
             } else {
-                cout << "There are " << groupingComps.size() << "grouping and " << aggComps.size() << "aggs.\n";
+//                cout << "There are " << groupingComps.size() << "grouping and " << aggComps.size() << "aggs.\n";
                 for (int j = 0; j < aggComps.size (); j++) {
                     
                     aggRec->getAtt (i++)->set (zero);
-                    cout << "aggRec (" << i-1 << ") set according to agg: " << aggRec->getAtt(i-1)->toString() << "\n";
+//                    cout << "aggRec (" << i-1 << ") set according to agg: " << aggRec->getAtt(i-1)->toString() << "\n";
                 }
                 for (auto &f : groupingComps) {
                     aggRec->getAtt (i++)->set (f ());
-                    cout << "aggRec (" << i-1 << ") set according to group: " << aggRec->getAtt(i-1)->toString() << "\n";
+//                    cout << "aggRec (" << i-1 << ") set according to group: " << aggRec->getAtt(i-1)->toString() << "\n";
 
                 }
             }
@@ -274,9 +274,9 @@ void Aggregate :: run (bool groupFirst) {
 
 	// loop through all of the aggregate records
 	MyDB_RecordPtr outRec = output->getEmptyRecord ();
-    for (pair <string, MyDB_AttTypePtr> p : outRec->getSchema ()->getAtts()) {
-        cout << "out schema: " << p.first << ", " << p.second->toString() << "\n";
-    }
+//    for (pair <string, MyDB_AttTypePtr> p : outRec->getSchema ()->getAtts()) {
+//        cout << "out schema: " << p.first << ", " << p.second->toString() << "\n";
+//    }
     
 	while (myIterAgain->advance ()) {
 
@@ -300,7 +300,7 @@ void Aggregate :: run (bool groupFirst) {
             }
             // set the grouping atts
             for (; i < numGroups+finalAggComps.size(); i++) {
-                cout << "set att: " << i << " to " << aggRec->getAtt(i)->toString() << "\n";
+//                cout << "set att: " << i << " to " << aggRec->getAtt(i)->toString() << "\n";
                 outRec->getAtt (i)->set (aggRec->getAtt (i+1));
             }
 
